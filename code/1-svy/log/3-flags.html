@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">3-flags.R</h1>
 <h4 class="author"><em>danka</em></h4>
-<h4 class="date"><em>Fri Dec 20 17:54:04 2019</em></h4>
+<h4 class="date"><em>Fri Dec 20 18:07:01 2019</em></h4>
 
 </div>
 
@@ -405,6 +405,9 @@ write_csv(out$flag_values, &quot;data-work/1-svy/svy-flags.csv&quot;)
 # only those &quot;core suspicious&quot; for communication with IPSOS
 out$flag_values %&gt;%
     filter(group == &quot;core_suspicious&quot;) %&gt;%
+    select(id, Vrid, flag_name, value) %&gt;%
+    spread(flag_name, value, fill = 0) %&gt;%
+    arrange(id) %&gt;%
     write_csv(&quot;data-work/1-svy/svy-flags-core.csv&quot;)
 
 # Double-check ------------------------------------------------------------

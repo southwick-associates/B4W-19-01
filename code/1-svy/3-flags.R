@@ -191,6 +191,9 @@ write_csv(out$flag_values, "data-work/1-svy/svy-flags.csv")
 # only those "core suspicious" for communication with IPSOS
 out$flag_values %>%
     filter(group == "core_suspicious") %>%
+    select(id, Vrid, flag_name, value) %>%
+    spread(flag_name, value, fill = 0) %>%
+    arrange(id) %>%
     write_csv("data-work/1-svy/svy-flags-core.csv")
 
 # Double-check ------------------------------------------------------------
