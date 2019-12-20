@@ -1,0 +1,45 @@
+Vrid,id,Vstatus,age,sex,income,race,race_other,hispanic
+324,,Partial,NA,NA,NA,NA,,NA
+984,,Complete,25 to 34,Male,"$50,000 to $74,999",White,,No
+1087,,Complete,65 to 74,Female,"Less than $25,000",White,,No
+612,1003534422,Complete,45 to 54,Female,"$150,000 or more",White,,No
+613,1003534422,Complete,45 to 54,Female,"$150,000 or more",White,,No
+444,1056716859,Complete,65 to 74,Male,"$100,000 to $124,999",Asian,,No
+580,1056716859,Partial,NA,NA,NA,NA,,NA
+787,1056716859,Complete,65 to 74,Male,"$100,000 to $124,999",Asian,,No
+507,1090290674,Complete,65 to 74,Male,"$100,000 to $124,999",White,,No
+649,1090290674,Complete,45 to 54,Male,"$100,000 to $124,999",White,,No
+944,1101263914,Complete,45 to 54,Male,"$100,000 to $124,999",White,,No
+945,1101263914,Complete,45 to 54,Male,"$125,000 to $149,999",White,,No
+989,1101263914,Disqualified,45 to 54,Male,"$100,000 to $124,999",White,,No
+1100,1154177130,Complete,55 to 64,Female,"$25,000 to $34,999",White,,No
+1101,1154177130,Complete,55 to 64,Female,"$25,000 to $34,999",White,,No
+894,1187417571,Complete,55 to 64,Female,"Less than $25,000",Other,"White, Am. Indian, Mexican",Yes
+902,1187417571,Complete,55 to 64,Female,"Less than $25,000",Other,"White, Am. Indian, Mexican",Yes
+995,1187417571,Complete,55 to 64,Female,"Less than $25,000",Other,Mixed race,Yes
+260,C2059169895,Partial,NA,NA,NA,NA,,NA
+261,C2059169895,Complete,55 to 64,Male,"$100,000 to $124,999",White,,No
+285,C2059237628,Complete,65 to 74,Female,"Less than $25,000",White,,No
+1192,C2059237628,Complete,65 to 74,Female,"Less than $25,000",White,,No
+350,C2059393062,Partial,NA,NA,NA,NA,,NA
+1166,C2059393062,Complete,55 to 64,Female,"$75,000 to $99,999",White,,No
+467,C2059843393,Complete,45 to 54,Female,"$35,000 to $49,999",White,,No
+537,C2059843393,Complete,45 to 54,Female,"$35,000 to $49,999",White,,No
+600,C2060506643,Partial,NA,NA,NA,NA,,NA
+601,C2060506643,Partial,NA,NA,NA,NA,,NA
+650,C2061078027,Complete,65 to 74,Female,"$75,000 to $99,999",White,,No
+1042,C2061078027,Complete,65 to 74,Female,"$75,000 to $99,999",White,,No
+780,C2061581250,Complete,65 to 74,Male,"$125,000 to $149,999",White,,No
+1119,C2061581250,Complete,65 to 74,Male,"$125,000 to $149,999",White,,No
+804,C2062157825,Partial,NA,NA,NA,NA,,NA
+806,C2062157825,Partial,NA,NA,NA,NA,,NA
+1024,C2067153579,Complete,35 to 44,Female,"$75,000 to $99,999",Asian,,No
+1029,C2067153579,Complete,35 to 44,Female,"$75,000 to $99,999",Asian,,No
+1026,C2067156720,Partial,NA,NA,NA,NA,,NA
+1044,C2067156720,Disqualified,75 or older,Female,"Less than $25,000",White,,No
+1049,C2067374038,Complete,65 to 74,Female,"$50,000 to $74,999",White,,No
+1050,C2067374038,Complete,65 to 74,Female,"$50,000 to $74,999",White,,No
+1083,C2067513932,Partial,NA,NA,NA,NA,,NA
+1096,C2067513932,Partial,NA,NA,NA,NA,,NA
+1110,C2067638536,Partial,NA,NA,NA,NA,,NA
+1201,C2067638536,Complete,55 to 64,Female,"Less than $25,000",White,,No

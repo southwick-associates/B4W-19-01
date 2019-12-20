@@ -1,0 +1,80 @@
+---
+title: "Summarize CO Ipsos survey flagging of suspicious responses"
+date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+output: 
+    html_document:
+        code_folding: hide
+---
+
+```{r setup, message=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r}
+svy <- readRDS("../../data-work/1-svy/svy-reshape.rds")
+flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
+```
+
+## Overview
+
+A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). We recommend removal of respondents as invalid if crossing a threshold of acceptable flags.
+
+### Flags used
+
+Only respondents with `Vrid == "Complete"` surveys are examined here, of which there are `r length(unique(flags$flag_values$Vrid))` observations.
+
+```{r}
+# drop incomplete responses
+# - in case we want to look at other attributes
+# svy <- lapply(svy, function(x) semi_join(x, flags$flag_values, by = "Vrid"))
+
+# counts by flag
+all_flags <- select(flags$flag_values, -flag, -core_flag, -id) %>% 
+    gather(flag_name, value, -Vrid) %>%
+    group_by(Vrid, flag_name) %>%
+    summarise(value = sum(value)) %>%
+    ungroup()
+
+cnt <- all_flags %>%
+    filter(value >= 1) %>%
+    distinct(Vrid, flag_name) %>%
+    count(flag_name)
+
+left_join(flags$flag_details, cnt, by = "flag_name") %>%
+    knitr::kable()
+```
+
+### Core Flags
+
+Core flags are those with `core == 1` from the first table. These tests together catch alot of respondents who left certain questions blank to some degree (see previous table). Only 864 of the 1006 respondents passed this bar.
+
+```{r}
+cores <- filter(flags$flag_details, core == 1)
+
+sum_by_vrid <- all_flags %>%
+    semi_join(cores, by = "flag_name") %>%
+    group_by(Vrid) %>%
+    summarise(flags = sum(value))
+
+sum_by_vrid %>%
+    count(flags) %>%
+    mutate(cumulative_n = cumsum(n)) %>%
+    knitr::kable()
+```
+
+
+### All Flags
+
+Only 841 of 1006 pass the stricter test that incorporates days consistency (797 if we lower the flag threshold to 2).
+
+```{r}
+sum_by_vrid <- all_flags %>%
+    group_by(Vrid) %>%
+    summarise(flags = sum(value))
+
+sum_by_vrid %>%
+    count(flags) %>%
+    mutate(cumulative_n = cumsum(n)) %>%
+    knitr::kable()
+```
