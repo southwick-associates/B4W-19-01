@@ -153,7 +153,7 @@ flags &lt;- readRDS(&quot;../../data-work/1-svy/svy-flag.rds&quot;)</code></pre>
 <p>A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). We recommend removal of respondents as invalid if crossing a threshold of acceptable flags.</p>
 <div id="flags-used" class="section level3">
 <h3>Flags used</h3>
-<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 312 observations.</p>
+<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 1006 observations.</p>
 <pre class="r"><code># drop incomplete responses
 # - in case we want to look at other attributes
 # svy &lt;- lapply(svy, function(x) semi_join(x, flags$flag_values, by = &quot;Vrid&quot;))

@@ -22,7 +22,7 @@ A set of tests were run to flag respondents for possible removal from survey ana
 
 ### Flags used
 
-Only respondents with `Vrid == "Complete"` surveys are examined here, of which there are `r length(unique(flags$flag_values$Vrid))` observations.
+Only respondents with `Vrid == "Complete"` surveys are examined here, of which there are `r filter(svy$person, Vstatus == "Complete") %>% nrow()` observations.
 
 ```{r}
 # drop incomplete responses
