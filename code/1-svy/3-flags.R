@@ -28,23 +28,23 @@ svy$flag <- select(svy$person, Vrid) %>% mutate(flag = 0)
 # Flag Details ------------------------------------------------------------
 
 flag_details <- tribble(
-    ~core, ~flag_name, ~flag_value, ~description,
-    1, "na_days", 3, "Didn't answer question about total days",
-    1, "na_part_water", 3, paste(
+    ~group, ~flag_name, ~flag_value, ~description,
+    "incomplete", "na_days", 3, "Didn't answer question about total days",
+    "incomplete", "na_part_water", 3, paste(
         "Didn't answer the question about whether they participated along the water", 
         "(i.e., missing values instead of Yes, No, or Not Sure)"
     ),
-    1, "na_days_water", 3, "Didn't answer question about water days",
-    1, "na_basin", 3, "Didn't answer question about basins",
-    1, "na_basin_days", 3, "Didn't answer question about basin-days",
-    1, "multiple_responses", 3, "Person (identified by id) has more than one Vrid (record)",
-    1, "all_activities", 1, "Indicated participating in every single activity",
-    1, "all_basins", 1, "Indicated participating in every single basin",
-    1, "high_days", 1, "More than 365 days identified for any activity",
-    1, "high_sum_days", 1, "More than 1000 days when summed across all activities",
-    0, "high_water_days", 1, "More days along water than total days",
-    0, "high_basin_days", 1, "Sum across basin days are >5 and more than double activity total water days",
-    0, "low_basin_days", 1, "Total water days are >5 and sum across basin is 50% or lower than total water days"
+    "incomplete", "na_days_water", 3, "Didn't answer question about water days",
+    "incomplete", "na_basin", 3, "Didn't answer question about basins",
+    "incomplete", "na_basin_days", 3, "Didn't answer question about basin-days",
+    "core_suspicious", "multiple_responses", 3, "Person (identified by id) has more than one Vrid (record)",
+    "core_suspicious", "all_activities", 1, "Indicated participating in every single activity",
+    "core_suspicious", "all_basins", 1, "Indicated participating in every single basin",
+    "core_suspicious", "high_days", 1, "More than 365 days identified for any activity",
+    "core_suspicious", "high_sum_days", 1, "More than 1000 days when summed across all activities",
+    "suspicious", "high_water_days", 1, "More days along water than total days",
+    "suspicious", "high_basin_days", 1, "Sum across basin days are >5 and more than double activity total water days",
+    "suspicious", "low_basin_days", 1, "Total water days are >5 and sum across basin is 50% or lower than total water days"
 )
 
 # Identify Completion -----------------------------------------------------
@@ -165,23 +165,33 @@ new_flags <- basin_diff %>%
 svy$flag <- svy$flag %>%
     update_flags(new_flags, "low_basin_days", 1)
 
-# Save --------------------------------------------------------------------
+# Groups ------------------------------------------------------------------
+# grouping into 3 categories
+# - core_suspicious: those that should be flagged for removal
+# - all_suspicious: those that maybe should be flagged for removal
+# - incomplete: those that didn't answer all survey questions they were presented
 
-# combine
-filter(flag_details, core == 0) # show non-core flags
 flag_values <- svy$flag %>%
-    # the core_flag ignores tests which we might not use
-    mutate(core_flag = flag - high_water_days - high_basin_days - low_basin_days) %>%
-    select(Vrid, core_flag, flag, na_days:low_basin_days)
+    select(-flag) %>%
+    gather(flag_name, value, -Vrid) %>%
+    filter(value > 0) %>%
+    left_join(flag_details, by = "flag_name") %>%
+    select(Vrid, group, flag_name, value)
 out <- mget(c("flag_details", "flag_values"))
 
 # attach id
 svy <- readRDS("data-work/1-svy/svy-raw.rds")
 out$flag_values <- right_join(select(svy, id, Vrid), out$flag_values, by = "Vrid")
 
-# save
+# Save --------------------------------------------------------------------
+
 saveRDS(out, "data-work/1-svy/svy-flag.rds")
-write_csv(out$flag_values, "data-work/1-svy/svy-flag.csv")
+write_csv(out$flag_values, "data-work/1-svy/svy-flags.csv")
+
+# only those "core suspicious" for communication with IPSOS
+out$flag_values %>%
+    filter(group == "core_suspicious") %>%
+    write_csv("data-work/1-svy/svy-flags-core.csv")
 
 # Double-check ------------------------------------------------------------
 # quickly look at some raw data tests (for trail)

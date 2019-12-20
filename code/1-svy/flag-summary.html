@@ -153,29 +153,19 @@ flags &lt;- readRDS(&quot;../../data-work/1-svy/svy-flag.rds&quot;)</code></pre>
 <p>A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). We recommend removal of respondents as invalid if crossing a threshold of acceptable flags.</p>
 <div id="flags-used" class="section level3">
 <h3>Flags used</h3>
-<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 1006 observations.</p>
+<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 312 observations.</p>
 <pre class="r"><code># drop incomplete responses
 # - in case we want to look at other attributes
 # svy &lt;- lapply(svy, function(x) semi_join(x, flags$flag_values, by = &quot;Vrid&quot;))
 
 # counts by flag
-all_flags &lt;- select(flags$flag_values, -flag, -core_flag, -id) %&gt;% 
-    gather(flag_name, value, -Vrid) %&gt;%
-    group_by(Vrid, flag_name) %&gt;%
-    summarise(value = sum(value)) %&gt;%
-    ungroup()
-
-cnt &lt;- all_flags %&gt;%
-    filter(value &gt;= 1) %&gt;%
-    distinct(Vrid, flag_name) %&gt;%
-    count(flag_name)
-
+cnt &lt;- flags$flag_values %&gt;% count(flag_name)
 left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
     knitr::kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="right">core</th>
+<th align="left">group</th>
 <th align="left">flag_name</th>
 <th align="right">flag_value</th>
 <th align="left">description</th>
@@ -184,91 +174,91 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
+<td align="left">incomplete</td>
 <td align="left">na_days</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about total days</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
+<td align="left">incomplete</td>
 <td align="left">na_part_water</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer the question about whether they participated along the water (i.e., missing values instead of Yes, No, or Not Sure)</td>
 <td align="right">39</td>
 </tr>
 <tr class="odd">
-<td align="right">1</td>
+<td align="left">incomplete</td>
 <td align="left">na_days_water</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about water days</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
+<td align="left">incomplete</td>
 <td align="left">na_basin</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about basins</td>
 <td align="right">20</td>
 </tr>
 <tr class="odd">
-<td align="right">1</td>
+<td align="left">incomplete</td>
 <td align="left">na_basin_days</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about basin-days</td>
 <td align="right">56</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
+<td align="left">core_suspicious</td>
 <td align="left">multiple_responses</td>
 <td align="right">3</td>
 <td align="left">Person (identified by id) has more than one Vrid (record)</td>
 <td align="right">27</td>
 </tr>
 <tr class="odd">
-<td align="right">1</td>
+<td align="left">core_suspicious</td>
 <td align="left">all_activities</td>
 <td align="right">1</td>
 <td align="left">Indicated participating in every single activity</td>
 <td align="right">4</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
+<td align="left">core_suspicious</td>
 <td align="left">all_basins</td>
 <td align="right">1</td>
 <td align="left">Indicated participating in every single basin</td>
 <td align="right">3</td>
 </tr>
 <tr class="odd">
-<td align="right">1</td>
+<td align="left">core_suspicious</td>
 <td align="left">high_days</td>
 <td align="right">1</td>
 <td align="left">More than 365 days identified for any activity</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
+<td align="left">core_suspicious</td>
 <td align="left">high_sum_days</td>
 <td align="right">1</td>
 <td align="left">More than 1000 days when summed across all activities</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
-<td align="right">0</td>
+<td align="left">suspicious</td>
 <td align="left">high_water_days</td>
 <td align="right">1</td>
 <td align="left">More days along water than total days</td>
 <td align="right">44</td>
 </tr>
 <tr class="even">
-<td align="right">0</td>
+<td align="left">suspicious</td>
 <td align="left">high_basin_days</td>
 <td align="right">1</td>
 <td align="left">Sum across basin days are &gt;5 and more than double activity total water days</td>
 <td align="right">27</td>
 </tr>
 <tr class="odd">
-<td align="right">0</td>
+<td align="left">suspicious</td>
 <td align="left">low_basin_days</td>
 <td align="right">1</td>
 <td align="left">Total water days are &gt;5 and sum across basin is 50% or lower than total water days</td>
@@ -279,15 +269,11 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 </div>
 <div id="core-flags" class="section level3">
 <h3>Core Flags</h3>
-<p>Core flags are those with <code>core == 1</code> from the first table. These tests together catch alot of respondents who left certain questions blank to some degree (see previous table). Only 864 of the 1006 respondents passed this bar.</p>
-<pre class="r"><code>cores &lt;- filter(flags$flag_details, core == 1)
-
-sum_by_vrid &lt;- all_flags %&gt;%
-    semi_join(cores, by = &quot;flag_name&quot;) %&gt;%
+<p>Core flags are those marked core_suspicious in the first table.</p>
+<pre class="r"><code>flags$flag_values %&gt;%
+    filter(group == &quot;core_suspicious&quot;) %&gt;%
     group_by(Vrid) %&gt;%
-    summarise(flags = sum(value))
-
-sum_by_vrid %&gt;%
+    summarise(flags = sum(value)) %&gt;%
     count(flags) %&gt;%
     mutate(cumulative_n = cumsum(n)) %&gt;%
     knitr::kable()</code></pre>
@@ -301,46 +287,110 @@ sum_by_vrid %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0</td>
-<td align="right">859</td>
-<td align="right">859</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">9</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">863</td>
-</tr>
-<tr class="odd">
 <td align="right">2</td>
 <td align="right">1</td>
-<td align="right">864</td>
-</tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">133</td>
-<td align="right">997</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
-<td align="right">4</td>
-<td align="right">5</td>
-<td align="right">1002</td>
+<td align="right">3</td>
+<td align="right">27</td>
+<td align="right">37</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="missing-responses" class="section level3">
+<h3>Missing Responses</h3>
+<pre class="r"><code>flags$flag_values %&gt;%
+    filter(group == &quot;incomplete&quot;) %&gt;%
+    group_by(Vrid) %&gt;%
+    summarise(flags = sum(value)) %&gt;%
+    count(flags) %&gt;%
+    mutate(cumulative_n = cumsum(n)) %&gt;%
+    knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">flags</th>
+<th align="right">n</th>
+<th align="right">cumulative_n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">113</td>
+<td align="right">113</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
+<td align="right">3</td>
+<td align="right">116</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="additional-suspicious-flags" class="section level3">
+<h3>Additional Suspicious Flags</h3>
+<pre class="r"><code>flags$flag_values %&gt;%
+    filter(group == &quot;suspicious&quot;) %&gt;%
+    group_by(Vrid) %&gt;%
+    summarise(flags = sum(value)) %&gt;%
+    count(flags) %&gt;%
+    mutate(cumulative_n = cumsum(n)) %&gt;%
+    knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">flags</th>
+<th align="right">n</th>
+<th align="right">cumulative_n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">114</td>
+<td align="right">114</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">50</td>
+<td align="right">164</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">18</td>
+<td align="right">182</td>
+</tr>
+<tr class="even">
 <td align="right">4</td>
-<td align="right">1006</td>
+<td align="right">12</td>
+<td align="right">194</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">196</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">197</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="all-flags" class="section level3">
 <h3>All Flags</h3>
-<p>Only 841 of 1006 pass the stricter test that incorporates days consistency (797 if we lower the flag threshold to 2).</p>
-<pre class="r"><code>sum_by_vrid &lt;- all_flags %&gt;%
+<pre class="r"><code>flags$flag_values %&gt;%
     group_by(Vrid) %&gt;%
-    summarise(flags = sum(value))
-
-sum_by_vrid %&gt;%
+    summarise(flags = sum(value)) %&gt;%
     count(flags) %&gt;%
     mutate(cumulative_n = cumsum(n)) %&gt;%
     knitr::kable()</code></pre>
@@ -354,54 +404,49 @@ sum_by_vrid %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0</td>
-<td align="right">694</td>
-<td align="right">694</td>
-</tr>
-<tr class="even">
 <td align="right">1</td>
 <td align="right">103</td>
-<td align="right">797</td>
+<td align="right">103</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="right">2</td>
 <td align="right">44</td>
-<td align="right">841</td>
+<td align="right">147</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="right">3</td>
 <td align="right">122</td>
-<td align="right">963</td>
+<td align="right">269</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="right">4</td>
 <td align="right">20</td>
-<td align="right">983</td>
-</tr>
-<tr class="even">
-<td align="right">5</td>
-<td align="right">8</td>
-<td align="right">991</td>
+<td align="right">289</td>
 </tr>
 <tr class="odd">
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">297</td>
+</tr>
+<tr class="even">
 <td align="right">6</td>
 <td align="right">5</td>
-<td align="right">996</td>
-</tr>
-<tr class="even">
-<td align="right">7</td>
-<td align="right">8</td>
-<td align="right">1004</td>
+<td align="right">302</td>
 </tr>
 <tr class="odd">
+<td align="right">7</td>
 <td align="right">8</td>
-<td align="right">1</td>
-<td align="right">1005</td>
+<td align="right">310</td>
 </tr>
 <tr class="even">
+<td align="right">8</td>
+<td align="right">1</td>
+<td align="right">311</td>
+</tr>
+<tr class="odd">
 <td align="right">10</td>
 <td align="right">1</td>
-<td align="right">1006</td>
+<td align="right">312</td>
 </tr>
 </tbody>
 </table>

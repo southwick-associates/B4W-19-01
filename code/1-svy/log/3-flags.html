@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">3-flags.R</h1>
 <h4 class="author"><em>danka</em></h4>
-<h4 class="date"><em>Fri Dec 20 14:57:37 2019</em></h4>
+<h4 class="date"><em>Fri Dec 20 17:54:04 2019</em></h4>
 
 </div>
 
@@ -166,23 +166,23 @@ svy$flag &lt;- select(svy$person, Vrid) %&gt;% mutate(flag = 0)
 # Flag Details ------------------------------------------------------------
 
 flag_details &lt;- tribble(
-    ~core, ~flag_name, ~flag_value, ~description,
-    1, &quot;na_days&quot;, 3, &quot;Didn't answer question about total days&quot;,
-    1, &quot;na_part_water&quot;, 3, paste(
+    ~group, ~flag_name, ~flag_value, ~description,
+    &quot;incomplete&quot;, &quot;na_days&quot;, 3, &quot;Didn't answer question about total days&quot;,
+    &quot;incomplete&quot;, &quot;na_part_water&quot;, 3, paste(
         &quot;Didn't answer the question about whether they participated along the water&quot;, 
         &quot;(i.e., missing values instead of Yes, No, or Not Sure)&quot;
     ),
-    1, &quot;na_days_water&quot;, 3, &quot;Didn't answer question about water days&quot;,
-    1, &quot;na_basin&quot;, 3, &quot;Didn't answer question about basins&quot;,
-    1, &quot;na_basin_days&quot;, 3, &quot;Didn't answer question about basin-days&quot;,
-    1, &quot;multiple_responses&quot;, 3, &quot;Person (identified by id) has more than one Vrid (record)&quot;,
-    1, &quot;all_activities&quot;, 1, &quot;Indicated participating in every single activity&quot;,
-    1, &quot;all_basins&quot;, 1, &quot;Indicated participating in every single basin&quot;,
-    1, &quot;high_days&quot;, 1, &quot;More than 365 days identified for any activity&quot;,
-    1, &quot;high_sum_days&quot;, 1, &quot;More than 1000 days when summed across all activities&quot;,
-    0, &quot;high_water_days&quot;, 1, &quot;More days along water than total days&quot;,
-    0, &quot;high_basin_days&quot;, 1, &quot;Sum across basin days are &gt;5 and more than double activity total water days&quot;,
-    0, &quot;low_basin_days&quot;, 1, &quot;Total water days are &gt;5 and sum across basin is 50% or lower than total water days&quot;
+    &quot;incomplete&quot;, &quot;na_days_water&quot;, 3, &quot;Didn't answer question about water days&quot;,
+    &quot;incomplete&quot;, &quot;na_basin&quot;, 3, &quot;Didn't answer question about basins&quot;,
+    &quot;incomplete&quot;, &quot;na_basin_days&quot;, 3, &quot;Didn't answer question about basin-days&quot;,
+    &quot;core_suspicious&quot;, &quot;multiple_responses&quot;, 3, &quot;Person (identified by id) has more than one Vrid (record)&quot;,
+    &quot;core_suspicious&quot;, &quot;all_activities&quot;, 1, &quot;Indicated participating in every single activity&quot;,
+    &quot;core_suspicious&quot;, &quot;all_basins&quot;, 1, &quot;Indicated participating in every single basin&quot;,
+    &quot;core_suspicious&quot;, &quot;high_days&quot;, 1, &quot;More than 365 days identified for any activity&quot;,
+    &quot;core_suspicious&quot;, &quot;high_sum_days&quot;, 1, &quot;More than 1000 days when summed across all activities&quot;,
+    &quot;suspicious&quot;, &quot;high_water_days&quot;, 1, &quot;More days along water than total days&quot;,
+    &quot;suspicious&quot;, &quot;high_basin_days&quot;, 1, &quot;Sum across basin days are &gt;5 and more than double activity total water days&quot;,
+    &quot;suspicious&quot;, &quot;low_basin_days&quot;, 1, &quot;Total water days are &gt;5 and sum across basin is 50% or lower than total water days&quot;
 )
 
 # Identify Completion -----------------------------------------------------
@@ -379,29 +379,33 @@ new_flags &lt;- basin_diff %&gt;%
 <pre class="r"><code>svy$flag &lt;- svy$flag %&gt;%
     update_flags(new_flags, &quot;low_basin_days&quot;, 1)
 
-# Save --------------------------------------------------------------------
+# Groups ------------------------------------------------------------------
+# grouping into 3 categories
+# - core_suspicious: those that should be flagged for removal
+# - all_suspicious: those that maybe should be flagged for removal
+# - incomplete: those that didn't answer all survey questions they were presented
 
-# combine
-filter(flag_details, core == 0) # show non-core flags</code></pre>
-<pre><code>## # A tibble: 3 x 4
-##    core flag_name    flag_value description                               
-##   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;                                     
-## 1     0 high_water_~          1 More days along water than total days     
-## 2     0 high_basin_~          1 Sum across basin days are &gt;5 and more tha~
-## 3     0 low_basin_d~          1 Total water days are &gt;5 and sum across ba~</code></pre>
-<pre class="r"><code>flag_values &lt;- svy$flag %&gt;%
-    # the core_flag ignores tests which we might not use
-    mutate(core_flag = flag - high_water_days - high_basin_days - low_basin_days) %&gt;%
-    select(Vrid, core_flag, flag, na_days:low_basin_days)
+flag_values &lt;- svy$flag %&gt;%
+    select(-flag) %&gt;%
+    gather(flag_name, value, -Vrid) %&gt;%
+    filter(value &gt; 0) %&gt;%
+    left_join(flag_details, by = &quot;flag_name&quot;) %&gt;%
+    select(Vrid, group, flag_name, value)
 out &lt;- mget(c(&quot;flag_details&quot;, &quot;flag_values&quot;))
 
 # attach id
 svy &lt;- readRDS(&quot;data-work/1-svy/svy-raw.rds&quot;)
 out$flag_values &lt;- right_join(select(svy, id, Vrid), out$flag_values, by = &quot;Vrid&quot;)
 
-# save
+# Save --------------------------------------------------------------------
+
 saveRDS(out, &quot;data-work/1-svy/svy-flag.rds&quot;)
-write_csv(out$flag_values, &quot;data-work/1-svy/svy-flag.csv&quot;)
+write_csv(out$flag_values, &quot;data-work/1-svy/svy-flags.csv&quot;)
+
+# only those &quot;core suspicious&quot; for communication with IPSOS
+out$flag_values %&gt;%
+    filter(group == &quot;core_suspicious&quot;) %&gt;%
+    write_csv(&quot;data-work/1-svy/svy-flags-core.csv&quot;)
 
 # Double-check ------------------------------------------------------------
 # quickly look at some raw data tests (for trail)

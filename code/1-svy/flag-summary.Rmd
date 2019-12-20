@@ -30,50 +30,55 @@ Only respondents with `Vrid == "Complete"` surveys are examined here, of which t
 # svy <- lapply(svy, function(x) semi_join(x, flags$flag_values, by = "Vrid"))
 
 # counts by flag
-all_flags <- select(flags$flag_values, -flag, -core_flag, -id) %>% 
-    gather(flag_name, value, -Vrid) %>%
-    group_by(Vrid, flag_name) %>%
-    summarise(value = sum(value)) %>%
-    ungroup()
-
-cnt <- all_flags %>%
-    filter(value >= 1) %>%
-    distinct(Vrid, flag_name) %>%
-    count(flag_name)
-
+cnt <- flags$flag_values %>% count(flag_name)
 left_join(flags$flag_details, cnt, by = "flag_name") %>%
     knitr::kable()
 ```
 
 ### Core Flags
 
-Core flags are those with `core == 1` from the first table. These tests together catch alot of respondents who left certain questions blank to some degree (see previous table). Only 864 of the 1006 respondents passed this bar.
+Core flags are those marked core_suspicious in the first table.
 
 ```{r}
-cores <- filter(flags$flag_details, core == 1)
-
-sum_by_vrid <- all_flags %>%
-    semi_join(cores, by = "flag_name") %>%
+flags$flag_values %>%
+    filter(group == "core_suspicious") %>%
     group_by(Vrid) %>%
-    summarise(flags = sum(value))
-
-sum_by_vrid %>%
+    summarise(flags = sum(value)) %>%
     count(flags) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
 ```
 
+### Missing Responses
+
+```{r}
+flags$flag_values %>%
+    filter(group == "incomplete") %>%
+    group_by(Vrid) %>%
+    summarise(flags = sum(value)) %>%
+    count(flags) %>%
+    mutate(cumulative_n = cumsum(n)) %>%
+    knitr::kable()
+```
+
+### Additional Suspicious Flags
+
+```{r}
+flags$flag_values %>%
+    filter(group == "suspicious") %>%
+    group_by(Vrid) %>%
+    summarise(flags = sum(value)) %>%
+    count(flags) %>%
+    mutate(cumulative_n = cumsum(n)) %>%
+    knitr::kable()
+```
 
 ### All Flags
 
-Only 841 of 1006 pass the stricter test that incorporates days consistency (797 if we lower the flag threshold to 2).
-
 ```{r}
-sum_by_vrid <- all_flags %>%
+flags$flag_values %>%
     group_by(Vrid) %>%
-    summarise(flags = sum(value))
-
-sum_by_vrid %>%
+    summarise(flags = sum(value)) %>%
     count(flags) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
