@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">3-flags.R</h1>
 <h4 class="author"><em>danka</em></h4>
-<h4 class="date"><em>Fri Dec 20 18:07:01 2019</em></h4>
+<h4 class="date"><em>Tue Dec 31 10:53:44 2019</em></h4>
 
 </div>
 
@@ -225,54 +225,54 @@ svy$act %&gt;% filter(part == &quot;Checked&quot;, days != 0, !is.na(days)) %&gt
 <tr class="odd">
 <td align="left">Checked</td>
 <td align="left">No</td>
-<td align="right">118</td>
-<td align="right">80</td>
+<td align="right">147</td>
+<td align="right">101</td>
 <td align="right">NA</td>
-<td align="right">71</td>
-<td align="right">155</td>
-<td align="right">149</td>
-<td align="right">81</td>
+<td align="right">92</td>
+<td align="right">200</td>
+<td align="right">188</td>
+<td align="right">102</td>
 <td align="right">NA</td>
-<td align="right">79</td>
+<td align="right">102</td>
 </tr>
 <tr class="even">
 <td align="left">Checked</td>
 <td align="left">Not Sure</td>
-<td align="right">8</td>
-<td align="right">4</td>
+<td align="right">11</td>
+<td align="right">5</td>
 <td align="right">NA</td>
 <td align="right">1</td>
-<td align="right">7</td>
 <td align="right">11</td>
-<td align="right">6</td>
-<td align="right">NA</td>
+<td align="right">13</td>
 <td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">12</td>
 </tr>
 <tr class="odd">
 <td align="left">Checked</td>
 <td align="left">Yes</td>
-<td align="right">178</td>
-<td align="right">274</td>
+<td align="right">206</td>
+<td align="right">358</td>
 <td align="right">NA</td>
-<td align="right">56</td>
-<td align="right">530</td>
-<td align="right">69</td>
-<td align="right">239</td>
+<td align="right">64</td>
+<td align="right">650</td>
+<td align="right">86</td>
+<td align="right">303</td>
 <td align="right">NA</td>
-<td align="right">305</td>
+<td align="right">372</td>
 </tr>
 <tr class="even">
 <td align="left">Checked</td>
 <td align="left">NA</td>
-<td align="right">9</td>
+<td align="right">10</td>
 <td align="right">7</td>
-<td align="right">249</td>
+<td align="right">318</td>
 <td align="right">2</td>
-<td align="right">20</td>
-<td align="right">8</td>
-<td align="right">12</td>
-<td align="right">287</td>
-<td align="right">13</td>
+<td align="right">23</td>
+<td align="right">9</td>
+<td align="right">14</td>
+<td align="right">368</td>
+<td align="right">14</td>
 </tr>
 </tbody>
 </table>
@@ -304,7 +304,7 @@ new_flags &lt;- svy$basin %&gt;%
 should_answer &lt;- svy$basin %&gt;%
     filter(part == &quot;Checked&quot;, basin != &quot;none&quot;)
 length(unique(should_answer$Vrid)) # 723 respondents got to this stage</code></pre>
-<pre><code>## [1] 723</code></pre>
+<pre><code>## [1] 898</code></pre>
 <pre class="r"><code>new_flags &lt;- svy$basin %&gt;%
     semi_join(should_answer, by = c(&quot;Vrid&quot;, &quot;act&quot;, &quot;basin&quot;)) %&gt;%
     filter(is.na(days_water))
@@ -394,30 +394,44 @@ flag_values &lt;- svy$flag %&gt;%
 out &lt;- mget(c(&quot;flag_details&quot;, &quot;flag_values&quot;))
 
 # attach id
-svy &lt;- readRDS(&quot;data-work/1-svy/svy-raw.rds&quot;)
-out$flag_values &lt;- right_join(select(svy, id, Vrid), out$flag_values, by = &quot;Vrid&quot;)
+svy_raw &lt;- readRDS(&quot;data-work/1-svy/svy-raw.rds&quot;)
+out$flag_values &lt;- out$flag_values %&gt;%
+    left_join(select(svy_raw, id, Vrid), by = &quot;Vrid&quot;)
 
 # Save --------------------------------------------------------------------
 
+# a. flagging data
 saveRDS(out, &quot;data-work/1-svy/svy-flag.rds&quot;)
-write_csv(out$flag_values, &quot;data-work/1-svy/svy-flags.csv&quot;)
+write_csv(out$flag_values, &quot;out/1-svy/flags-all.csv&quot;)
 
-# only those &quot;core suspicious&quot; for communication with IPSOS
-out$flag_values %&gt;%
+# b. only those &quot;core suspicious&quot; for communication with IPSOS
+core_suspicious &lt;- out$flag_values %&gt;%
     filter(group == &quot;core_suspicious&quot;) %&gt;%
-    select(id, Vrid, flag_name, value) %&gt;%
+    select(id, Vrid, flag_name, value)
+core_suspicious %&gt;%
     spread(flag_name, value, fill = 0) %&gt;%
     arrange(id) %&gt;%
-    write_csv(&quot;data-work/1-svy/svy-flags-core.csv&quot;)
+    write_csv(&quot;out/1-svy/flags-core.csv&quot;)
+
+# c. unique IDs to share with IPSOS (those that passed)
+# - excludes incompletes and those core_suspicious with 3+ flags
+exclude &lt;- core_suspicious %&gt;%
+    group_by(id) %&gt;%
+    summarise(value = sum(value)) %&gt;%
+    filter(value &gt;= 3)
+svy$person %&gt;%
+    anti_join(exclude, by = &quot;id&quot;) %&gt;%
+    distinct(id) %&gt;%
+    write_csv(&quot;out/1-svy/flags-ipsos-okay.csv&quot;)
 
 # Double-check ------------------------------------------------------------
 # quickly look at some raw data tests (for trail)
 
 # No answer to participation along water
-svy %&gt;%
+svy_raw %&gt;%
     filter(var2O1 == &quot;Checked&quot;, is.na(var47), var94 != 0) %&gt;%
     select(var2O1, var94, var47)</code></pre>
-<pre><code>## # A tibble: 13 x 3
+<pre><code>## # A tibble: 16 x 3
 ##    var2O1  var94 var47
 ##    &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;
 ##  1 Checked     5 &lt;NA&gt; 
@@ -432,64 +446,53 @@ svy %&gt;%
 ## 10 Checked    10 &lt;NA&gt; 
 ## 11 Checked    50 &lt;NA&gt; 
 ## 12 Checked     5 &lt;NA&gt; 
-## 13 Checked     3 &lt;NA&gt;</code></pre>
+## 13 Checked     3 &lt;NA&gt; 
+## 14 Checked    10 &lt;NA&gt; 
+## 15 Checked   277 &lt;NA&gt; 
+## 16 Checked     5 &lt;NA&gt;</code></pre>
 <pre class="r"><code># low basin days
-trail_basin_days &lt;- svy %&gt;%
+trail_basin_days &lt;- svy_raw %&gt;%
     select(Vrid, var80O197:var80O213) %&gt;%
     gather(var, days, na.rm = T, -Vrid) %&gt;%
     group_by(Vrid) %&gt;%
     summarise(trail_days = sum(days))</code></pre>
 <pre><code>## Warning: attributes are not identical across measure variables;
 ## they will be dropped</code></pre>
-<pre class="r"><code>svy %&gt;%
+<pre class="r"><code>svy_raw %&gt;%
     left_join(trail_basin_days, by = &quot;Vrid&quot;) %&gt;%
     filter(!is.na(var57), !is.na(trail_days), var57 / 2 &gt;= trail_days, var57 &gt;= 5) %&gt;%
     select(Vrid, var57, trail_days) %&gt;%
     arrange(Vrid)</code></pre>
 <pre><code>## Warning: Column `Vrid` has different attributes on LHS and RHS of join</code></pre>
-<pre><code>## # A tibble: 18 x 3
+<pre><code>## # A tibble: 24 x 3
 ##    Vrid  var57 trail_days
 ##    &lt;chr&gt; &lt;dbl&gt;      &lt;dbl&gt;
 ##  1 1160     10          5
 ##  2 1188     15          7
-##  3 168       5          2
-##  4 242     100         15
-##  5 275       5          1
-##  6 276      15          7
-##  7 320      90         45
-##  8 389      30         15
-##  9 485      50         20
-## 10 549      30         13
-## 11 551       6          3
-## 12 583      60         17
-## 13 617      30         15
-## 14 684      22         11
-## 15 723       6          1
-## 16 725      25         10
-## 17 742       6          3
-## 18 955      45         20</code></pre>
+##  3 1224     10          3
+##  4 1228     10          2
+##  5 1302     50          5
+##  6 1320     20          9
+##  7 1340     30         15
+##  8 1353    150         45
+##  9 168       5          2
+## 10 242     100         15
+## # ... with 14 more rows</code></pre>
 <pre class="r"><code>filter(new_flags, act == &quot;trail&quot;, days_water.y != 0) %&gt;% arrange(Vrid)</code></pre>
-<pre><code>## # A tibble: 18 x 7
+<pre><code>## # A tibble: 24 x 7
 ##    Vrid  act    days days_water.x days_water.y  diff ratio
 ##    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ##  1 1160  trail   140           10            5    -5 0.5  
 ##  2 1188  trail     5           15            7    -8 0.467
-##  3 168   trail     5            5            2    -3 0.4  
-##  4 242   trail   160          100           15   -85 0.15 
-##  5 275   trail    10            5            1    -4 0.2  
-##  6 276   trail    15           15            7    -8 0.467
-##  7 320   trail   200           90           45   -45 0.5  
-##  8 389   trail    90           30           15   -15 0.5  
-##  9 485   trail   100           50           20   -30 0.4  
-## 10 549   trail     5           30           13   -17 0.433
-## 11 551   trail     6            6            3    -3 0.5  
-## 12 583   trail   248           60           17   -43 0.283
-## 13 617   trail    30           30           15   -15 0.5  
-## 14 684   trail    66           22           11   -11 0.5  
-## 15 723   trail     6            6            1    -5 0.167
-## 16 725   trail   100           25           10   -15 0.4  
-## 17 742   trail   156            6            3    -3 0.5  
-## 18 955   trail   280           45           20   -25 0.444</code></pre>
+##  3 1224  trail    70           10            3    -7 0.3  
+##  4 1228  trail    30           10            2    -8 0.2  
+##  5 1302  trail     3           50            5   -45 0.1  
+##  6 1320  trail    40           20            9   -11 0.45 
+##  7 1340  trail    60           30           15   -15 0.5  
+##  8 1353  trail  1000          150           45  -105 0.3  
+##  9 168   trail     5            5            2    -3 0.4  
+## 10 242   trail   160          100           15   -85 0.15 
+## # ... with 14 more rows</code></pre>
 
 
 

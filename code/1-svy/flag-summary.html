@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2019-12-20" />
+<meta name="date" content="2019-12-31" />
 
 <title>Summarize CO Ipsos survey flagging of suspicious responses</title>
 
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Summarize CO Ipsos survey flagging of suspicious responses</h1>
-<h4 class="date"><em>December 20, 2019</em></h4>
+<h4 class="date"><em>December 31, 2019</em></h4>
 
 </div>
 
@@ -153,7 +153,7 @@ flags &lt;- readRDS(&quot;../../data-work/1-svy/svy-flag.rds&quot;)</code></pre>
 <p>A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). We recommend removal of respondents as invalid if crossing a threshold of acceptable flags.</p>
 <div id="flags-used" class="section level3">
 <h3>Flags used</h3>
-<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 1006 observations.</p>
+<p>Only respondents with <code>Vrid == &quot;Complete&quot;</code> surveys are examined here, of which there are 1252 observations.</p>
 <pre class="r"><code># drop incomplete responses
 # - in case we want to look at other attributes
 # svy &lt;- lapply(svy, function(x) semi_join(x, flags$flag_values, by = &quot;Vrid&quot;))
@@ -178,14 +178,14 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <td align="left">na_days</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about total days</td>
-<td align="right">2</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
 <td align="left">incomplete</td>
 <td align="left">na_part_water</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer the question about whether they participated along the water (i.e., missing values instead of Yes, No, or Not Sure)</td>
-<td align="right">39</td>
+<td align="right">44</td>
 </tr>
 <tr class="odd">
 <td align="left">incomplete</td>
@@ -199,28 +199,28 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <td align="left">na_basin</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about basins</td>
-<td align="right">20</td>
+<td align="right">26</td>
 </tr>
 <tr class="odd">
 <td align="left">incomplete</td>
 <td align="left">na_basin_days</td>
 <td align="right">3</td>
 <td align="left">Didn’t answer question about basin-days</td>
-<td align="right">56</td>
+<td align="right">73</td>
 </tr>
 <tr class="even">
 <td align="left">core_suspicious</td>
 <td align="left">multiple_responses</td>
 <td align="right">3</td>
 <td align="left">Person (identified by id) has more than one Vrid (record)</td>
-<td align="right">27</td>
+<td align="right">34</td>
 </tr>
 <tr class="odd">
 <td align="left">core_suspicious</td>
 <td align="left">all_activities</td>
 <td align="right">1</td>
 <td align="left">Indicated participating in every single activity</td>
-<td align="right">4</td>
+<td align="right">5</td>
 </tr>
 <tr class="even">
 <td align="left">core_suspicious</td>
@@ -234,35 +234,35 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <td align="left">high_days</td>
 <td align="right">1</td>
 <td align="left">More than 365 days identified for any activity</td>
-<td align="right">2</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
 <td align="left">core_suspicious</td>
 <td align="left">high_sum_days</td>
 <td align="right">1</td>
 <td align="left">More than 1000 days when summed across all activities</td>
-<td align="right">2</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
 <td align="left">suspicious</td>
 <td align="left">high_water_days</td>
 <td align="right">1</td>
 <td align="left">More days along water than total days</td>
-<td align="right">44</td>
+<td align="right">57</td>
 </tr>
 <tr class="even">
 <td align="left">suspicious</td>
 <td align="left">high_basin_days</td>
 <td align="right">1</td>
 <td align="left">Sum across basin days are &gt;5 and more than double activity total water days</td>
-<td align="right">27</td>
+<td align="right">31</td>
 </tr>
 <tr class="odd">
 <td align="left">suspicious</td>
 <td align="left">low_basin_days</td>
 <td align="right">1</td>
 <td align="left">Total water days are &gt;5 and sum across basin is 50% or lower than total water days</td>
-<td align="right">150</td>
+<td align="right">193</td>
 </tr>
 </tbody>
 </table>
@@ -288,18 +288,18 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">9</td>
-<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">1</td>
-<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">12</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">27</td>
-<td align="right">37</td>
+<td align="right">35</td>
+<td align="right">47</td>
 </tr>
 </tbody>
 </table>
@@ -324,13 +324,13 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">113</td>
-<td align="right">113</td>
+<td align="right">143</td>
+<td align="right">143</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
 <td align="right">3</td>
-<td align="right">116</td>
+<td align="right">146</td>
 </tr>
 </tbody>
 </table>
@@ -355,33 +355,33 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">114</td>
-<td align="right">114</td>
+<td align="right">151</td>
+<td align="right">151</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">50</td>
-<td align="right">164</td>
+<td align="right">60</td>
+<td align="right">211</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">18</td>
-<td align="right">182</td>
+<td align="right">23</td>
+<td align="right">234</td>
 </tr>
 <tr class="even">
 <td align="right">4</td>
-<td align="right">12</td>
-<td align="right">194</td>
+<td align="right">13</td>
+<td align="right">247</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
 <td align="right">2</td>
-<td align="right">196</td>
+<td align="right">249</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="right">197</td>
+<td align="right">250</td>
 </tr>
 </tbody>
 </table>
@@ -405,48 +405,48 @@ left_join(flags$flag_details, cnt, by = &quot;flag_name&quot;) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">103</td>
-<td align="right">103</td>
+<td align="right">136</td>
+<td align="right">136</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">44</td>
-<td align="right">147</td>
+<td align="right">53</td>
+<td align="right">189</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">122</td>
-<td align="right">269</td>
+<td align="right">152</td>
+<td align="right">341</td>
 </tr>
 <tr class="even">
 <td align="right">4</td>
-<td align="right">20</td>
-<td align="right">289</td>
+<td align="right">24</td>
+<td align="right">365</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
-<td align="right">8</td>
-<td align="right">297</td>
+<td align="right">9</td>
+<td align="right">374</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
-<td align="right">5</td>
-<td align="right">302</td>
+<td align="right">9</td>
+<td align="right">383</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="right">8</td>
-<td align="right">310</td>
+<td align="right">9</td>
+<td align="right">392</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
 <td align="right">1</td>
-<td align="right">311</td>
+<td align="right">393</td>
 </tr>
 <tr class="odd">
 <td align="right">10</td>
 <td align="right">1</td>
-<td align="right">312</td>
+<td align="right">394</td>
 </tr>
 </tbody>
 </table>

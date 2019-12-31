@@ -2,6 +2,8 @@ Vrid,id,Vstatus,age,sex,income,race,race_other,hispanic
 324,,Partial,NA,NA,NA,NA,,NA
 984,,Complete,25 to 34,Male,"$50,000 to $74,999",White,,No
 1087,,Complete,65 to 74,Female,"Less than $25,000",White,,No
+1403,,Partial,NA,NA,NA,NA,,NA
+1404,,Complete,55 to 64,Female,"Less than $25,000",White,,No
 612,1003534422,Complete,45 to 54,Female,"$150,000 or more",White,,No
 613,1003534422,Complete,45 to 54,Female,"$150,000 or more",White,,No
 444,1056716859,Complete,65 to 74,Male,"$100,000 to $124,999",Asian,,No
@@ -21,6 +23,10 @@ Vrid,id,Vstatus,age,sex,income,race,race_other,hispanic
 261,C2059169895,Complete,55 to 64,Male,"$100,000 to $124,999",White,,No
 285,C2059237628,Complete,65 to 74,Female,"Less than $25,000",White,,No
 1192,C2059237628,Complete,65 to 74,Female,"Less than $25,000",White,,No
+310,C2059301712,Complete,65 to 74,Female,"$50,000 to $74,999",White,,No
+1223,C2059301712,Complete,65 to 74,Female,"$50,000 to $74,999",White,,No
+322,C2059326392,Complete,55 to 64,Female,"$75,000 to $99,999",White,,No
+1208,C2059326392,Disqualified,55 to 64,Female,"$75,000 to $99,999",White,,No
 350,C2059393062,Partial,NA,NA,NA,NA,,NA
 1166,C2059393062,Complete,55 to 64,Female,"$75,000 to $99,999",White,,No
 467,C2059843393,Complete,45 to 54,Female,"$35,000 to $49,999",White,,No
@@ -29,6 +35,8 @@ Vrid,id,Vstatus,age,sex,income,race,race_other,hispanic
 601,C2060506643,Partial,NA,NA,NA,NA,,NA
 650,C2061078027,Complete,65 to 74,Female,"$75,000 to $99,999",White,,No
 1042,C2061078027,Complete,65 to 74,Female,"$75,000 to $99,999",White,,No
+740,C2061396311,Complete,55 to 64,Male,"$150,000 or more",White,,No
+1251,C2061396311,Complete,55 to 64,Male,"$150,000 or more",White,,No
 780,C2061581250,Complete,65 to 74,Male,"$125,000 to $149,999",White,,No
 1119,C2061581250,Complete,65 to 74,Male,"$125,000 to $149,999",White,,No
 804,C2062157825,Partial,NA,NA,NA,NA,,NA
@@ -43,3 +51,8 @@ Vrid,id,Vstatus,age,sex,income,race,race_other,hispanic
 1096,C2067513932,Partial,NA,NA,NA,NA,,NA
 1110,C2067638536,Partial,NA,NA,NA,NA,,NA
 1201,C2067638536,Complete,55 to 64,Female,"Less than $25,000",White,,No
+1213,C2074725203,Complete,55 to 64,Female,"$35,000 to $49,999",White,,No
+1216,C2074725203,Complete,55 to 64,Female,"$35,000 to $49,999",White,,No
+1315,C2074846511,Partial,NA,NA,NA,NA,,NA
+1317,C2074846511,Partial,NA,NA,NA,NA,,NA
+1319,C2074846511,Partial,NA,NA,NA,NA,,NA

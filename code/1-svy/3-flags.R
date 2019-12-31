@@ -180,38 +180,52 @@ flag_values <- svy$flag %>%
 out <- mget(c("flag_details", "flag_values"))
 
 # attach id
-svy <- readRDS("data-work/1-svy/svy-raw.rds")
-out$flag_values <- right_join(select(svy, id, Vrid), out$flag_values, by = "Vrid")
+svy_raw <- readRDS("data-work/1-svy/svy-raw.rds")
+out$flag_values <- out$flag_values %>%
+    left_join(select(svy_raw, id, Vrid), by = "Vrid")
 
 # Save --------------------------------------------------------------------
 
+# a. flagging data
 saveRDS(out, "data-work/1-svy/svy-flag.rds")
-write_csv(out$flag_values, "data-work/1-svy/svy-flags.csv")
+write_csv(out$flag_values, "out/1-svy/flags-all.csv")
 
-# only those "core suspicious" for communication with IPSOS
-out$flag_values %>%
+# b. only those "core suspicious" for communication with IPSOS
+core_suspicious <- out$flag_values %>%
     filter(group == "core_suspicious") %>%
-    select(id, Vrid, flag_name, value) %>%
+    select(id, Vrid, flag_name, value)
+core_suspicious %>%
     spread(flag_name, value, fill = 0) %>%
     arrange(id) %>%
-    write_csv("data-work/1-svy/svy-flags-core.csv")
+    write_csv("out/1-svy/flags-core.csv")
+
+# c. unique IDs to share with IPSOS (those that passed)
+# - excludes incompletes and those core_suspicious with 3+ flags
+exclude <- core_suspicious %>%
+    group_by(id) %>%
+    summarise(value = sum(value)) %>%
+    filter(value >= 3)
+svy$person %>%
+    anti_join(exclude, by = "id") %>%
+    distinct(id) %>%
+    write_csv("out/1-svy/flags-ipsos-okay.csv")
 
 # Double-check ------------------------------------------------------------
 # quickly look at some raw data tests (for trail)
 
 # No answer to participation along water
-svy %>%
+svy_raw %>%
     filter(var2O1 == "Checked", is.na(var47), var94 != 0) %>%
     select(var2O1, var94, var47)
 
 # low basin days
-trail_basin_days <- svy %>%
+trail_basin_days <- svy_raw %>%
     select(Vrid, var80O197:var80O213) %>%
     gather(var, days, na.rm = T, -Vrid) %>%
     group_by(Vrid) %>%
     summarise(trail_days = sum(days))
 
-svy %>%
+svy_raw %>%
     left_join(trail_basin_days, by = "Vrid") %>%
     filter(!is.na(var57), !is.na(trail_days), var57 / 2 >= trail_days, var57 >= 5) %>%
     select(Vrid, var57, trail_days) %>%
