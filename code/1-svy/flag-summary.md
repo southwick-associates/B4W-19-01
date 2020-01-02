@@ -22,10 +22,6 @@ A set of tests were run to flag respondents for possible removal from survey ana
 Only respondents with `Vrid == "Complete"` surveys are examined here, of which there are 1252 observations.
 
 ``` r
-# drop incomplete responses
-# - in case we want to look at other attributes
-# svy <- lapply(svy, function(x) semi_join(x, flags$flag_values, by = "Vrid"))
-
 # counts by flag
 cnt <- flags$flag_values %>% count(flag_name)
 left_join(flags$flag_details, cnt, by = "flag_name") %>%
