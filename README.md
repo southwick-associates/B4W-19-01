@@ -27,7 +27,7 @@ Flagging has been performed for assigning valid quotas for IPSOS (out/1-svy):
 - flags-core.csv: respondents that didn't make the cut for the IPSOS quota
 - flags-ipsos-okay.csv: respondents that did make the quota (shared with IPSOS by Lisa B)
 
-See "code/1-svy/flag-summary.html" for an overview
+See "code/1-svy/flag-summary.md" for an overview
 
 ### Folder Organization
 

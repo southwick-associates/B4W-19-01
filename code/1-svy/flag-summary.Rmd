@@ -1,9 +1,7 @@
 ---
 title: "Summarize CO Ipsos survey flagging of suspicious responses"
 date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
-output: 
-    html_document:
-        code_folding: hide
+output: github_document
 ---
 
 ```{r setup, message=FALSE}
