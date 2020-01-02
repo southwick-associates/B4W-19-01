@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">2-reshape.R</h1>
 <h4 class="author"><em>danka</em></h4>
-<h4 class="date"><em>Tue Dec 31 10:47:10 2019</em></h4>
+<h4 class="date"><em>Thu Jan 02 16:21:12 2020</em></h4>
 
 </div>
 
@@ -136,8 +136,16 @@ $(document).ready(function () {
 # - act (person by activity)
 # - basin (person by activity by basin)
 
-library(tidyverse)
-source(&quot;R/prep-svy.R&quot;) # functions
+library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.0.0     v purrr   0.2.5
+## v tibble  1.4.2     v dplyr   0.7.6
+## v tidyr   0.8.1     v stringr 1.3.1
+## v readr   1.1.1     v forcats 0.3.0</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>source(&quot;R/prep-svy.R&quot;) # functions
 
 # Load Data ---------------------------------------------------------------
 
@@ -386,7 +394,58 @@ part &lt;- svy %&gt;%
 out &lt;- mget(c(&quot;person&quot;, &quot;act&quot;, &quot;basin&quot;))
 saveRDS(out, &quot;data-work/1-svy/svy-reshape.rds&quot;)
 
-# Summaries ---------------------------------------------------------------
+# in csv format
+sapply(names(out), function(nm) {
+    write_list_csv(out, nm, &quot;data-work/1-svy/svy-reshape-csv/&quot;)
+})</code></pre>
+<pre><code>## $person
+## # A tibble: 1,373 x 9
+##    Vrid  id     Vstatus  age    sex   income  race    race_other  hispanic
+##    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;chr&gt;       &lt;fct&gt;   
+##  1 98    C2058~ Complete 45 to~ Fema~ Less t~ White   &quot;&quot;          No      
+##  2 99    C2058~ Complete 45 to~ Fema~ Less t~ Other   unecessary~ No      
+##  3 100   C2058~ Partial  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;    &lt;NA&gt;    &quot;&quot;          &lt;NA&gt;    
+##  4 101   C2058~ Complete 35 to~ Male  $25,00~ White   &quot;&quot;          No      
+##  5 102   C2058~ Complete 35 to~ Fema~ $50,00~ Black/~ &quot;&quot;          No      
+##  6 103   C2058~ Complete 18 to~ Male  $25,00~ White   &quot;&quot;          No      
+##  7 104   C2058~ Complete 55 to~ Fema~ $75,00~ White   &quot;&quot;          No      
+##  8 105   C2058~ Complete 25 to~ Male  $50,00~ White   &quot;&quot;          No      
+##  9 106   C2058~ Complete 45 to~ Fema~ $35,00~ Black/~ &quot;&quot;          No      
+## 10 107   C2058~ Complete 35 to~ Male  $25,00~ White   &quot;&quot;          Yes     
+## # ... with 1,363 more rows
+## 
+## $act
+## # A tibble: 20,595 x 6
+##    Vrid  act   part      part_water  days days_water
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1 98    trail Unchecked &lt;NA&gt;          NA         NA
+##  2 99    trail Unchecked &lt;NA&gt;          NA         NA
+##  3 100   trail Unchecked &lt;NA&gt;          NA         NA
+##  4 101   trail Unchecked &lt;NA&gt;          NA         NA
+##  5 102   trail Unchecked &lt;NA&gt;          NA         NA
+##  6 103   trail Unchecked &lt;NA&gt;          NA         NA
+##  7 104   trail Unchecked &lt;NA&gt;          NA         NA
+##  8 105   trail Unchecked &lt;NA&gt;          NA         NA
+##  9 106   trail Unchecked &lt;NA&gt;          NA         NA
+## 10 107   trail Checked   Yes           15         10
+## # ... with 20,585 more rows
+## 
+## $basin
+## # A tibble: 26,860 x 5
+##    Vrid  act   basin    part      days_water
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+##  1 107   trail arkansas Checked            5
+##  2 108   trail arkansas Unchecked         NA
+##  3 110   trail arkansas Unchecked         NA
+##  4 113   trail arkansas Checked            8
+##  5 119   trail arkansas Unchecked         NA
+##  6 127   trail arkansas Unchecked         NA
+##  7 129   trail arkansas Checked            1
+##  8 131   trail arkansas Unchecked         NA
+##  9 140   trail arkansas Checked           12
+## 10 152   trail arkansas Unchecked         NA
+## # ... with 26,850 more rows</code></pre>
+<pre class="r"><code># Summaries ---------------------------------------------------------------
 
 # person
 plot_choice(person, age)</code></pre>

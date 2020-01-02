@@ -78,6 +78,11 @@ basin <- left_join(part, days)
 out <- mget(c("person", "act", "basin"))
 saveRDS(out, "data-work/1-svy/svy-reshape.rds")
 
+# in csv format
+sapply(names(out), function(nm) {
+    write_list_csv(out, nm, "data-work/1-svy/svy-reshape-csv/")
+})
+
 # Summaries ---------------------------------------------------------------
 
 # person

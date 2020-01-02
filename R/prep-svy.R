@@ -2,6 +2,15 @@
 
 library(dplyr)
 
+# Write a list of data frames to csv
+# - ls list object
+# - nm name of list element to write to csv (should be a data frame)
+# - dir file path to directory where csv will be written 
+write_list_csv <- function(ls, nm, dir) {
+    dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+    write_csv(ls[[nm]], file.path(dir, paste0(nm, ".csv")), na = "")
+}
+
 # Reshaping ---------------------------------------------------------------
 
 # Get variable labels for a set of variables stored in df
