@@ -13,18 +13,18 @@ The analysis can be run from `code/run.R`
 
 ### Survey Data
 
-Survey data was reshaped into 3 tables related by Vrid, 1 table per dimension:
+Survey data was reshaped into 3 tables related by Vrid ("data-work/1-svy/svy-reshape"), 1 table per dimension:
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
-- basin [person by activity by basin)]: participation & days
+- basin [person by activity by basin]: participation & days
 
-## Organization
+### Folder Organization
 
 - R: R functions
 - code: analysis scripts
 - data: raw data
-- data-work: intermedicat data
+- data-work: intermediate data
 - out: output & results
 
 ## R Package Library
