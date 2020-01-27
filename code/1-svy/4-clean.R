@@ -1,11 +1,13 @@
 # clean survey data
-# - get part_primary based on days ("Unchecked" if primary days == 0)
+# - days zero recoding (to ensure those who entered zero days aren't counted as participants)
+# - fixing the basin dimension (by applying a filter to exclude non-water participants)
+# - setting obvious days outliers to missing (i.e, those > 365)
 
 library(tidyverse)
 source("R/prep-svy.R") # functions
 
 svy <- readRDS("data-work/1-svy/svy-reshape.rds")
-flag <- readRDS("data-work/1-svy/svy-flag.rds")
+# flag <- readRDS("data-work/1-svy/svy-flag.rds")
 
 # Vstatus -----------------------------------------------------------------
 
@@ -18,25 +20,6 @@ svy$act %>%
     filter(part == "Checked")
 
 # Days zero recoding --------------------------------------------------------
-
-# those entering zero days shouldn't count as participants
-set_no_check <- function(df, partvar, dayvar, uncheckval = "Unchecked") {
-    partvar <- enquo(partvar)
-    dayvar <- enquo(dayvar)
-    
-    out <- mutate(df, !! quo_name(partvar) := case_when(
-        is.na(!! dayvar) | !! dayvar > 0 ~ !! partvar,
-        TRUE ~ uncheckval
-    ))
-    # summarize change
-    x <- bind_rows(
-        filter(df, !! dayvar == 0) %>% count(!! partvar, !! dayvar),
-        filter(out, !! dayvar == 0) %>% count(!! partvar, !! dayvar)
-    )
-    x$set <- c("before recode", "after recode")
-    print(x)
-    out
-}
 
 # quite a few of these need to be recoded
 svy$act <- set_no_check(svy$act, part, days, "Unchecked")
