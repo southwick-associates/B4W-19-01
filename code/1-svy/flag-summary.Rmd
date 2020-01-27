@@ -74,6 +74,7 @@ flags$flag_values %>%
     group_by(Vrid) %>%
     summarise(flags = sum(value)) %>%
     count(flags) %>%
+    arrange(desc(flags)) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
 ```

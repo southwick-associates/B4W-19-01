@@ -17,7 +17,13 @@ Survey data was reshaped into 3 tables related by Vrid ("data-work/1-svy/svy-res
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
+    + part: Overall participation (for all respondents)
+    + days: Overall days (for participants)
+    + part_water: Water-specific participation (for participants)
+    + days_water: Water specific days (for water participants)
 - basin [person by activity by basin]: participation & days
+    + part_water: Participation by basin (for state-level water participants)
+    + days_water: Days by basin (for basin-level water participants)
 
 ### Respondent Flagging
 

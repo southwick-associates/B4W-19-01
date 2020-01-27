@@ -7,6 +7,7 @@
 # - outrageous days values for individual questions
 # - outrageous days values when summed
 # - inconsistent days values across dimensions
+# - completed survey too quickly
 
 library(tidyverse)
 source("R/prep-svy.R") # functions
@@ -47,7 +48,8 @@ flag_details <- tribble(
     "suspicious", "low_basin_days", 1, "Total water days are >5 and sum across basin is 50% or lower than total water days"
 )
 
-# Identify Completion -----------------------------------------------------
+# Flag-Completion  -----------------------------------------------------
+# lot's of questions got skipped by survey takers
 
 # demographics - these are all complete (i.e., no rows with missing values)
 c("age", "sex", "income", "race", "hispanic") %>%
@@ -99,14 +101,15 @@ new_flags <- svy$basin %>%
 svy$flag <- svy$flag %>%
     update_flags(new_flags, "na_basin_days", 3, count_once = TRUE)
 
-# Other Flags ------------------------------------------------------------------
+# Flag-Core ------------------------------------------------------------------
+# for determining how IPSOS gets paid
 
 # multiple responses
 dups <- svy$person %>% count(id) %>% filter(n > 1)
 new_flags <- svy$person %>%
     semi_join(dups, by = "id")
 svy$flag <- svy$flag %>%
-    update_flags(new_flags, "multiple_responses", 3)
+    update_flags(new_flags, "multiple_responses", 4)
 
 # all activities
 new_flags <- svy_act_all %>% filter(part == "Checked") %>% count(Vrid) %>% filter(n == 14)
@@ -134,6 +137,9 @@ new_flags <- svy$act %>% group_by(Vrid) %>% summarise(days = sum(days, na.rm = T
 svy$flag <- svy$flag %>%
     update_flags(new_flags, "high_sum_days", 1)
 
+# Flag-suspicious ---------------------------------------------------------
+# additional flags
+
 # high days along water
 sum_narm <- function(x) sum(x, na.rm = TRUE)
 days_act <- svy$act %>% group_by(Vrid, act) %>% 
@@ -158,14 +164,21 @@ svy$flag <- svy$flag %>%
     update_flags(new_flags, "high_basin_days", 1)
 
 # low basin days
-no_basin <- svy$basin %>% filter(basin == "none", part == "Checked")
+# - needs modification to deal with non-response in basin days question
+non_response <- svy$basin %>%
+    filter(part == "Checked", basin != "none", is.na(days_water)) %>%
+    distinct(Vrid, act)
+no_basin <- filter(svy$basin, basin == "none", part == "Checked")
+
 new_flags <- basin_diff %>%
     anti_join(no_basin, by = c("Vrid", "act")) %>%
+    anti_join(non_response, by = c("Vrid", "act")) %>%
     filter(days_water.x >= 5, ratio <= 0.50)
 svy$flag <- svy$flag %>%
     update_flags(new_flags, "low_basin_days", 1)
 
 # Groups ------------------------------------------------------------------
+
 # grouping into 3 categories
 # - core_suspicious: those that should be flagged for removal
 # - all_suspicious: those that maybe should be flagged for removal
@@ -183,6 +196,11 @@ out <- mget(c("flag_details", "flag_values"))
 svy_raw <- readRDS("data-work/1-svy/svy-raw.rds")
 out$flag_values <- out$flag_values %>%
     left_join(select(svy_raw, id, Vrid), by = "Vrid")
+
+# total flag values by Vrid
+out$flag_totals <- out$flag_values %>%
+    group_by(Vrid) %>%
+    summarise(flag = sum(value))
 
 # Save --------------------------------------------------------------------
 
