@@ -9,13 +9,13 @@ The analysis can be run from `code/run.R`
 
 ### Survey Data
 
-Final survey data is stored [in 3 tables](data-work/1-svy/svy-weight-csv.zip):
+Final survey data is [available for download here](data-work/1-svy/svy-weight-csv.zip), stored in 3 tables:
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
 - basin [person by activity by basin]: participation & days
 
-Details are available in the [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=GFT2ZJ)
+Details are available in the [O365 Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=GFT2ZJ)
 
 ### Respondent Flagging
 
