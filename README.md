@@ -5,7 +5,7 @@ For Southwick internal use only; Dan's portion of the analysis for the CO survey
 
 ## Usage
 
-The analysis can be run from `code/run.R`
+The analysis can be reproduced from `code/run.R`
 
 ### Survey Data
 
@@ -19,7 +19,7 @@ Details are available in the [O365 Survey Data Dictionary](https://southwickasso
 
 ### Respondent Flagging
 
-Flagging has been performed for assigning valid quotas for IPSOS (out/1-svy):
+Flagging has been performed for assigning valid quotas for IPSOS, stored in `out/1-svy`:
 
 - flags-all.csv: all flagged values
 - flags-core.csv: respondents that didn't make the cut for the IPSOS quota
@@ -35,10 +35,9 @@ See [the flag summary](code/1-svy/flag-summary.md) for an overview.
 - data-work: intermediate data
 - out: output & results
 
-## R Package Library
+## Software Environment
 
-This project was setup using package 'saproj'
+This project was setup using package [saproj](https://github.com/southwick-associates/saproj) with a [Southwick-specific R Setup](https://github.com/southwick-associates/R-setup). Certain files shouldn't be edited by hand:
 
-Certain files shouldn't be edited by hand:
 - .Rprofile             specifies R version and project library
-- snapshot-library.csv  details project-specific packages (if they exist)
+- snapshot-library.csv  details project-specific packages
