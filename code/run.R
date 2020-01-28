@@ -2,6 +2,7 @@
 
 run_script <- function(script_dir, script_name) {
     rmarkdown::render(
+        # output_format = "github_document", # try this for md docs
         input = file.path("code", script_dir, script_name),
         output_dir = file.path("code", script_dir, "log"),
         knit_root_dir = getwd()

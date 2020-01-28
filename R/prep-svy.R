@@ -28,12 +28,12 @@ set_no_check <- function(df, partvar, dayvar, uncheckval = "Unchecked") {
         TRUE ~ uncheckval
     ))
     # summarize change
-    x <- bind_rows(
-        filter(df, !! dayvar == 0) %>% count(!! partvar, !! dayvar),
-        filter(out, !! dayvar == 0) %>% count(!! partvar, !! dayvar)
-    )
-    x$set <- c("before recode", "after recode")
-    print(x)
+    bind_rows(
+        filter(df, !! dayvar == 0) %>% count(!! partvar, !! dayvar) %>%
+            mutate(grp = "before recode"),
+        filter(out, !! dayvar == 0) %>% count(!! partvar, !! dayvar) %>%
+            mutate(grp = "after recode"),
+    ) %>% print()
     out
 }
 
