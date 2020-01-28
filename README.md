@@ -11,7 +11,27 @@ For Southwick internal use only, this represents the analysis for the CO survey.
 
 The analysis can be run from `code/run.R`
 
-### Survey Data
+### Survey Data (Suggested restructure)
+
+Use 4 tables:
+
+- person (1 row per respondent)
+    + dimension = All Respondents
+    + variablse = Vrid, id (IPSOS), Vstatus, demographics
+    
+- act (1 row per respondent-activity)
+    + dimension = All Respondents
+    + variables = part, days, is_targeted (to identify 9 activities of interest)
+    
+- act_water (1 row per respondent-activity)
+    + dimension = All Participants (for 9 activities of interest)
+    + variables = part_water, days_water
+    
+- basin (1 row per respondent-activity-basin)
+    + dimension = All along the water participants (9 activities)
+    + variables = part_water, days_water
+    
+### Survey Data (Current structure)
 
 Survey data was reshaped into 3 tables related by Vrid ("data-work/1-svy/svy-reshape"), 1 table per dimension:
 
