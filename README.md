@@ -9,7 +9,7 @@ The analysis can be run from `code/run.R`
 
 ### Survey Data
 
-Survey data was reshaped into 3 tables ("data-work/1-svy/svy-reshape"), 1 table per dimension:
+Final survey data is stored [in 3 tables]("data-work/1-svy/svy-weight-csv.zip"):
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
