@@ -11,32 +11,6 @@ write_list_csv <- function(ls, nm, dir) {
     write_csv(ls[[nm]], file.path(dir, paste0(nm, ".csv")), na = "")
 }
 
-# Cleaning ----------------------------------------------------------------
-
-# Respondents entering zero days shouldn't count as participants
-# - df = survey data frame
-# - partvar = unquoted variable name for participation
-# - dayvar = unquoted variable name for days
-# - uncheval = string value that indicates no participation
-set_no_check <- function(df, partvar, dayvar, uncheckval = "Unchecked") {
-    partvar <- enquo(partvar)
-    dayvar <- enquo(dayvar)
-    
-    # recode participation variable for zero days
-    out <- mutate(df, !! quo_name(partvar) := case_when(
-        is.na(!! dayvar) | !! dayvar > 0 ~ !! partvar,
-        TRUE ~ uncheckval
-    ))
-    # summarize change
-    bind_rows(
-        filter(df, !! dayvar == 0) %>% count(!! partvar, !! dayvar) %>%
-            mutate(grp = "before recode"),
-        filter(out, !! dayvar == 0) %>% count(!! partvar, !! dayvar) %>%
-            mutate(grp = "after recode"),
-    ) %>% print()
-    out
-}
-
 # Reshaping ---------------------------------------------------------------
 
 # Get variable labels for a set of variables stored in df

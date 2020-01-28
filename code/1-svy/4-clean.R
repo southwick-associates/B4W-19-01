@@ -1,34 +1,31 @@
-# recode survey data
+# clean survey data
 
-# alot of modifications made here, general outline:
-# 1. set fishing/water activities participation along water
-# 2. recode participation questions to "Unchecked" if days == 0
-# 3. set missing values for certain questions based on dimensional filtering
-
-# Additions, etc.
-# - adding svy$act$is_targeted to identify 9 activities of interest for the study
-# - attach aggregate flag variable
-
-# Outliers
-# - setting obvious days outliers to missing (i.e, those > 365)
-
-# Filters (maybe another script)
-# - fixing the basin dimension (by applying a filter to exclude non-water participants)
+# 0. Drop those who checked "none" for activities
+# 1. Set fishing/water activities participation along water
+# 2. Set days to missing where days_water > days
+# 3. Recode those who entered "none" for basins
+#    act$part_water = "No", act$days_water = NA
+# 4. Add act$is_targeted to identify 9 activities of interest for the study
+# 5. Set obvious days outliers to missing (i.e, those > 365)
 
 library(tidyverse)
 source("R/prep-svy.R") # functions
 svy <- readRDS("data-work/1-svy/svy-reshape.rds")
+
+# 0. Filter out respondents with "none" -----------------------------------
+
+# IPSOS pre-screened with this same question so no respondents should
+#  be indicating none
+drop_vrids <- filter(svy$act, act == "none", part == "Checked") %>% distinct(Vrid)
+svy$person <- anti_join(svy$person, drop_vrids, by = "Vrid")
+svy$act <- anti_join(svy$act, drop_vrids, by = "Vrid") %>%
+    filter(act != "none")
 
 # 1. Fishing & Water ---------------------------------------------------------
 
 # For the fishing/water activities, we assumed that all their activity
 #  is along the water, so the water-specific questions weren't asked.
 # Recoding water-specific here to "Checked", "Yes", etc. to make that explicit
-
-# demonstrate the need to recode
-x <- svy$act %>% filter(act %in% c("water", "fish"), part == "Checked")
-count(x, part, part_water)
-summary(x)
 
 # recode
 svy$act <- svy$act %>% mutate(
@@ -38,40 +35,52 @@ svy$act <- svy$act %>% mutate(
         TRUE ~ part_water
     ),
     days_water = case_when(
-        act %in% c("water", "fish") ~ days, TRUE ~ days
+        act %in% c("water", "fish") ~ days, TRUE ~ days_water
     )
 )
 
-# 2. Days zero recoding --------------------------------------------------------
+# check recoding
+x <- svy$act %>% filter(act %in% c("water", "fish"), part == "Checked")
+count(x, part, part_water)
+all.equal(x$days, x$days_water)
 
-# need to ensure those who entered zero days aren't counted as participants
-# - for example, those who enter zero but currently counted as participants
-filter(svy$act, days == 0, part == "Checked") %>% count(part, days)
-filter(svy$act, days_water == 0, part_water == "Yes") %>% count(part_water, days_water)
-filter(svy$basin, days_water == 0, part == "Checked") %>% count(part, days_water)
+# 2. Days Recoding -------------------------------------------------------------
 
-# recode
-svy$act <- set_no_check(svy$act, part, days, "Unchecked")
-svy$act <- set_no_check(svy$act, part_water, days_water, "No")
-svy$basin <- set_no_check(svy$basin, part, days_water, "Unchecked")
+# Some respondents entered larger values for days_water than days
+# All days values for these respondents (for given activity) are set to missing
+#  since the days entered by these people are unreliable
+high_water_days <- filter(svy$act, part_water == "Yes", days < days_water)
+high_water_days
 
-# 3. Dimensional Issues from Missing values ----------------------------------
+svy$act <- bind_rows(
+    anti_join(svy$act, high_water_days, by = c("Vrid", "act")),
+    semi_join(svy$act, high_water_days, by = c("Vrid", "act")) %>%
+        mutate(days = NA, days_water = NA)
+)
 
-# Missing values caused problems in question filters.
-# For example, those who didn't answer the "participation along water" question
-#  still received the "how many days along water" question,
-#  which some of them answered.
+svy$basin <- bind_rows(
+    anti_join(svy$basin, high_water_days, by = c("Vrid", "act")),
+    semi_join(svy$basin, high_water_days, by = c("Vrid", "act")) %>%
+        mutate(days_water = NA)
+)
 
-# This happened for all question-dependent filters in the survey.
-# Downstream questions will be set to missing to preserve
-#  the integrity of the filters (as they were intended to be set).
-# some respondents have values for days_water when they skipped part_water
-filter(svy$act, !is.na(days_water), is.na(part_water)) %>% count(act, part_water)
+# 3. Recode "none" in basins ----------------------------------------------
 
-# this is caused by filters not being correctly set
-# survey gizmo wasn't set up to deal with missing values
+# The basins completey cover NE, so those who enter "none" shouldn't be
+#  counted as along-the-water participants
+no_basin <- filter(svy$basin, basin == "none", part == "Checked")
+no_basin
 
-# Add svy$act$is_target variable --------------------------------------------
+svy$act <- bind_rows(
+    anti_join(svy$act, no_basin, by = c("Vrid", "act")),
+    semi_join(svy$act, no_basin, by = c("Vrid", "act")) %>%
+        mutate(part_water = "No", days_water = NA)
+)
+
+# no longer need the "none" identifier
+svy$basin <- filter(svy$basin, basin != "none")
+
+# 4. Add is_targeted variable --------------------------------------------
 
 # for the svy$act table, to identify activities of interest for the study
 svy$act <- svy$act %>% mutate(
@@ -81,30 +90,15 @@ svy$act <- svy$act %>% mutate(
 )
 count(svy$act, is_targeted, act)
 
-# Fix Basin Dimension -----------------------------------------------------
+# 5. Days Outliers --------------------------------------------------------
 
-# The filter for the basin question wasn't correctly set
-# - people who entered zero in activity water days were excluded
-# - but this failed to filter out people who didn't check participation along the water
-# - so we end up with a strange dimensional filter for this question
+# some obvious outliers for days will be set to missing
+filter(svy$act, days > 365 | days_water > 365)
+filter(svy$basin, days_water > 365)
+set_missing <- function(x) ifelse(!is.na(x) & x > 365, NA, x)
 
-# - note: might need to consider activities like boating/fishing here
-# - make sure you aren't missing anything
-no_water <- filter(svy$act, is.na(part_water))
-svy$basin %>%
-    semi_join(no_water, by = c("Vrid", "act")) %>% 
-    count(part)
-
-# this filters to represent only those who participated along the water
-svy$basin <- svy$basin %>%
-    anti_join(no_water, by = c("Vrid", "act")) %>%
-    rename(part_water = part)
-
-# Outlier Recoding --------------------------------------------------------
-
-# START HERE
-# some obvious outliers for the days values will need to be reset
-
+svy$basin <- mutate(svy$basin, days_water = set_missing(days_water))
+svy$act <- mutate_at(svy$act, vars(days, days_water), "set_missing")
 
 # Misc -----------------------------------------------------------------
 
@@ -116,11 +110,14 @@ svy$act %>%
     semi_join(disqualified) %>%
     filter(part == "Checked")
 
-# TODO --------------------------------------------------------------
+# Save --------------------------------------------------------------------
 
-# not sure if any additional cleaning will be needed
-# might also consider doing this recoding pre-flagging given the new basin filter
-# alternatively changing the flag code to deal with the basin dimension
+svy$act <- select(svy$act, Vrid, act, is_targeted, part, days,
+                  part_water, days_water)
+svy$basin <- rename(svy$basin, part_water = part)
 
-# these are all good
-svy$basin %>% filter(is.na(part), !is.na(days_water))
+glimpse(svy$person)
+glimpse(svy$act)
+glimpse(svy$basin)
+
+saveRDS(svy, "data-work/1-svy/svy-clean.rds")
