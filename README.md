@@ -1,11 +1,7 @@
 
 ## Overview
 
-For Southwick internal use only, this represents the analysis for the CO survey. Currently working on survey data prep:
-
-- identifying suspicious respondents for potential removal (code/1-svy/3-flags.R & flag-summary.Rmd)
-- data cleaning to deal with treatment of missing data, respondents to be excluded, and (maybe) outlier identification
-- survey weighting
+For Southwick internal use only; Dan's portion of the analysis for the CO survey. 
 
 ## Usage
 
@@ -17,18 +13,18 @@ Use 4 tables:
 
 - person (1 row per respondent)
     + dimension = All Respondents
-    + variablse = Vrid, id (IPSOS), Vstatus, demographics
+    + variables = Vrid, id (IPSOS), Vstatus, demographics
     
 - act (1 row per respondent-activity)
     + dimension = All Respondents
-    + variables = part, days, is_targeted (to identify 9 activities of interest)
+    + variables = part (participation), days, is_targeted (to identify 9 activities of interest)
     
 - act_water (1 row per respondent-activity)
-    + dimension = All Participants (for 9 activities of interest)
-    + variables = part_water, days_water
+    + dimension = Participants (for 9 activities of interest)
+    + variables = part_water (participation along the water), days_water
     
 - basin (1 row per respondent-activity-basin)
-    + dimension = All along the water participants (9 activities)
+    + dimension = Along-the-water participants (9 activities)
     + variables = part_water, days_water
     
 ### Survey Data (Current structure)
