@@ -12,19 +12,19 @@ The analysis can be run from `code/run.R`
 Use 4 tables:
 
 - person (1 row per respondent)
-    + dimension = All Respondents
+    + set = All Respondents
     + variables = Vrid, id (IPSOS), Vstatus, demographics
     
 - act (1 row per respondent-activity)
-    + dimension = All Respondents
+    + set = All Respondents
     + variables = part (participation), days, is_targeted (to identify 9 activities of interest)
     
 - act_water (1 row per respondent-activity)
-    + dimension = Participants (for 9 activities of interest)
+    + set = Participants (for 9 activities of interest)
     + variables = part_water (participation along the water), days_water
     
 - basin (1 row per respondent-activity-basin)
-    + dimension = Along-the-water participants (9 activities)
+    + set = Along-the-water participants (9 activities)
     + variables = part_water, days_water
     
 ### Survey Data (Current structure)
