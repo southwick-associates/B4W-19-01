@@ -9,7 +9,7 @@ The analysis can be run from `code/run.R`
 
 ### Survey Data
 
-Final survey data is stored [in 3 tables]("data-work/1-svy/svy-weight-csv.zip"):
+Final survey data is stored [in 3 tables](data-work/1-svy/svy-weight-csv.zip):
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
@@ -25,7 +25,7 @@ Flagging has been performed for assigning valid quotas for IPSOS (out/1-svy):
 - flags-core.csv: respondents that didn't make the cut for the IPSOS quota
 - flags-ipsos-okay.csv: respondents that did make the quota (shared with IPSOS by Lisa B)
 
-See "code/1-svy/flag-summary.md" for an overview
+See [the flag summary](code/1-svy/flag-summary.md) for an overview.
 
 ### Folder Organization
 
