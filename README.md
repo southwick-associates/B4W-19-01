@@ -1,7 +1,7 @@
 
 ## Overview
 
-For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01:
+For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01 project:
 
 - Preparing Survey data:
     + CO: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)
@@ -31,7 +31,7 @@ Final survey data is stored in 3 tables:
 
 Survey details are available on O365 > B4W-19-01:
 
-- [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/ETchk1k_EfZKgZe0z3PzS_kB3D_QBvQsxGPhABfOPMIHdg?e=07goQ1)
+- [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=LAeALG)
 - [Questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/B4W-19-01/ESlQqzDJbg5BplbAPakEnoEBL8F7pUZLftXywcK4F01exA?e=hfEiig)
 
 ### Respondent Flagging
@@ -48,6 +48,6 @@ See the flag summary for an overview:  [code/1-svy/flag-summary.md](code/1-svy/f
 
 Used for defining the CO survey target population (and subsequent weighting). More docs to prepare:
 
-- link to questionnaire
+- [link to OIA questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EbI0t01qsPdHtU1GFu5o0ukBovyynTC6IqkskwEAbgSJxQ?e=uuJI6d)
 - data is stored on the server: E:/SA/...
 - other info?
