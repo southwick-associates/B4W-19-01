@@ -3,7 +3,9 @@
 
 For Southwick internal use only; Dan's portion of the analysis for the CO survey:
 
-- Preparing CO and OIA survey data
+- Preparing Survey data:
+    + CO: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)
+    + OIA: [data-work/oia/oia-co.csv](data-work/oia/oia-co.csv)
 - Estimating OIA-based profiles
 
 ### Usage
@@ -21,7 +23,7 @@ This project was setup using package [saproj](https://github.com/southwick-assoc
 
 ## CO Survey Data
 
-Final survey data is available for download at [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip), stored in 3 tables:
+Final survey data is stored in 3 tables:
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
@@ -44,7 +46,7 @@ See the flag summary for an overview:  [code/1-svy/flag-summary.md](code/1-svy/f
 
 ## OIA Survey Data
 
-Used for defining the CO survey target population (and subsequent weighting). The cleaned dataset is available at [data-work/oia/oia-co.csv](data-work/oia/oia-co.csv)
+Used for defining the CO survey target population (and subsequent weighting). More docs to prepare:
 
 - link to questionnaire
 - data is stored on the server: E:/SA/...

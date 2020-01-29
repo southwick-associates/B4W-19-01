@@ -2,8 +2,6 @@
 # - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
-# library(weights)
-library(anesrake)
 source("R/prep-svy.R")
 
 svy <- readRDS("data-work/1-svy/svy-demo.rds")
@@ -49,6 +47,7 @@ svy_wt <- svy_wt %>%
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
 # check
+summary(svy$person$weight)
 sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
 
 # Save --------------------------------------------------------------------

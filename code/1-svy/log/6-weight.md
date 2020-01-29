@@ -1,115 +1,13 @@
 6-weight.R
 ================
 danka
-Wed Jan 29 17:19:35 2020
+Wed Jan 29 17:25:28 2020
 
 ``` r
 # weight survey using OIA
 # - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
-# library(weights)
-library(anesrake)
-```
-
-    ## Loading required package: Hmisc
-
-    ## Loading required package: lattice
-
-    ## Loading required package: survival
-
-    ## Loading required package: Formula
-
-    ## 
-    ## Attaching package: 'Hmisc'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     src, summarize
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     format.pval, units
-
-    ## Loading required package: weights
-
-    ## Loading required package: gdata
-
-    ## gdata: Unable to locate valid perl interpreter
-    ## gdata: 
-    ## gdata: read.xls() will be unable to read Excel XLS and XLSX files
-    ## gdata: unless the 'perl=' argument is used to specify the location
-    ## gdata: of a valid perl intrpreter.
-    ## gdata: 
-    ## gdata: (To avoid display of this message in the future, please
-    ## gdata: ensure perl is installed and available on the executable
-    ## gdata: search path.)
-
-    ## gdata: Unable to load perl libaries needed by read.xls()
-    ## gdata: to support 'XLX' (Excel 97-2004) files.
-
-    ## 
-
-    ## gdata: Unable to load perl libaries needed by read.xls()
-    ## gdata: to support 'XLSX' (Excel 2007+) files.
-
-    ## 
-
-    ## gdata: Run the function 'installXLSXsupport()'
-    ## gdata: to automatically download and install the perl
-    ## gdata: libaries needed to support Excel XLS and XLSX formats.
-
-    ## 
-    ## Attaching package: 'gdata'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     combine, first, last
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     keep
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     nobs
-
-    ## The following object is masked from 'package:utils':
-    ## 
-    ##     object.size
-
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     startsWith
-
-    ## Loading required package: mice
-
-    ## 
-    ## Attaching package: 'mice'
-
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     complete
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     cbind, rbind
-
-``` r
 source("R/prep-svy.R")
 
 svy <- readRDS("data-work/1-svy/svy-demo.rds")
@@ -304,6 +202,13 @@ svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
 ``` r
 # check
+summary(svy$person$weight)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##  0.3553  0.7402  0.9321  1.0000  1.1666  2.6919      79
+
+``` r
 sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
 ```
 

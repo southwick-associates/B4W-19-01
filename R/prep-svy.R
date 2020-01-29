@@ -45,7 +45,7 @@ est_wts <- function(
     svy, pop, print_name = "", idvar = "sguid", cap = 20
 ) {
     # run weighting
-    wts <- anesrake(pop, svy, caseid = svy[[idvar]], force1 = TRUE, cap = cap)
+    wts <- anesrake::anesrake(pop, svy, caseid = svy[[idvar]], force1 = TRUE, cap = cap)
     
     # print summary
     cat("\nWeight Summary for", print_name, "-----------------------------\n\n")
