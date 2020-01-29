@@ -1,26 +1,12 @@
 explore-act-rates.R
 ================
 danka
-Wed Jan 29 14:49:24 2020
+Wed Jan 29 15:01:26 2020
 
 ``` r
 # some initial work in activity rates (screener)
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 source("R/prep-svy.R") # functions
 svy <- readRDS("data-work/1-svy/svy-reshape.rds")
 
