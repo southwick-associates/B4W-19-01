@@ -8,7 +8,9 @@ For Southwick internal use only; Dan's portion of the analysis for the CO survey
 
 ### Usage
 
-The analysis can be reproduced from `code/run.R`. Folder organization: R (R functions), code (analysis scripts), data (raw data), data-work (intermediate data), out (output & results)
+The analysis can be reproduced from `code/run.R`. Folder organization: 
+
+- R (R functions), code (analysis scripts), data (raw data), data-work (intermediate data), out (output & results)
 
 ### Software Environment
 
