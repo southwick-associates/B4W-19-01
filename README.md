@@ -23,15 +23,9 @@ Survey details are available on O365 > B4W-19-01:
 - [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=LAeALG)
 - [Questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/B4W-19-01/ESlQqzDJbg5BplbAPakEnoEBL8F7pUZLftXywcK4F01exA?e=hfEiig)
 
-Final survey data is stored in 3 tables:
-
-- person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
-- act [person by activity]: participation & days overall vs. along water
-- basin [person by activity by basin]: participation & days
-
 ### Respondent Flagging
 
-Flagging has been performed for assigning valid quotas for IPSOS, stored in `out/1-svy`:
+Flagging has been performed for (1) assigning valid quotas for IPSOS, and (2) removing unreliable respondents. Data is stored in `out/1-svy`:
 
 - `flags-all.csv`: all flagged values
 - `flags-core.csv`: respondents that didn't make the cut for the IPSOS quota
