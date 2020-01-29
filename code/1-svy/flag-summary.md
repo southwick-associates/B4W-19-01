@@ -58,16 +58,17 @@ flags$flag_values %>%
     group_by(Vrid) %>%
     summarise(flags = sum(value)) %>%
     count(flags) %>%
+    arrange(desc(flags)) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
 ```
 
 | flags |  n | cumulative\_n |
 | ----: | -: | ------------: |
-|     1 | 10 |            10 |
-|     2 |  2 |            12 |
-|     3 |  1 |            13 |
-|     4 | 34 |            47 |
+|     4 | 34 |            34 |
+|     3 |  1 |            35 |
+|     2 |  2 |            37 |
+|     1 | 10 |            47 |
 
 ### Missing Responses
 
@@ -77,14 +78,15 @@ flags$flag_values %>%
     group_by(Vrid) %>%
     summarise(flags = sum(value)) %>%
     count(flags) %>%
+    arrange(desc(flags)) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
 ```
 
 | flags |   n | cumulative\_n |
 | ----: | --: | ------------: |
-|     3 | 143 |           143 |
-|     6 |   3 |           146 |
+|     6 |   3 |             3 |
+|     3 | 143 |           146 |
 
 ### Additional Suspicious Flags
 
@@ -94,20 +96,23 @@ flags$flag_values %>%
     group_by(Vrid) %>%
     summarise(flags = sum(value)) %>%
     count(flags) %>%
+    arrange(desc(flags)) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
 ```
 
 | flags |   n | cumulative\_n |
 | ----: | --: | ------------: |
-|     1 | 152 |           152 |
-|     2 |  59 |           211 |
-|     3 |  21 |           232 |
-|     4 |  10 |           242 |
-|     5 |   2 |           244 |
-|     6 |   1 |           245 |
+|     6 |   1 |             1 |
+|     5 |   2 |             3 |
+|     4 |  10 |            13 |
+|     3 |  21 |            34 |
+|     2 |  59 |            93 |
+|     1 | 152 |           245 |
 
 ### All Flags
+
+Respondents with 4 or more flags are intended to be excluded.
 
 ``` r
 flags$flag_values %>%

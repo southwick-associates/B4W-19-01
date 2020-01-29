@@ -25,13 +25,13 @@ Survey details are available on O365 > B4W-19-01:
 
 ### Respondent Flagging
 
-Flagging has been performed for (1) assigning valid quotas for IPSOS, and (2) removing unreliable respondents. Data is stored in `out/1-svy`:
+Flagging was done to (1) assign valid quotas for IPSOS, and (2) remove unreliable respondents. Data is stored in `out/1-svy`:
 
 - `flags-all.csv`: all flagged values
 - `flags-core.csv`: respondents that didn't make the cut for the IPSOS quota
 - `flags-ipsos-okay.csv`: respondents that did make the quota (shared with IPSOS by Lisa B)
 
-See the flag summary for an overview:  [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
+For an overview: [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
 
 ## OIA Survey Data
 
