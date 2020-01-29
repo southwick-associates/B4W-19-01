@@ -7,7 +7,6 @@
 # - outrageous days values for individual questions
 # - outrageous days values when summed
 # - inconsistent days values across dimensions
-# - completed survey too quickly
 
 library(tidyverse)
 source("R/prep-svy.R") # functions
