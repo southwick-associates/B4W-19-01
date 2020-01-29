@@ -21,3 +21,4 @@ run_script("1-svy", "4-clean.R")
 run_script("1-svy", "5-weight.R")
 
 # oia profiles
+run_script("oia", "1-prep-oia.R")

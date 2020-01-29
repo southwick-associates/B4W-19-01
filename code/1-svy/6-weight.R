@@ -3,7 +3,7 @@
 library(tidyverse)
 source("R/prep-svy.R")
 
-svy <- readRDS("data-work/1-svy/svy-clean.rds")
+svy <- readRDS("data-work/1-svy/svy-demo.rds")
 flags <- readRDS("data-work/1-svy/svy-flag.rds")
 
 # Add Flags ---------------------------------------------------------------

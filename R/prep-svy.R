@@ -11,6 +11,25 @@ write_list_csv <- function(ls, nm, dir) {
     write_csv(ls[[nm]], file.path(dir, paste0(nm, ".csv")), na = "")
 }
 
+
+# Recoding ----------------------------------------------------------------
+
+# Recode a category variable (factor)
+# - df survey data frame
+# - oldvar name of input variable
+# - newvar name of output variable (must be different than oldvar)
+# - newcat output factor levels for each input factor level (ascending order)
+# - newlab output factor labels
+recode_cat <- function(df, oldvar, newvar, newcat, newlab) {
+    df[[newvar]] <- plyr::mapvalues(
+        df[[oldvar]], levels(df[[oldvar]]), newcat
+    ) %>% 
+        factor(labels = newlab)
+    count_(df, c(newvar, oldvar)) %>% print() # summarize
+    df[[oldvar]] <- NULL
+    df
+}
+
 # Reshaping ---------------------------------------------------------------
 
 # Get variable labels for a set of variables stored in df
