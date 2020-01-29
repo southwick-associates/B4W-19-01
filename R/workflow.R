@@ -1,11 +1,11 @@
 # workflow functions
 
-# render a script, storing as .md in a log subfolder
-# the function is a bit verbose, but it's nice to have markdown files for github
-# - script_path file path to code to be executed
+# Run a script, storing rendered output as .md in a log subfolder
+# This function is a bit verbose, but it's nice to have markdown files for github
 run_script <- function(script_path) {
+    # source script & render to markdown
     rmarkdown::render(
-        output_format = "github_document", # outputs to .md 
+        output_format = "github_document",
         input = script_path,
         knit_root_dir = getwd()
     )
@@ -16,14 +16,16 @@ run_script <- function(script_path) {
     outdir <- file.path(indir, "log")
     dir.create(outdir, showWarnings = FALSE)
     
-    # - move .md files to log folder & remove any html previews
+    # - remove any html preview files
     file.remove(file.path(indir, paste0(script_name, ".html")))
+    
+    # - move .md files to log folder 
     file.rename(
         file.path(indir, paste0(script_name, ".md")),
         file.path(outdir, paste0(script_name, ".md"))
     )
-    # these will be produced if figures are included in the .md
-    # and they need to be moved along with the .md
+    # - a files folder will be produced if figures are included in the md file
+    # - and it needs to be moved along with the md file
     file.rename(
         file.path(indir, paste0(script_name, "_files")),
         file.path(outdir, paste0(script_name, "_files"))

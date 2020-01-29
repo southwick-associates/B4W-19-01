@@ -3,8 +3,8 @@
 
 For Southwick internal use only; Dan's portion of the analysis for the CO survey:
 
-- preparing CO and OIA survey data
-- producing OIA-based estimation profiles
+- Preparing CO and OIA survey data
+- Estimating OIA-based profiles
 
 ### Usage
 
@@ -27,7 +27,7 @@ Final survey data is available for download at [data-work/1-svy/svy-weight-csv.z
 - act [person by activity]: participation & days overall vs. along water
 - basin [person by activity by basin]: participation & days
 
-Survey details are available on O365:
+Survey details are available on O365 > B4W-19-01:
 
 - [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/ETchk1k_EfZKgZe0z3PzS_kB3D_QBvQsxGPhABfOPMIHdg?e=07goQ1)
 - [Questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/B4W-19-01/ESlQqzDJbg5BplbAPakEnoEBL8F7pUZLftXywcK4F01exA?e=hfEiig)
