@@ -1,7 +1,7 @@
 explore-act-rates.R
 ================
 danka
-Wed Jan 29 15:01:26 2020
+Wed Jan 29 15:48:01 2020
 
 ``` r
 # some initial work in activity rates (screener)
@@ -49,25 +49,25 @@ svy$person <- left_join(svy$person, outdoors, by = "Vrid") %>%
 plot_choice(svy$person, outdoor, sex) + facet_wrap(~ sex)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/explore-act-rates_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 plot_choice(svy$person, outdoor, race) + facet_wrap(~ race)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/explore-act-rates_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ``` r
 plot_choice(svy$person, outdoor, income) + facet_wrap(~ income)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/explore-act-rates_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
 ``` r
 plot_choice(svy$person, outdoor, age) + facet_wrap(~ age)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/explore-act-rates_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
+![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
 
 ``` r
 # checked all
@@ -80,4 +80,4 @@ filter(svy$act, act != "none", part == "Checked") %>%
     geom_col()
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/explore-act-rates_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
+![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->

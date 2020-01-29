@@ -1,7 +1,7 @@
 1-load-raw.R
 ================
 danka
-Wed Jan 29 15:01:03 2020
+Wed Jan 29 15:47:34 2020
 
 ``` r
 # load raw data into RDS

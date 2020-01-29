@@ -1,7 +1,7 @@
 2-reshape.R
 ================
 danka
-Wed Jan 29 15:01:06 2020
+Wed Jan 29 15:47:44 2020
 
 ``` r
 # reshape (i.e., tidy) survey data to facilitate analysis
@@ -385,51 +385,51 @@ sapply(names(out), function(nm) {
 plot_choice(person, age)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 plot_choice(person, sex)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ``` r
 plot_choice(person, income)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
 ``` r
 plot_choice(person, race)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
 
 ``` r
 plot_choice(person, race_other)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
 
 ``` r
 plot_choice(person, hispanic)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-6.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-6.png)<!-- -->
 
 ``` r
 # act
 plot_choice_multi(act, part, act) + ggtitle("Overall Participation")
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-7.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-7.png)<!-- -->
 
 ``` r
 plot_choice_multi(act, part_water, act, part) + facet_wrap(~ part) + 
     ggtitle("Participation along the water (facetted by overall participation)")
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-8.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-8.png)<!-- -->
 
 ``` r
 plot_num(act, days, act, part) + facet_wrap(~ part) +
@@ -440,7 +440,7 @@ plot_num(act, days, act, part) + facet_wrap(~ part) +
 
     ## Warning: Removed 57 rows containing non-finite values (stat_boxplot).
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-9.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-9.png)<!-- -->
 
 ``` r
 plot_num(act, days_water, act, part_water) + facet_wrap(~ part_water)+
@@ -451,14 +451,14 @@ plot_num(act, days_water, act, part_water) + facet_wrap(~ part_water)+
 
     ## Warning: Removed 84 rows containing non-finite values (stat_boxplot).
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-10.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-10.png)<!-- -->
 
 ``` r
 # basin
 plot_choice_multi(basin, part, basin, act) + facet_wrap(~ act)
 ```
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-11.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-11.png)<!-- -->
 
 ``` r
 plot_num(basin, days_water, basin, part) + facet_wrap(~ part)
@@ -468,7 +468,7 @@ plot_num(basin, days_water, basin, part) + facet_wrap(~ part)
 
     ## Warning: Removed 205 rows containing non-finite values (stat_boxplot).
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-12.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-12.png)<!-- -->
 
 ``` r
 plot_num(basin, days_water, basin, act) + facet_wrap(~ act)
@@ -478,4 +478,4 @@ plot_num(basin, days_water, basin, act) + facet_wrap(~ act)
     
     ## Warning: Removed 205 rows containing non-finite values (stat_boxplot).
 
-![](D:/SA/Project/B4W-19-01-CO-H2O/Analysis/code/1-svy/log/2-reshape_files/figure-gfm/unnamed-chunk-1-13.png)<!-- -->
+![](2-reshape_files/figure-gfm/unnamed-chunk-1-13.png)<!-- -->

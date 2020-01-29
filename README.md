@@ -40,7 +40,7 @@ Flagging has been performed for assigning valid quotas for IPSOS, stored in `out
 - `flags-core.csv`: respondents that didn't make the cut for the IPSOS quota
 - `flags-ipsos-okay.csv`: respondents that did make the quota (shared with IPSOS by Lisa B)
 
-See [the flag summary](code/1-svy/flag-summary.md) for an overview.
+See the flag summary for an overview:  [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
 
 ## OIA Survey Data
 

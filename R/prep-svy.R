@@ -11,7 +11,6 @@ write_list_csv <- function(ls, nm, dir) {
     write_csv(ls[[nm]], file.path(dir, paste0(nm, ".csv")), na = "")
 }
 
-
 # Recoding ----------------------------------------------------------------
 
 # Recode a category variable (factor)

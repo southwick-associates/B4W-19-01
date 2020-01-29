@@ -1,7 +1,7 @@
 2-check-svy.R
 ================
 danka
-Wed Jan 29 15:00:55 2020
+Wed Jan 29 15:47:07 2020
 
 ``` r
 # check first set of responses for survey

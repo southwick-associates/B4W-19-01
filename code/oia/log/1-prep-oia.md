@@ -1,7 +1,7 @@
 1-prep-oia.R
 ================
 danka
-Wed Jan 29 15:01:42 2020
+Wed Jan 29 15:47:19 2020
 
 ``` r
 # prepare OIA data for CO analysis
