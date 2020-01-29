@@ -3,16 +3,11 @@
 
 For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01 project:
 
-- Preparing Survey data:
-    + CO: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)
-    + OIA: [data-work/oia/oia-co.csv](data-work/oia/oia-co.csv)
-- Estimating OIA-based profiles
+- CO survey prep: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)
+- OIA survey prep: [data-work/oia/oia-co.csv](data-work/oia/oia-co.csv)
+- OIA-based profiles: TODO
 
-### Usage
-
-The analysis can be reproduced from `code/run.R`. Folder organization: 
-
-- R (R functions), code (analysis scripts), data (raw data), data-work (intermediate data), out (output & results)
+The analysis can be reproduced from `code/run.R`.
 
 ### Software Environment
 
@@ -23,16 +18,16 @@ This project was setup using package [saproj](https://github.com/southwick-assoc
 
 ## CO Survey Data
 
+Survey details are available on O365 > B4W-19-01:
+
+- [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=LAeALG)
+- [Questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/B4W-19-01/ESlQqzDJbg5BplbAPakEnoEBL8F7pUZLftXywcK4F01exA?e=hfEiig)
+
 Final survey data is stored in 3 tables:
 
 - person [1 row per respondent]: Vrid, id (IPSOS), Vstatus, demographics
 - act [person by activity]: participation & days overall vs. along water
 - basin [person by activity by basin]: participation & days
-
-Survey details are available on O365 > B4W-19-01:
-
-- [Survey Data Dictionary](https://southwickassociatesinc.sharepoint.com/:x:/s/B4W-19-01/EUfzP3tm7O5Kpim_RuhzFzABWy7W_i-17pSKllDirAeU9g?e=LAeALG)
-- [Questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/B4W-19-01/ESlQqzDJbg5BplbAPakEnoEBL8F7pUZLftXywcK4F01exA?e=hfEiig)
 
 ### Respondent Flagging
 
