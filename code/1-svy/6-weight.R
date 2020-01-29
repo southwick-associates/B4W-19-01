@@ -2,7 +2,7 @@
 # - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
-library(weights)
+# library(weights)
 library(anesrake)
 source("R/prep-svy.R")
 
@@ -31,7 +31,7 @@ pop_data <- oia %>%
 # get population distribution targets
 weight_variable_names <- setdiff(names(pop_data), c("Vrid", "stwt"))
 pop <- weight_variable_names %>%
-    sapply(function(x) wpct(pop_data[[x]], weight = pop_data$stwt))
+    sapply(function(x) weights::wpct(pop_data[[x]], weight = pop_data$stwt))
 pop
 
 # Weight ------------------------------------------------------------------

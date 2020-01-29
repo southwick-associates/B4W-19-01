@@ -1,7 +1,7 @@
 6-weight.R
 ================
 danka
-Wed Jan 29 17:15:40 2020
+Wed Jan 29 17:19:35 2020
 
 ``` r
 # weight survey using OIA
@@ -22,7 +22,8 @@ library(tidyverse)
     ## x dplyr::lag()    masks stats::lag()
 
 ``` r
-library(weights)
+# library(weights)
+library(anesrake)
 ```
 
     ## Loading required package: Hmisc
@@ -43,6 +44,8 @@ library(weights)
     ## The following objects are masked from 'package:base':
     ## 
     ##     format.pval, units
+
+    ## Loading required package: weights
 
     ## Loading required package: gdata
 
@@ -107,7 +110,6 @@ library(weights)
     ##     cbind, rbind
 
 ``` r
-library(anesrake)
 source("R/prep-svy.R")
 
 svy <- readRDS("data-work/1-svy/svy-demo.rds")
@@ -160,7 +162,7 @@ pop_data <- oia %>%
 # get population distribution targets
 weight_variable_names <- setdiff(names(pop_data), c("Vrid", "stwt"))
 pop <- weight_variable_names %>%
-    sapply(function(x) wpct(pop_data[[x]], weight = pop_data$stwt))
+    sapply(function(x) weights::wpct(pop_data[[x]], weight = pop_data$stwt))
 pop
 ```
 
