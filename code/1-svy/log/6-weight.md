@@ -1,13 +1,27 @@
 6-weight.R
 ================
 danka
-Wed Jan 29 17:25:28 2020
+Wed Jan 29 17:40:46 2020
 
 ``` r
 # weight survey using OIA
 # - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 source("R/prep-svy.R")
 
 svy <- readRDS("data-work/1-svy/svy-demo.rds")
@@ -110,10 +124,8 @@ sapply(names(pop), function(x) weights::wpct(svy_wt[[x]]))
 
 ``` r
 # run weighting
-svy_wt <- mutate(svy_wt, Vrid = as.integer(Vrid)) %>% data.frame()
 svy_wt <- svy_wt %>%
     est_wts(pop, print_name = "CO survey", idvar = "Vrid") %>%
-    mutate(Vrid = as.character(Vrid)) %>%
     select(Vrid, weight = rake_wt)
 ```
 
@@ -196,11 +208,7 @@ svy_wt <- svy_wt %>%
 
 ``` r
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
-```
 
-    ## Warning: Column `Vrid` has different attributes on LHS and RHS of join
-
-``` r
 # check
 summary(svy$person$weight)
 ```

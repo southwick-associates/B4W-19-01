@@ -1,7 +1,7 @@
 
 ## Overview
 
-For Southwick internal use only; Dan's portion of the analysis for the CO survey:
+For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01:
 
 - Preparing Survey data:
     + CO: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)

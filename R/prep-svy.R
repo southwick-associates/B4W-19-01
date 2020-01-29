@@ -44,6 +44,9 @@ recode_cat <- function(df, oldvar, newvar, newcat, newlab) {
 est_wts <- function(
     svy, pop, print_name = "", idvar = "sguid", cap = 20
 ) {
+    # anesrake doesn't like tibbles (i.e., the tidyverse version of a data frame)
+    svy <- data.frame(svy)
+    
     # run weighting
     wts <- anesrake::anesrake(pop, svy, caseid = svy[[idvar]], force1 = TRUE, cap = cap)
     

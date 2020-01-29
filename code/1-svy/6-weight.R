@@ -39,10 +39,8 @@ pop
 sapply(names(pop), function(x) weights::wpct(svy_wt[[x]]))
 
 # run weighting
-svy_wt <- mutate(svy_wt, Vrid = as.integer(Vrid)) %>% data.frame()
 svy_wt <- svy_wt %>%
     est_wts(pop, print_name = "CO survey", idvar = "Vrid") %>%
-    mutate(Vrid = as.character(Vrid)) %>%
     select(Vrid, weight = rake_wt)
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
