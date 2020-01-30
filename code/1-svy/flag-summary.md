@@ -8,8 +8,13 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ``` r
-svy <- readRDS("../../data-work/1-svy/svy-reshape.rds")
+svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
+
+# a few "none" activity people are dropped from the flag table
+# (they were filtered out in the 4-clean step since they shouldn't have gotten the survey)
+flags$flag_values <- flags$flag_values %>%
+    semi_join(svy$person, by = "Vrid")
 ```
 
 ## Overview
@@ -39,7 +44,7 @@ left_join(flags$flag_details, cnt, by = "flag_name") %>%
 | incomplete       | na\_days\_water     |           3 | Didn’t answer question about water days                                                                                           |   7 |
 | incomplete       | na\_basin           |           3 | Didn’t answer question about basins                                                                                               |  48 |
 | incomplete       | na\_basin\_days     |           3 | Didn’t answer question about basin-days                                                                                           |  83 |
-| core\_suspicious | multiple\_responses |           4 | Person (identified by id) has more than one Vrid (record)                                                                         |  57 |
+| core\_suspicious | multiple\_responses |           4 | Person (identified by id) has more than one Vrid (record)                                                                         |  54 |
 | core\_suspicious | all\_activities     |           1 | Indicated participating in every single activity                                                                                  |   6 |
 | core\_suspicious | all\_basins         |           1 | Indicated participating in every single basin                                                                                     |   3 |
 | core\_suspicious | high\_days          |           1 | More than 365 days identified for any activity                                                                                    |   5 |
@@ -65,10 +70,10 @@ flags$flag_values %>%
 
 | flags |  n | cumulative\_n |
 | ----: | -: | ------------: |
-|     4 | 57 |            57 |
-|     3 |  1 |            58 |
-|     2 |  3 |            61 |
-|     1 | 11 |            72 |
+|     4 | 54 |            54 |
+|     3 |  1 |            55 |
+|     2 |  3 |            58 |
+|     1 | 11 |            69 |
 
 ### Missing Responses
 
@@ -135,7 +140,7 @@ flags$flag_values %>%
 |     7 |  21 |            25 |
 |     6 |   9 |            34 |
 |     5 |  10 |            44 |
-|     4 |  66 |           110 |
-|     3 | 170 |           280 |
-|     2 |  54 |           334 |
-|     1 | 137 |           471 |
+|     4 |  63 |           107 |
+|     3 | 170 |           277 |
+|     2 |  54 |           331 |
+|     1 | 137 |           468 |

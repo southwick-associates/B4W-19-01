@@ -10,8 +10,13 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ```{r}
-svy <- readRDS("../../data-work/1-svy/svy-reshape.rds")
+svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
+
+# a few "none" activity people are dropped from the flag table
+# (they were filtered out in the 4-clean step since they shouldn't have gotten the survey)
+flags$flag_values <- flags$flag_values %>%
+    semi_join(svy$person, by = "Vrid")
 ```
 
 ## Overview
