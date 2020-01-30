@@ -1,15 +1,29 @@
 1-prep-oia.R
 ================
 danka
-Wed Jan 29 15:47:19 2020
+Thu Jan 30 10:20:35 2020
 
 ``` r
-# prepare OIA data for CO analysis
+# prepare OIA survey data for CO analysis
 # - filtering to include CO residents & selecting necessary variables 
 # - identify target population of CO survey
 # - recode demographics for weighting CO survey data
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 source("R/prep-svy.R")
 
@@ -81,10 +95,11 @@ co_activities <- oia_activities %>%
 # Load OIA Svy Data ---------------------------------------------------------------
 
 # pull in OIA 2016 survey data for CO residents
-load("D:/SA/Project/OIA_Rec_Econ_2016/Analysis-OIA/data/svy-wtd.RDATA")
+load("data/svy-wtd.RDATA")
 
 # data representative of the whole Colorado resident population
-svy_all <- filter(svy, flag < 3, state == "Colorado") %>% 
+svy_all <- svy_wtd %>%
+    filter(flag < 3, state == "Colorado") %>% 
     rename(income = d5) %>%
     as_tibble()
 
@@ -137,7 +152,12 @@ in_co_pop <- svy_all %>%
     gather(var, val, -Vrid) %>%
     filter(val == "Checked") %>%
     distinct(Vrid)
+```
 
+    ## Warning: attributes are not identical across measure variables;
+    ## they will be dropped
+
+``` r
 # add identifier variable "in_co_pop" for downstream filtering/summarizing
 svy_all <- bind_rows(
     semi_join(svy_all, in_co_pop, by = "Vrid") %>% mutate(in_co_pop = TRUE),

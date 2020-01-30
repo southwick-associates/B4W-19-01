@@ -1,4 +1,4 @@
-# prepare OIA data for CO analysis
+# prepare OIA survey data for CO analysis
 # - filtering to include CO residents & selecting necessary variables 
 # - identify target population of CO survey
 # - recode demographics for weighting CO survey data
@@ -25,10 +25,11 @@ co_activities <- oia_activities %>%
 # Load OIA Svy Data ---------------------------------------------------------------
 
 # pull in OIA 2016 survey data for CO residents
-load("D:/SA/Project/OIA_Rec_Econ_2016/Analysis-OIA/data/svy-wtd.RDATA")
+load("data/svy-wtd.RDATA")
 
 # data representative of the whole Colorado resident population
-svy_all <- filter(svy, flag < 3, state == "Colorado") %>% 
+svy_all <- svy_wtd %>%
+    filter(flag < 3, state == "Colorado") %>% 
     rename(income = d5) %>%
     as_tibble()
 

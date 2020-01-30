@@ -4,7 +4,8 @@ source("R/workflow.R")
 
 # OIA
 run_script("code/oia/1-prep-oia.R")
-# run_script("code/oia/2-profile-oia.R")
+run_script("code/oia/2-spend-oia.R")
+run_script("code/oia/3-profile-oia.R")
 
 # initial CO svy testing
 run_script("code/0-svy-test/1-load-raw.R")
