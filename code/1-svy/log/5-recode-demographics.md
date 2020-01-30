@@ -1,7 +1,7 @@
 5-recode-demographics.R
 ================
 danka
-Wed Jan 29 15:48:41 2020
+Thu Jan 30 15:13:19 2020
 
 ``` r
 # recode certain demographic variables for weighting

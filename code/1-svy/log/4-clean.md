@@ -1,7 +1,7 @@
 4-clean.R
 ================
 danka
-Wed Jan 29 15:48:38 2020
+Thu Jan 30 15:13:16 2020
 
 ``` r
 # clean survey data

@@ -14,9 +14,6 @@ svy <- readRDS("data-work/1-svy/svy-reshape.rds")
 
 # Prep ------------------------------------------------------------------
 
-# filter: remove incomplete Vrids
-svy <- lapply(svy, function(x) semi_join(x, filter(svy$person, Vstatus == "Complete"), by = "Vrid"))
-
 # drop activities which we don't care about
 acts_of_interest <- unique(svy$basin$act)
 svy_act_all <- svy$act
@@ -37,7 +34,7 @@ flag_details <- tribble(
     "incomplete", "na_days_water", 3, "Didn't answer question about water days",
     "incomplete", "na_basin", 3, "Didn't answer question about basins",
     "incomplete", "na_basin_days", 3, "Didn't answer question about basin-days",
-    "core_suspicious", "multiple_responses", 3, "Person (identified by id) has more than one Vrid (record)",
+    "core_suspicious", "multiple_responses", 4, "Person (identified by id) has more than one Vrid (record)",
     "core_suspicious", "all_activities", 1, "Indicated participating in every single activity",
     "core_suspicious", "all_basins", 1, "Indicated participating in every single basin",
     "core_suspicious", "high_days", 1, "More than 365 days identified for any activity",
@@ -208,7 +205,11 @@ saveRDS(out, "data-work/1-svy/svy-flag.rds")
 write_csv(out$flag_values, "out/1-svy/flags-all.csv")
 
 # b. only those "core suspicious" for communication with IPSOS
+# - we are aslo only counting "Complete" respondents for the purpose of IPSOS
+ipsos_interest <- filter(svy$person, Vstatus == "Complete")
+
 core_suspicious <- out$flag_values %>%
+    semi_join(ipsos_interest, by = "Vrid") %>%
     filter(group == "core_suspicious") %>%
     select(id, Vrid, flag_name, value)
 core_suspicious %>%
@@ -217,12 +218,13 @@ core_suspicious %>%
     write_csv("out/1-svy/flags-core.csv")
 
 # c. unique IDs to share with IPSOS (those that passed)
-# - excludes incompletes and those core_suspicious with 3+ flags
+# - excludes incompletes and those core_suspicious with 4+ flags
 exclude <- core_suspicious %>%
     group_by(id) %>%
     summarise(value = sum(value)) %>%
-    filter(value >= 3)
+    filter(value >= 4)
 svy$person %>%
+    semi_join(ipsos_interest, by = "Vrid") %>%
     anti_join(exclude, by = "id") %>%
     distinct(id) %>%
     write_csv("out/1-svy/flags-ipsos-okay.csv")

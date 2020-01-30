@@ -1,6 +1,6 @@
 Summarize CO Ipsos survey flagging of suspicious responses
 ================
-January 29, 2020
+January 30, 2020
 
 ``` r
 library(tidyverse)
@@ -34,19 +34,19 @@ left_join(flags$flag_details, cnt, by = "flag_name") %>%
 
 | group            | flag\_name          | flag\_value | description                                                                                                                       |   n |
 | :--------------- | :------------------ | ----------: | :-------------------------------------------------------------------------------------------------------------------------------- | --: |
-| incomplete       | na\_days            |           3 | Didn’t answer question about total days                                                                                           |   4 |
-| incomplete       | na\_part\_water     |           3 | Didn’t answer the question about whether they participated along the water (i.e., missing values instead of Yes, No, or Not Sure) |  44 |
-| incomplete       | na\_days\_water     |           3 | Didn’t answer question about water days                                                                                           |   2 |
-| incomplete       | na\_basin           |           3 | Didn’t answer question about basins                                                                                               |  26 |
-| incomplete       | na\_basin\_days     |           3 | Didn’t answer question about basin-days                                                                                           |  73 |
-| core\_suspicious | multiple\_responses |           3 | Person (identified by id) has more than one Vrid (record)                                                                         |  34 |
-| core\_suspicious | all\_activities     |           1 | Indicated participating in every single activity                                                                                  |   5 |
+| incomplete       | na\_days            |           3 | Didn’t answer question about total days                                                                                           |  32 |
+| incomplete       | na\_part\_water     |           3 | Didn’t answer the question about whether they participated along the water (i.e., missing values instead of Yes, No, or Not Sure) |  50 |
+| incomplete       | na\_days\_water     |           3 | Didn’t answer question about water days                                                                                           |   7 |
+| incomplete       | na\_basin           |           3 | Didn’t answer question about basins                                                                                               |  48 |
+| incomplete       | na\_basin\_days     |           3 | Didn’t answer question about basin-days                                                                                           |  83 |
+| core\_suspicious | multiple\_responses |           4 | Person (identified by id) has more than one Vrid (record)                                                                         |  57 |
+| core\_suspicious | all\_activities     |           1 | Indicated participating in every single activity                                                                                  |   6 |
 | core\_suspicious | all\_basins         |           1 | Indicated participating in every single basin                                                                                     |   3 |
-| core\_suspicious | high\_days          |           1 | More than 365 days identified for any activity                                                                                    |   4 |
-| core\_suspicious | high\_sum\_days     |           1 | More than 1000 days when summed across all activities                                                                             |   4 |
-| suspicious       | high\_water\_days   |           1 | More days along water than total days                                                                                             |  57 |
+| core\_suspicious | high\_days          |           1 | More than 365 days identified for any activity                                                                                    |   5 |
+| core\_suspicious | high\_sum\_days     |           1 | More than 1000 days when summed across all activities                                                                             |   5 |
+| suspicious       | high\_water\_days   |           1 | More days along water than total days                                                                                             |  60 |
 | suspicious       | high\_basin\_days   |           1 | Sum across basin days are \>5 and more than double activity total water days                                                      |  31 |
-| suspicious       | low\_basin\_days    |           1 | Total water days are \>5 and sum across basin is 50% or lower than total water days                                               | 187 |
+| suspicious       | low\_basin\_days    |           1 | Total water days are \>5 and sum across basin is 50% or lower than total water days                                               | 191 |
 
 ### Core Flags
 
@@ -65,10 +65,10 @@ flags$flag_values %>%
 
 | flags |  n | cumulative\_n |
 | ----: | -: | ------------: |
-|     4 | 34 |            34 |
-|     3 |  1 |            35 |
-|     2 |  2 |            37 |
-|     1 | 10 |            47 |
+|     4 | 57 |            57 |
+|     3 |  1 |            58 |
+|     2 |  3 |            61 |
+|     1 | 11 |            72 |
 
 ### Missing Responses
 
@@ -85,8 +85,9 @@ flags$flag_values %>%
 
 | flags |   n | cumulative\_n |
 | ----: | --: | ------------: |
-|     6 |   3 |             3 |
-|     3 | 143 |           146 |
+|     9 |   1 |             1 |
+|     6 |   7 |             8 |
+|     3 | 203 |           211 |
 
 ### Additional Suspicious Flags
 
@@ -103,12 +104,13 @@ flags$flag_values %>%
 
 | flags |   n | cumulative\_n |
 | ----: | --: | ------------: |
-|     6 |   1 |             1 |
-|     5 |   2 |             3 |
-|     4 |  10 |            13 |
-|     3 |  21 |            34 |
-|     2 |  59 |            93 |
-|     1 | 152 |           245 |
+|     8 |   1 |             1 |
+|     6 |   1 |             2 |
+|     5 |   2 |             4 |
+|     4 |  10 |            14 |
+|     3 |  21 |            35 |
+|     2 |  60 |            95 |
+|     1 | 156 |           251 |
 
 ### All Flags
 
@@ -126,11 +128,14 @@ flags$flag_values %>%
 
 | flags |   n | cumulative\_n |
 | ----: | --: | ------------: |
-|     9 |   1 |             1 |
-|     7 |  10 |            11 |
-|     6 |   5 |            16 |
-|     5 |   8 |            24 |
-|     4 |  55 |            79 |
-|     3 | 126 |           205 |
-|     2 |  53 |           258 |
-|     1 | 136 |           394 |
+|    13 |   1 |             1 |
+|    11 |   1 |             2 |
+|     9 |   1 |             3 |
+|     8 |   1 |             4 |
+|     7 |  21 |            25 |
+|     6 |   9 |            34 |
+|     5 |  10 |            44 |
+|     4 |  66 |           110 |
+|     3 | 170 |           280 |
+|     2 |  54 |           334 |
+|     1 | 137 |           471 |

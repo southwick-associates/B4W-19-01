@@ -1,7 +1,7 @@
 3-flags.R
 ================
 danka
-Wed Jan 29 15:48:33 2020
+Thu Jan 30 15:12:55 2020
 
 ``` r
 # flagging respondents for potentional removal
@@ -15,18 +15,25 @@ Wed Jan 29 15:48:33 2020
 # - inconsistent days values across dimensions
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 source("R/prep-svy.R") # functions
 svy <- readRDS("data-work/1-svy/svy-reshape.rds")
 
 # Prep ------------------------------------------------------------------
 
-# filter: remove incomplete Vrids
-svy <- lapply(svy, function(x) semi_join(x, filter(svy$person, Vstatus == "Complete"), by = "Vrid"))
-```
-
-    ## Warning: Column `Vrid` has different attributes on LHS and RHS of join
-
-``` r
 # drop activities which we don't care about
 acts_of_interest <- unique(svy$basin$act)
 svy_act_all <- svy$act
@@ -47,7 +54,7 @@ flag_details <- tribble(
     "incomplete", "na_days_water", 3, "Didn't answer question about water days",
     "incomplete", "na_basin", 3, "Didn't answer question about basins",
     "incomplete", "na_basin_days", 3, "Didn't answer question about basin-days",
-    "core_suspicious", "multiple_responses", 3, "Person (identified by id) has more than one Vrid (record)",
+    "core_suspicious", "multiple_responses", 4, "Person (identified by id) has more than one Vrid (record)",
     "core_suspicious", "all_activities", 1, "Indicated participating in every single activity",
     "core_suspicious", "all_basins", 1, "Indicated participating in every single basin",
     "core_suspicious", "high_days", 1, "More than 365 days identified for any activity",
@@ -86,10 +93,10 @@ svy$act %>% filter(part == "Checked", days != 0, !is.na(days)) %>%
 
 | part    | part\_water | bike | camp | fish | hunt | picnic | snow | trail | water | wildlife |
 | :------ | :---------- | ---: | ---: | ---: | ---: | -----: | ---: | ----: | ----: | -------: |
-| Checked | No          |  147 |  101 |   NA |   92 |    200 |  188 |   102 |    NA |      102 |
-| Checked | Not Sure    |   11 |    5 |   NA |    1 |     11 |   13 |     7 |    NA |       12 |
-| Checked | Yes         |  206 |  358 |   NA |   64 |    650 |   86 |   303 |    NA |      372 |
-| Checked | NA          |   10 |    7 |  318 |    2 |     23 |    9 |    14 |   368 |       14 |
+| Checked | No          |  151 |  103 |   NA |   92 |    216 |  198 |   106 |    NA |      113 |
+| Checked | Not Sure    |   11 |    5 |   NA |    3 |     14 |   13 |     8 |    NA |       13 |
+| Checked | Yes         |  216 |  380 |   NA |   70 |    678 |   91 |   314 |    NA |      388 |
+| Checked | NA          |   12 |    9 |  335 |    2 |     26 |   12 |    16 |   385 |       16 |
 
 ``` r
 new_flags <- svy$act %>% 
@@ -130,7 +137,7 @@ should_answer <- svy$basin %>%
 length(unique(should_answer$Vrid)) # 723 respondents got to this stage
 ```
 
-    ## [1] 898
+    ## [1] 912
 
 ``` r
 new_flags <- svy$basin %>%
@@ -267,7 +274,11 @@ saveRDS(out, "data-work/1-svy/svy-flag.rds")
 write_csv(out$flag_values, "out/1-svy/flags-all.csv")
 
 # b. only those "core suspicious" for communication with IPSOS
+# - we are aslo only counting "Complete" respondents for the purpose of IPSOS
+ipsos_interest <- filter(svy$person, Vstatus == "Complete")
+
 core_suspicious <- out$flag_values %>%
+    semi_join(ipsos_interest, by = "Vrid") %>%
     filter(group == "core_suspicious") %>%
     select(id, Vrid, flag_name, value)
 core_suspicious %>%
@@ -276,12 +287,13 @@ core_suspicious %>%
     write_csv("out/1-svy/flags-core.csv")
 
 # c. unique IDs to share with IPSOS (those that passed)
-# - excludes incompletes and those core_suspicious with 3+ flags
+# - excludes incompletes and those core_suspicious with 4+ flags
 exclude <- core_suspicious %>%
     group_by(id) %>%
     summarise(value = sum(value)) %>%
-    filter(value >= 3)
+    filter(value >= 4)
 svy$person %>%
+    semi_join(ipsos_interest, by = "Vrid") %>%
     anti_join(exclude, by = "id") %>%
     distinct(id) %>%
     write_csv("out/1-svy/flags-ipsos-okay.csv")
