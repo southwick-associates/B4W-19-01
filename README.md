@@ -4,7 +4,6 @@
 For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01 project:
 
 - CO survey prep: [data-work/1-svy/svy-weight-csv.zip](data-work/1-svy/svy-weight-csv.zip)
-- OIA survey prep: [data-work/oia/oia-co.csv](data-work/oia/oia-co.csv)
 - OIA-based profiles: TODO
 
 The analysis can be reproduced from `code/run.R`.
@@ -35,8 +34,7 @@ For an overview: [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
 
 ## OIA Survey Data
 
-Used for defining the CO survey target population (and subsequent weighting). More docs to prepare:
+Using OIA 2016 survey data stored/documented on [O365 > OIA 2016 > Analysis Resources](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EdZ4EMXUfXtKsEurnqCqlbcBbxarVPTtLkyCNiYti18vUA?e=zvmc87):
 
-- [link to OIA questionnaire](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EbI0t01qsPdHtU1GFu5o0ukBovyynTC6IqkskwEAbgSJxQ?e=uuJI6d)
-- data is stored on the server: E:/SA/...
-- other info?
+- Define the CO survey target population (and subsequent weighting)
+- Produce spending profiles
