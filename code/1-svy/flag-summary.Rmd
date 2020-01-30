@@ -1,5 +1,5 @@
 ---
-title: "Summarize CO Ipsos survey flagging of suspicious responses"
+title: "Summarize CO survey flagging of suspicious responses"
 date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
 output: github_document
 ---
@@ -10,6 +10,7 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ```{r}
+svy_all <- readRDS("../../data-work/1-svy/svy-reshape.rds")
 svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
 
@@ -21,11 +22,9 @@ flags$flag_values <- flags$flag_values %>%
 
 ## Overview
 
-A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). We recommend removal of respondents as invalid if crossing a threshold of acceptable flags.
+A set of tests were run to flag respondents for possible removal from survey analysis, based on suspicious responses. Each instance of a suspicious response is assigned a defined flag value, and flags sum (i.e., a respondent can accumulate multiple flags). 
 
 ### Flags used
-
-Only respondents with `Vrid == "Complete"` surveys are examined here, of which there are `r filter(svy$person, Vstatus == "Complete") %>% nrow()` observations.
 
 ```{r}
 # counts by flag
@@ -87,4 +86,26 @@ flags$flag_values %>%
     arrange(desc(flags)) %>%
     mutate(cumulative_n = cumsum(n)) %>%
     knitr::kable()
+```
+
+## Exclusion Summary
+
+Respondents are flagged as invalid and exluded if crossing a threshold of acceptable flags:
+
+```{r}
+# all unique respondents to the survey
+svy_all$person %>%
+    distinct(id) %>% 
+    nrow()
+
+# valid respondents used for analysis
+valid <- svy$person %>%
+    left_join(flags$flag_totals, by = "Vrid") %>%
+    filter(flag < 4 | is.na(flag)) 
+valid %>%
+    distinct(id) %>%
+    nrow()
+
+# note that not all of the valid respondents are marked as complete
+count(valid, Vstatus)
 ```

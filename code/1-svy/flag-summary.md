@@ -8,6 +8,7 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ``` r
+svy_all <- readRDS("../../data-work/1-svy/svy-reshape.rds")
 svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
 
@@ -22,13 +23,9 @@ flags$flag_values <- flags$flag_values %>%
 A set of tests were run to flag respondents for possible removal from
 survey analysis, based on suspicious responses. Each instance of a
 suspicious response is assigned a defined flag value, and flags sum
-(i.e., a respondent can accumulate multiple flags). We recommend removal
-of respondents as invalid if crossing a threshold of acceptable flags.
+(i.e., a respondent can accumulate multiple flags).
 
 ### Flags used
-
-Only respondents with `Vrid == "Complete"` surveys are examined here, of
-which there are 1252 observations.
 
 ``` r
 # counts by flag
@@ -144,3 +141,41 @@ flags$flag_values %>%
 |     3 | 170 |           277 |
 |     2 |  54 |           331 |
 |     1 | 137 |           468 |
+
+## Exclusion Summary
+
+Respondents are flagged as invalid and exluded if crossing a threshold
+of acceptable flags:
+
+``` r
+# all unique respondents to the survey
+svy_all$person %>%
+    distinct(id) %>% 
+    nrow()
+```
+
+    [1] 1341
+
+``` r
+# valid respondents used for analysis
+valid <- svy$person %>%
+    left_join(flags$flag_totals, by = "Vrid") %>%
+    filter(flag < 4 | is.na(flag)) 
+valid %>%
+    distinct(id) %>%
+    nrow()
+```
+
+    [1] 1252
+
+``` r
+# note that not all of the valid respondents are marked as complete
+count(valid, Vstatus)
+```
+
+    # A tibble: 3 x 2
+      Vstatus          n
+      <chr>        <int>
+    1 Complete      1169
+    2 Disqualified    12
+    3 Partial         71

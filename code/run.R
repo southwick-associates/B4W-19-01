@@ -1,4 +1,4 @@
-# Run each script, storing log files as markdown
+# run analysis
 
 source("R/workflow.R")
 
@@ -20,3 +20,6 @@ run_script("code/1-svy/4-clean.R")
 run_script("code/1-svy/5-recode-demographics.R")
 run_script("code/1-svy/6-weight.R")
 # save zipped file by hand for "data-work/1-svy/svy-weight-csv/"
+
+rmarkdown::render("code/1-svy/flag-summary.Rmd") # includes flagging stats for report
+rmarkdown::render("code/1-svy/weight-summary.Rmd") # includes weight stats/figure for report
