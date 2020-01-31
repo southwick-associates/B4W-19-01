@@ -12,7 +12,7 @@ knitr::opts_chunk$set(comment = NA)
 
 ## Tukey's Test
 
-We can apply [Tukey's test]() to identify outliers for overall days by activity. We end up with a rule that is very aggressive in identifying outliers.
+We can apply [Tukey's test]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) to identify outliers for overall days by activity. We end up with a rule that is very aggressive in identifying outliers.
 
 ```{r}
 svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
@@ -41,7 +41,8 @@ A very large percentage are flagged for removal in every activity
 group_by(x, act, is_outlier) %>%
     summarise(n = n()) %>%
     mutate(pct_outliers = n / sum(n) * 100) %>%
-    filter(is_outlier)
+    filter(is_outlier) %>%
+    knitr::kable()
 ```
 
 ## Log-transfrom with Tukey's Test
@@ -64,11 +65,10 @@ ggplot(x, aes(act, days)) +
     ggtitle("Tukey's test based on log-transformed values")
 ```
 
-We end up with a far lower percentage flagged as outliers
-
 ```{r}
 group_by(x, act, is_outlier) %>%
     summarise(n = n()) %>%
     mutate(pct_outliers = n / sum(n) * 100) %>%
-    filter(is_outlier)
+    filter(is_outlier) %>%
+    knitr::kable()
 ```

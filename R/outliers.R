@@ -31,8 +31,3 @@ tukey_top <- function(x, k = 1.5, apply_log = FALSE) {
     iqr <- diff(quartiles)
     exp(quartiles[2] + k * iqr)
 }
-
-# show boxplots with outliers identified
-plot_outliers <- function() {
-    
-}
