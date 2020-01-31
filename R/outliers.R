@@ -8,14 +8,13 @@
 #   Increasing will make outlier identification less strict (& vice-versa)
 # - ignore_lwr: If TRUE, don't use the lower fence for identifying outliers
 # - apply_log: If TRUE, log transform input values prior to applying tukey's rule
+#   Useful since distributions often have a log-normal shape (e.g., spending)
 # - ingnore_zero: If TRUE, will exclude zero values from IQR & flagging
 #   Note that zeroes will automatically be ignored if apply_log = TRUE
 tukey_outlier <- function(
     x, k = 1.5, ignore_lwr = FALSE, apply_log = FALSE, ignore_zero = FALSE
 ) {
     if (ignore_zero) x <- ifelse(x == 0, NA, x)
-    
-    # distributions often have a log-normal shape (e.g., spending)
     if (apply_log) x <- log(x)
     
     quartiles <- quantile(x, probs = c(0.25, 0.75), na.rm = TRUE)
@@ -30,7 +29,8 @@ tukey_outlier <- function(
 }
 
 # get the top (non-outlier) value for top-coding
-tukey_top <- function(x, k = 1.5, apply_log = FALSE) {
+tukey_top <- function(x, k = 1.5, apply_log = FALSE, ignore_zero = FALSE) {
+    if (ignore_zero) x <- ifelse(x == 0, NA, x)
     if (apply_log) x <- log(x)
     quartiles <- quantile(x, probs = c(0.25, 0.75), na.rm = TRUE)
     iqr <- diff(quartiles)

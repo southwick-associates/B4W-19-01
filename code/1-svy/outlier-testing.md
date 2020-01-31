@@ -23,7 +23,10 @@ that is very aggressive in identifying outliers.
 # identify outliers
 days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE)) %>%
+    mutate(
+        is_outlier = tukey_outlier(days, ignore_zero = TRUE),
+        days_cleaned = ifelse(is_outlier, NA, days)
+    ) %>%
     ungroup()
 
 # plot
@@ -36,7 +39,7 @@ x %>%
     ggtitle("Tukey's test")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 A very large percentage are flagged for removal in every activity
 
@@ -65,7 +68,6 @@ The outlier flagging has a very large effect on averages.
 ``` r
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
     knitr::kable()
@@ -91,7 +93,10 @@ This is a much less aggressive rule.
 # identify outliers
 days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE)) %>%
+    mutate(
+        is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE),
+        days_cleaned = ifelse(is_outlier, NA, days)
+    ) %>%
     ungroup()
 
 # plot
@@ -105,7 +110,7 @@ x %>%
     ggtitle("Tukey's test based on log-transformed values")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 group_by(x, act, is_outlier) %>%
@@ -131,7 +136,6 @@ The rule can still have a sizeable effect on averages:
 ``` r
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
     knitr::kable()
@@ -148,3 +152,55 @@ days %>%
 | trail    | 28.418367 |     25.502577 |
 | water    | 12.353760 |     10.521127 |
 | wildlife | 30.524490 |     21.828092 |
+
+### Top-coding
+
+Alternatively, we could topcode those values, which is a less aggressive
+approach:
+
+``` r
+days2 <- days %>%
+    group_by(act) %>%
+    mutate(
+        topcode_value = tukey_top(days, apply_log = TRUE, ignore_zero = TRUE),
+        days_cleaned = ifelse(is_outlier, topcode_value, days)
+    ) %>%
+    ungroup()
+
+days2 %>%
+    filter(is_targeted) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
+| act      |      days | days\_cleaned |
+| :------- | --------: | ------------: |
+| bike     | 31.581395 |     31.581395 |
+| camp     | 11.163218 |      9.303789 |
+| fish     | 11.640523 |     10.532331 |
+| hunt     |  9.374150 |      9.046282 |
+| picnic   | 17.478161 |     15.761582 |
+| snow     |  9.989247 |      9.913979 |
+| trail    | 28.418367 |     28.094475 |
+| water    | 12.353760 |     11.473538 |
+| wildlife | 30.524490 |     28.561833 |
+
+``` r
+days2 %>%
+    filter(is_targeted) %>%
+    count(act, topcode_value) %>% 
+    knitr::kable()
+```
+
+| act      | topcode\_value |    n |
+| :------- | -------------: | ---: |
+| bike     |      440.90815 | 1252 |
+| camp     |       60.85806 | 1252 |
+| fish     |      125.29775 | 1252 |
+| hunt     |      111.80340 | 1252 |
+| picnic   |      167.70510 | 1252 |
+| snow     |       96.00000 | 1252 |
+| trail    |      279.50850 | 1252 |
+| water    |       96.00000 | 1252 |
+| wildlife |      275.63832 | 1252 |

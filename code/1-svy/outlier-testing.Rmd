@@ -26,7 +26,10 @@ We can apply [Tukey's test]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fen
 # identify outliers
 days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE)) %>%
+    mutate(
+        is_outlier = tukey_outlier(days, ignore_zero = TRUE),
+        days_cleaned = ifelse(is_outlier, NA, days)
+    ) %>%
     ungroup()
 
 # plot
@@ -54,7 +57,6 @@ The outlier flagging has a very large effect on averages.
 ```{r}
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
     knitr::kable()
@@ -68,7 +70,10 @@ This is a much less aggressive rule.
 # identify outliers
 days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE)) %>%
+    mutate(
+        is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE),
+        days_cleaned = ifelse(is_outlier, NA, days)
+    ) %>%
     ungroup()
 
 # plot
@@ -95,9 +100,33 @@ The rule can still have a sizeable effect on averages:
 ```{r}
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
+### Top-coding
+
+Alternatively, we could topcode those values, which is a less aggressive approach:
+
+```{r}
+days2 <- days %>%
+    group_by(act) %>%
+    mutate(
+        topcode_value = tukey_top(days, apply_log = TRUE, ignore_zero = TRUE),
+        days_cleaned = ifelse(is_outlier, topcode_value, days)
+    ) %>%
+    ungroup()
+
+days2 %>%
+    filter(is_targeted) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+
+days2 %>%
+    filter(is_targeted) %>%
+    count(act, topcode_value) %>% 
     knitr::kable()
 ```
 
