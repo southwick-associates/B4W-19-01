@@ -19,9 +19,9 @@ tukey_outlier <- function(
     top <- quartiles[2] + k * iqr
     
     if (ignore_lwr) {
-        return(ifelse(x > top, TRUE, FALSE))
+        return(x > top)
     }
-    ifelse(x > top | x < bottom, TRUE, FALSE)
+    x > top | x < bottom
 }
 
 # get the top (non-outlier) value for top-coding

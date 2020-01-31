@@ -32,6 +32,10 @@ Flagging was done to (1) assign valid quotas for IPSOS, and (2) remove unreliabl
 
 For an overview: [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
 
+### Weighting
+
+For an overview:  [code/1-svy/weight-summary.md](code/1-svy/weight-summary.md)
+
 ## OIA Survey Data
 
 Using OIA 2016 survey data stored/documented on [O365 > OIA 2016 > Analysis Resources](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EdZ4EMXUfXtKsEurnqCqlbcBbxarVPTtLkyCNiYti18vUA?e=zvmc87):
