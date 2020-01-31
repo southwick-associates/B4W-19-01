@@ -1,0 +1,74 @@
+---
+title: "Test outlier identification with Tukey's Rule"
+date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+output: github_document
+---
+
+```{r setup, message=FALSE}
+library(tidyverse)
+source("../../R/outliers.R")
+knitr::opts_chunk$set(comment = NA)
+```
+
+## Tukey's Test
+
+We can apply [Tukey's test]() to identify outliers for overall days by activity. We end up with a rule that is very aggressive in identifying outliers.
+
+```{r}
+svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
+
+# only looking at days greater than zero
+days <- svy$act %>% 
+    filter(is_targeted, !is.na(days), days > 0)
+
+# identify outliers
+x <- days %>%
+    group_by(act) %>%
+    mutate(is_outlier = tukey_outlier(days)) %>%
+    ungroup()
+
+# plot
+ggplot(x, aes(act, days)) +
+    geom_boxplot(outlier.size = -1) +
+    geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
+    scale_color_manual(values = c("gray", "red")) +
+    ggtitle("Tukey's test")
+```
+
+A very large percentage are flagged for removal in every activity
+
+```{r}
+group_by(x, act, is_outlier) %>%
+    summarise(n = n()) %>%
+    mutate(pct_outliers = n / sum(n) * 100) %>%
+    filter(is_outlier)
+```
+
+## Log-transfrom with Tukey's Test
+
+This is a much less aggressive rule.
+
+```{r}
+# identify outliers
+x <- days %>%
+    group_by(act) %>%
+    mutate(is_outlier = tukey_outlier(days, apply_log = TRUE)) %>%
+    ungroup()
+
+# plot
+ggplot(x, aes(act, days)) +
+    geom_boxplot(outlier.size = -1) +
+    geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
+    scale_color_manual(values = c("gray", "red")) +
+    scale_y_log10() +
+    ggtitle("Tukey's test based on log-transformed values")
+```
+
+We end up with a far lower percentage flagged as outliers
+
+```{r}
+group_by(x, act, is_outlier) %>%
+    summarise(n = n()) %>%
+    mutate(pct_outliers = n / sum(n) * 100) %>%
+    filter(is_outlier)
+```

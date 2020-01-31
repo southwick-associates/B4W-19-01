@@ -2,47 +2,6 @@
 
 # an xlsx save function (see NC code)
 
-
-# Outliers ----------------------------------------------------------------
-
-# TODO:
-# - test the functions below for CO
-# - if it works well, just provide some better documentation
-
-### Copied from AZ
-# - relevant AZ application is in code/1-svy/5-outliers.Rmd
-# - it looks like I log transformed and either set to missing or top coded
-#   depending on the quantity being estimated
-
-# identify outliers based on tukey's rule ( > 1.5 * iqr)
-tukey_outlier <- function(x, k = 1.5, ignore_lwr = FALSE, apply_log = TRUE) {
-    # most of these distributions have a longnormal appearance
-    if (apply_log) x <- log(x)
-    
-    quar <- quantile(x, probs = c(0.25, 0.75))
-    iqr <- diff(quar)
-    bottom <- quar[1] - k * iqr
-    top <- quar[2] + k * iqr
-    
-    # might want to manually ignore low values
-    if (ignore_lwr) {
-        ifelse(x > top, 1, 0)
-    } else {
-        ifelse(x > top | x < bottom, 1, 0)
-    }
-}
-
-# get the top (non-outlier) value for top-coding
-tukey_top <- function(x, k = 1.5, apply_log = TRUE) {
-    if (apply_log) x <- log(x)
-    
-    quar <- quantile(x, probs = c(0.25, 0.75))
-    iqr <- diff(quar)
-    exp(quar[2] + k * iqr)
-}
-
-
-
 # Plotting Distributions --------------------------------------------------
 
 # TODO: get a simpler distribution plotting function(s) for use in CO
