@@ -4,10 +4,13 @@ date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
 output: github_document
 ---
 
-```{r setup, message=FALSE}
+```{r setup, message=FALSE, include = FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r, message = FALSE}
 library(tidyverse)
 source("../../R/results.R")
-knitr::opts_chunk$set(comment = NA)
 ```
 
 ## Overview

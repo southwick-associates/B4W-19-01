@@ -5,7 +5,7 @@ January 31, 2020
 ``` r
 library(tidyverse)
 source("../../R/outliers.R")
-knitr::opts_chunk$set(comment = NA)
+svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
 ```
 
 ## Tukey’s Test
@@ -16,8 +16,6 @@ identify outliers for overall days by activity. We end up with a rule
 that is very aggressive in identifying outliers.
 
 ``` r
-svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
-
 # only looking at days greater than zero
 days <- svy$act %>% 
     filter(is_targeted, !is.na(days), days > 0)
@@ -36,7 +34,7 @@ ggplot(x, aes(act, days)) +
     ggtitle("Tukey's test")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 A very large percentage are flagged for removal in every activity
 
@@ -80,7 +78,7 @@ ggplot(x, aes(act, days)) +
     ggtitle("Tukey's test based on log-transformed values")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 group_by(x, act, is_outlier) %>%

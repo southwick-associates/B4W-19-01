@@ -4,12 +4,13 @@ date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
 output: github_document
 ---
 
-```{r setup, message=FALSE}
-library(tidyverse)
+```{r setup, message=FALSE, include = FALSE}
 knitr::opts_chunk$set(comment = NA)
 ```
 
-```{r}
+```{r, message = FALSE}
+library(tidyverse)
+
 svy_all <- readRDS("../../data-work/1-svy/svy-reshape.rds")
 svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")

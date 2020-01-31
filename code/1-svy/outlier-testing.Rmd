@@ -4,10 +4,14 @@ date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
 output: github_document
 ---
 
-```{r setup, message=FALSE}
+```{r setup, message=FALSE, include=FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r, message = FALSE}
 library(tidyverse)
 source("../../R/outliers.R")
-knitr::opts_chunk$set(comment = NA)
+svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
 ```
 
 ## Tukey's Test
@@ -15,8 +19,6 @@ knitr::opts_chunk$set(comment = NA)
 We can apply [Tukey's test]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) to identify outliers for overall days by activity. We end up with a rule that is very aggressive in identifying outliers.
 
 ```{r}
-svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
-
 # only looking at days greater than zero
 days <- svy$act %>% 
     filter(is_targeted, !is.na(days), days > 0)

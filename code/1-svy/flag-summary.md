@@ -1,13 +1,10 @@
-Summarize CO Ipsos survey flagging of suspicious responses
+Summarize CO survey flagging of suspicious responses
 ================
-January 30, 2020
+January 31, 2020
 
 ``` r
 library(tidyverse)
-knitr::opts_chunk$set(comment = NA)
-```
 
-``` r
 svy_all <- readRDS("../../data-work/1-svy/svy-reshape.rds")
 svy <- readRDS("../../data-work/1-svy/svy-clean.rds")
 flags <- readRDS("../../data-work/1-svy/svy-flag.rds")
