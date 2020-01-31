@@ -36,3 +36,34 @@ tukey_top <- function(x, k = 1.5, apply_log = FALSE, ignore_zero = FALSE) {
     iqr <- diff(quartiles)
     exp(quartiles[2] + k * iqr)
 }
+
+
+# Summarizing -------------------------------------------------------------
+
+outlier_plot <- function(df, var = "days", grps = "act") {
+    cnts <- count_(df, c(grps, var, "is_outlier"))
+    df %>%
+        ggplot(aes_string("act", var)) +
+        geom_boxplot(outlier.size = -1) +
+        geom_point(data = cnts, aes(size = n, color = is_outlier)) +
+        scale_color_manual(values = c("gray", "red")) +
+        scale_y_log10()
+}
+
+outlier_pct <- function(df, ...) {
+    grps <- enquos(...)
+    df %>%
+        group_by(!!! grps, is_outlier) %>%
+        summarise(n = n()) %>%
+        mutate(pct_outliers = n / sum(n) * 100) %>%
+        filter(is_outlier)
+}
+
+outlier_mean_compare <- function(
+    df, oldvar = "days", newvar = "days_cleaned", ...
+) {
+    grps <- enquos(...)
+    df %>%
+        group_by(!!! grps) %>%
+        summarise_at(c(oldvar, newvar), funs(mean(., na.rm = TRUE)))
+}
