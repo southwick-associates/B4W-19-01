@@ -24,8 +24,8 @@ svy$act <- svy$act %>%
 # summarize
 x <- filter(svy$act, is_targeted, !is.na(days))
 filter(x, days > 0) %>% outlier_plot() + ggtitle("Overall days outliers")
-outlier_pct(x, act)
-outlier_mean_compare(x, "days", "days_cleaned", act)
+outlier_pct(x, act) %>% knitr::kable()
+outlier_mean_compare(x, "days", "days_cleaned", act) %>% knitr::kable()
 
 # clean-up
 svy$act <- svy$act %>%
@@ -47,8 +47,8 @@ svy$act <- svy$act %>%
 # summarize
 x <- filter(svy$act, is_targeted, !is.na(days_water))
 filter(x, days_water > 0) %>% outlier_plot("days_water") + ggtitle("Water days outliers")
-outlier_pct(x, act)
-outlier_mean_compare(x, "days_water", "days_cleaned", act)
+outlier_pct(x, act) %>% knitr::kable()
+outlier_mean_compare(x, "days_water", "days_cleaned", act) %>% knitr::kable()
 
 # clean-up
 svy$act <- svy$act %>%
@@ -72,13 +72,12 @@ x <- filter(svy$basin, !is.na(days_water))
 filter(x, days_water > 0) %>% outlier_plot("days_water", c("act", "basin")) + 
     facet_wrap(~ basin)
 outlier_pct(x, act, basin) %>% ungroup() %>% select(-n, -is_outlier) %>% 
-    spread(basin, pct_outliers, fill = 0)
+    spread(basin, pct_outliers, fill = 0) %>% knitr::kable()
 outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
-    data.frame()
+    knitr::kable()
 
 # Save --------------------------------------------------------------------
 
-glimpse(svy$person)
 saveRDS(svy, "data-work/1-svy/svy-final.rds")
 
 # save as csvs (for Eric)
