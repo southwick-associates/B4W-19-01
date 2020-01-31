@@ -36,7 +36,7 @@ x %>%
     ggtitle("Tukey's test")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 A very large percentage are flagged for removal in every activity
 
@@ -105,7 +105,7 @@ x %>%
     ggtitle("Tukey's test based on log-transformed values")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 group_by(x, act, is_outlier) %>%
@@ -131,7 +131,7 @@ The rule can still have a sizeable effect on averages:
 ``` r
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier & days != 0, NA, days)) %>%
+    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
     knitr::kable()

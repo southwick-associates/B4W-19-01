@@ -95,7 +95,7 @@ The rule can still have a sizeable effect on averages:
 ```{r}
 days %>%
     filter(is_targeted) %>%
-    mutate(days_cleaned = ifelse(is_outlier & days != 0, NA, days)) %>%
+    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
     group_by(act) %>%
     summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
     knitr::kable()
