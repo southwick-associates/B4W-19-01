@@ -18,8 +18,13 @@ that is very aggressive in identifying outliers.
 ``` r
 # only looking at days greater than zero
 days <- svy$act %>% 
+    semi_join(filter(svy$person, flag < 4), by = "Vrid") %>%
     filter(is_targeted, !is.na(days), days > 0)
+```
 
+    Warning: Column `Vrid` has different attributes on LHS and RHS of join
+
+``` r
 # identify outliers
 x <- days %>%
     group_by(act) %>%
@@ -48,15 +53,15 @@ group_by(x, act, is_outlier) %>%
 
 | act      | is\_outlier |  n | pct\_outliers |
 | :------- | :---------- | -: | ------------: |
-| bike     | TRUE        | 46 |     11.979167 |
-| camp     | TRUE        | 55 |     11.482255 |
-| fish     | TRUE        | 33 |      9.850746 |
-| hunt     | TRUE        | 17 |     10.493827 |
-| picnic   | TRUE        | 88 |      9.638554 |
-| snow     | TRUE        | 27 |      8.681672 |
-| trail    | TRUE        | 50 |     11.682243 |
-| water    | TRUE        | 30 |      7.792208 |
-| wildlife | TRUE        | 63 |     12.022901 |
+| bike     | TRUE        | 38 |     11.176471 |
+| camp     | TRUE        | 46 |     10.623557 |
+| fish     | TRUE        | 34 |     11.333333 |
+| hunt     | TRUE        | 10 |      6.896552 |
+| picnic   | TRUE        | 81 |      9.429569 |
+| snow     | TRUE        | 24 |      8.727273 |
+| trail    | TRUE        | 51 |     13.110540 |
+| water    | TRUE        | 41 |     11.581921 |
+| wildlife | TRUE        | 68 |     14.107884 |
 
 ## Log-transfrom with Tukey’s Test
 
@@ -90,10 +95,11 @@ group_by(x, act, is_outlier) %>%
 
 | act      | is\_outlier |  n | pct\_outliers |
 | :------- | :---------- | -: | ------------: |
-| camp     | TRUE        |  8 |     1.6701461 |
-| fish     | TRUE        |  3 |     0.8955224 |
-| hunt     | TRUE        |  4 |     2.4691358 |
-| picnic   | TRUE        | 16 |     1.7524644 |
-| snow     | TRUE        |  2 |     0.6430868 |
-| water    | TRUE        |  2 |     0.5194805 |
-| wildlife | TRUE        | 14 |     2.6717557 |
+| camp     | TRUE        |  6 |     1.3856813 |
+| fish     | TRUE        |  3 |     1.0000000 |
+| hunt     | TRUE        |  1 |     0.6896552 |
+| picnic   | TRUE        | 15 |     1.7462165 |
+| snow     | TRUE        |  2 |     0.7272727 |
+| trail    | TRUE        |  4 |     1.0282776 |
+| water    | TRUE        |  4 |     1.1299435 |
+| wildlife | TRUE        | 13 |     2.6970954 |

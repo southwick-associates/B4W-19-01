@@ -21,6 +21,7 @@ We can apply [Tukey's test]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fen
 ```{r}
 # only looking at days greater than zero
 days <- svy$act %>% 
+    semi_join(filter(svy$person, flag < 4), by = "Vrid") %>%
     filter(is_targeted, !is.na(days), days > 0)
 
 # identify outliers
