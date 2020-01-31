@@ -6,6 +6,10 @@ January 31, 2020
 library(tidyverse)
 source("../../R/outliers.R")
 svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
+
+# exclude suspicious respondents
+suspicious <- filter(svy$person, flag > 3)
+svy <- lapply(svy, function(df) anti_join(df, suspicious, by = "Vrid"))
 ```
 
 ## Tukey’s Test
@@ -16,23 +20,16 @@ identify outliers for overall days by activity. We end up with a rule
 that is very aggressive in identifying outliers.
 
 ``` r
-# only looking at days greater than zero
-days <- svy$act %>% 
-    semi_join(filter(svy$person, flag < 4), by = "Vrid") %>%
-    filter(is_targeted, !is.na(days), days > 0)
-```
-
-    Warning: Column `Vrid` has different attributes on LHS and RHS of join
-
-``` r
 # identify outliers
-x <- days %>%
+days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days)) %>%
+    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE)) %>%
     ungroup()
 
 # plot
-ggplot(x, aes(act, days)) +
+x <- filter(days, is_targeted, !is.na(days), days > 0)
+x %>%
+    ggplot(aes(act, days)) +
     geom_boxplot(outlier.size = -1) +
     geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
     scale_color_manual(values = c("gray", "red")) +
@@ -57,11 +54,34 @@ group_by(x, act, is_outlier) %>%
 | camp     | TRUE        | 46 |     10.623557 |
 | fish     | TRUE        | 34 |     11.333333 |
 | hunt     | TRUE        | 10 |      6.896552 |
-| picnic   | TRUE        | 81 |      9.429569 |
+| picnic   | TRUE        | 82 |      9.545984 |
 | snow     | TRUE        | 24 |      8.727273 |
 | trail    | TRUE        | 51 |     13.110540 |
 | water    | TRUE        | 41 |     11.581921 |
 | wildlife | TRUE        | 68 |     14.107884 |
+
+The outlier flagging has a very large effect on averages.
+
+``` r
+days %>%
+    filter(is_targeted) %>%
+    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
+| act      |      days | days\_cleaned |
+| :------- | --------: | ------------: |
+| bike     | 31.581395 |     14.885621 |
+| camp     | 11.163218 |      6.102828 |
+| fish     | 11.640523 |      5.977941 |
+| hunt     |  9.374150 |      5.941606 |
+| picnic   | 17.478161 |      8.257614 |
+| snow     |  9.989247 |      6.564706 |
+| trail    | 28.418367 |     11.961877 |
+| water    | 12.353760 |      6.754717 |
+| wildlife | 30.524490 |     10.144550 |
 
 ## Log-transfrom with Tukey’s Test
 
@@ -69,13 +89,15 @@ This is a much less aggressive rule.
 
 ``` r
 # identify outliers
-x <- days %>%
+days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, apply_log = TRUE)) %>%
+    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE)) %>%
     ungroup()
 
 # plot
-ggplot(x, aes(act, days)) +
+x <- filter(days, is_targeted, !is.na(days), days > 0)
+x %>%
+    ggplot(aes(act, days)) +
     geom_boxplot(outlier.size = -1) +
     geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
     scale_color_manual(values = c("gray", "red")) +
@@ -83,7 +105,7 @@ ggplot(x, aes(act, days)) +
     ggtitle("Tukey's test based on log-transformed values")
 ```
 
-![](outlier-testing_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](outlier-testing_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 group_by(x, act, is_outlier) %>%
@@ -103,3 +125,26 @@ group_by(x, act, is_outlier) %>%
 | trail    | TRUE        |  4 |     1.0282776 |
 | water    | TRUE        |  4 |     1.1299435 |
 | wildlife | TRUE        | 13 |     2.6970954 |
+
+The rule can still have a sizeable effect on averages:
+
+``` r
+days %>%
+    filter(is_targeted) %>%
+    mutate(days_cleaned = ifelse(is_outlier & days != 0, NA, days)) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
+| act      |      days | days\_cleaned |
+| :------- | --------: | ------------: |
+| bike     | 31.581395 |     31.581395 |
+| camp     | 11.163218 |      8.582751 |
+| fish     | 11.640523 |      9.396040 |
+| hunt     |  9.374150 |      8.342466 |
+| picnic   | 17.478161 |     13.095906 |
+| snow     |  9.989247 |      9.292419 |
+| trail    | 28.418367 |     25.502577 |
+| water    | 12.353760 |     10.521127 |
+| wildlife | 30.524490 |     21.828092 |

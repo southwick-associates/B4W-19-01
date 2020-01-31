@@ -8,10 +8,14 @@ output: github_document
 knitr::opts_chunk$set(comment = NA)
 ```
 
-```{r, message = FALSE}
+```{r, message = FALSE, warning = FALSE}
 library(tidyverse)
 source("../../R/outliers.R")
 svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
+
+# exclude suspicious respondents
+suspicious <- filter(svy$person, flag > 3)
+svy <- lapply(svy, function(df) anti_join(df, suspicious, by = "Vrid"))
 ```
 
 ## Tukey's Test
@@ -19,19 +23,16 @@ svy <- readRDS("../../data-work/1-svy/svy-weight.rds")
 We can apply [Tukey's test]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) to identify outliers for overall days by activity. We end up with a rule that is very aggressive in identifying outliers.
 
 ```{r}
-# only looking at days greater than zero
-days <- svy$act %>% 
-    semi_join(filter(svy$person, flag < 4), by = "Vrid") %>%
-    filter(is_targeted, !is.na(days), days > 0)
-
 # identify outliers
-x <- days %>%
+days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days)) %>%
+    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE)) %>%
     ungroup()
 
 # plot
-ggplot(x, aes(act, days)) +
+x <- filter(days, is_targeted, !is.na(days), days > 0)
+x %>%
+    ggplot(aes(act, days)) +
     geom_boxplot(outlier.size = -1) +
     geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
     scale_color_manual(values = c("gray", "red")) +
@@ -48,19 +49,32 @@ group_by(x, act, is_outlier) %>%
     knitr::kable()
 ```
 
+The outlier flagging has a very large effect on averages.
+
+```{r}
+days %>%
+    filter(is_targeted) %>%
+    mutate(days_cleaned = ifelse(is_outlier, NA, days)) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
 ## Log-transfrom with Tukey's Test
 
 This is a much less aggressive rule.
 
 ```{r}
 # identify outliers
-x <- days %>%
+days <- svy$act %>%
     group_by(act) %>%
-    mutate(is_outlier = tukey_outlier(days, apply_log = TRUE)) %>%
+    mutate(is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE)) %>%
     ungroup()
 
 # plot
-ggplot(x, aes(act, days)) +
+x <- filter(days, is_targeted, !is.na(days), days > 0)
+x %>%
+    ggplot(aes(act, days)) +
     geom_boxplot(outlier.size = -1) +
     geom_point(data = count(x, act, days, is_outlier), aes(size = n, color = is_outlier)) +
     scale_color_manual(values = c("gray", "red")) +
@@ -75,3 +89,15 @@ group_by(x, act, is_outlier) %>%
     filter(is_outlier) %>%
     knitr::kable()
 ```
+
+The rule can still have a sizeable effect on averages:
+
+```{r}
+days %>%
+    filter(is_targeted) %>%
+    mutate(days_cleaned = ifelse(is_outlier & days != 0, NA, days)) %>%
+    group_by(act) %>%
+    summarise_at(vars(days, days_cleaned), funs(mean(., na.rm = TRUE))) %>%
+    knitr::kable()
+```
+
