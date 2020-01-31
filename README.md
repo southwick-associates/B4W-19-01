@@ -34,17 +34,17 @@ For an overview: [code/1-svy/flag-summary.md](code/1-svy/flag-summary.md)
 
 ### Weighting
 
-For an overview:  [code/1-svy/weight-summary.md](code/1-svy/weight-summary.md)
+The dataset was weighted on 4 demographic variables. For an overview:  [code/1-svy/weight-summary.md](code/1-svy/weight-summary.md)
 
 ### Outlier Removal
 
-Days outliers were identified using [Tukey's rule]() with a slight modification to log transform the variables prior to running the test (to provide a more normal distribution). Three days variables were recoded to some degree:
+Days outliers were identified using [Tukey's rule]( https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) with a slight modification to log transform the variables prior to running the test (to provide a more normal distribution). Three days variables were recoded to some degree:
 
 - `act$days`: Overall days had any outliers set to missing
 - `act$water_days`: Water-specific days had any outliers set to missing, and were also set to missing where `act$days` was set to missing
 - `basin$water_days`: Basin-level days were top-coded such that outliers were set to the top Tukey fence, to avoid losing data when estimating share of activity for each basin.
 
-For a code summary:  [code/1-svy/log/7-recode-outliers.md](code/1-svy/log/7-recode-outliers.md)
+For a code summary:  [code/1-svy/log/7-recode-outliers.md](code/1-svy/log/7-recode-outliers.md). 
 Initial work is available here: [code/1-svy/outlier-testing.md](code/1-svy/outlier-testing.md)
 
 ## OIA Survey Data
