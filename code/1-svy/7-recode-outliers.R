@@ -68,6 +68,7 @@ svy$basin <- svy$basin %>%
     ) %>%
     ungroup()
 
+# summarize
 x <- filter(svy$basin, !is.na(days_water))
 filter(x, days_water > 0) %>% outlier_plot("days_water", c("act", "basin")) + 
     facet_wrap(~ basin)
@@ -75,6 +76,10 @@ outlier_pct(x, act, basin) %>% ungroup() %>% select(-n, -is_outlier) %>%
     spread(basin, pct_outliers, fill = 0) %>% knitr::kable()
 outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
     knitr::kable()
+
+# clean-up
+svy$basin <- svy$basin %>%
+    select(Vrid:part_water, days_water = days_cleaned)
 
 # Save --------------------------------------------------------------------
 

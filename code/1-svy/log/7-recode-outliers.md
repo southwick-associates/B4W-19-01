@@ -1,7 +1,7 @@
 7-recode-outliers.R
 ================
 danka
-Fri Jan 31 15:29:09 2020
+Fri Jan 31 16:00:44 2020
 
 ``` r
 # identify days outliers using tukey's rule
@@ -159,6 +159,7 @@ svy$basin <- svy$basin %>%
     ) %>%
     ungroup()
 
+# summarize
 x <- filter(svy$basin, !is.na(days_water))
 filter(x, days_water > 0) %>% outlier_plot("days_water", c("act", "basin")) + 
     facet_wrap(~ basin)
@@ -269,6 +270,10 @@ outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
 | wildlife | yampa     |    2.333333 |      2.333333 |
 
 ``` r
+# clean-up
+svy$basin <- svy$basin %>%
+    select(Vrid:part_water, days_water = days_cleaned)
+
 # Save --------------------------------------------------------------------
 
 saveRDS(svy, "data-work/1-svy/svy-final.rds")
@@ -314,17 +319,17 @@ sapply(names(svy), function(nm) {
     ## # ... with 17,518 more rows
     ## 
     ## $basin
-    ## # A tibble: 22,167 x 8
-    ##    Vrid  act   basin part_water days_water is_outlier topcode_value
-    ##    <chr> <chr> <chr> <chr>           <dbl> <lgl>              <dbl>
-    ##  1 107   trail arka~ Checked             5 FALSE               112.
-    ##  2 108   trail arka~ Unchecked          NA FALSE               112.
-    ##  3 110   trail arka~ Unchecked          NA FALSE               112.
-    ##  4 113   trail arka~ Checked             8 FALSE               112.
-    ##  5 119   trail arka~ Unchecked          NA FALSE               112.
-    ##  6 129   trail arka~ Checked             1 FALSE               112.
-    ##  7 131   trail arka~ Unchecked          NA FALSE               112.
-    ##  8 140   trail arka~ Checked            12 FALSE               112.
-    ##  9 152   trail arka~ Unchecked          NA FALSE               112.
-    ## 10 157   trail arka~ Unchecked          NA FALSE               112.
-    ## # ... with 22,157 more rows, and 1 more variable: days_cleaned <dbl>
+    ## # A tibble: 22,167 x 5
+    ##    Vrid  act   basin    part_water days_water
+    ##    <chr> <chr> <chr>    <chr>           <dbl>
+    ##  1 107   trail arkansas Checked             5
+    ##  2 108   trail arkansas Unchecked          NA
+    ##  3 110   trail arkansas Unchecked          NA
+    ##  4 113   trail arkansas Checked             8
+    ##  5 119   trail arkansas Unchecked          NA
+    ##  6 129   trail arkansas Checked             1
+    ##  7 131   trail arkansas Unchecked          NA
+    ##  8 140   trail arkansas Checked            12
+    ##  9 152   trail arkansas Unchecked          NA
+    ## 10 157   trail arkansas Unchecked          NA
+    ## # ... with 22,157 more rows

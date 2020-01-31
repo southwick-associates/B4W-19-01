@@ -45,6 +45,7 @@ Days outliers were identified using [Tukey's rule]() with a slight modification 
 - `basin$water_days`: Basin-level days were top-coded such that outliers were set to the top Tukey fence, to avoid losing data when estimating share of activity for each basin.
 
 For a code summary:  [code/1-svy/log/7-recode-outliers.md](code/1-svy/log/7-recode-outliers.md)
+Initial work is available here: [code/1-svy/outlier-testing.md](code/1-svy/outlier-testing.md)
 
 ## OIA Survey Data
 
