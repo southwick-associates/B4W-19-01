@@ -13,30 +13,47 @@ library(tidyverse)
 source("../../R/results.R")
 ```
 
+## Weight Summary
+
+```{r}
+svy_data <- readRDS("../../data-work/1-svy/svy-final.rds")$person
+pop_data <- readRDS("../../data-work/oia/oia-co.rds") %>% filter(in_co_pop)
+summary(svy_data$weight)
+sd(svy_data$weight)
+```
+
 ## Representation
 
 There was a small amount of skew between the CO survey (valid) respondents and the target population defined using the OIA survey dataset:
 
 ```{r}
-svy_data <- readRDS("../../data-work/1-svy/svy-final.rds")$person
-pop_data <- readRDS("../../data-work/oia/oia-co.rds") %>% filter(in_co_pop)
-
 figs <- list(
     compare_demo(age_weight, svy_data, pop_data) %>% plot_demo(age_weight, "Age"),
-    compare_demo(sex, svy_data, pop_data) %>% plot_demo(sex, "Gender", hide_legend = FALSE),
+    compare_demo(sex, svy_data, pop_data) %>% plot_demo(sex, "Gender"),
     compare_demo(income_weight, svy_data, pop_data) %>% plot_demo(income_weight, "Income", angle_x_labs = 30),
     compare_demo(race_weight, svy_data, pop_data) %>% plot_demo(race_weight, "Race")
 )
-fig <- gridExtra::grid.arrange(grobs = figs, ncol = 2)
-ggsave("../../out/fig/demorep.png", fig, height = 3, width = 6.5, units = "in")
+gridExtra::grid.arrange(grobs = figs, ncol = 2) %>%
+    ggsave("../../out/fig/demorep.png", ., width = 6.5, units = "in")
+
+# legend
+compare_demo(sex, svy_data, pop_data) %>% 
+    plot_demo(sex, "", hide_legend = FALSE) %>%
+    get_legend() %>%
+    gridExtra:::grid.arrange() %>%
+    ggsave("../../out/fig/demorep-legend.png", ., height = 0.5, width = 6.5, units = "in")
 ```
 
-### Weight Summary
+### Survey
 
 ```{r}
-summary(svy_data$weight)
+wt_vars <- c("age_weight", "sex", "income_weight", "race_weight")
+sapply(wt_vars, function(x) weights::wpct(svy_data[[x]]))
+```
 
-# std. deviation
-sd(svy_data$weight)
+### Target Pop
+
+```{r}
+sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
 ```
 

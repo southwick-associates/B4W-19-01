@@ -3,6 +3,7 @@
 # an xlsx save function (see NC code)
 
 # Survey Representation --------------------------------------------------
+# - see code/1-svy/weight-summary.Rmd
 
 # get distributions for a demographic variable for survey vs. population
 compare_demo <- function(var, svy_data, pop_data) {
@@ -35,10 +36,13 @@ plot_demo <- function(
         scale_y_continuous(labels = scales::percent) +
         theme_minimal() +
         theme(
-            panel.grid.major.x  = element_blank(),
+            plot.title = element_text(size = 10, hjust = 0.5),
             axis.title = element_blank(),
+            panel.grid.major.x  = element_blank(),
+            panel.grid.minor.y = element_blank(),
             legend.title = element_blank(),
-            plot.title = element_text(size = 11)
+            legend.position = "top",
+            legend.text.align = 0
         )
     if (hide_legend) {
         p <- p + theme(legend.position = "none")
@@ -47,4 +51,11 @@ plot_demo <- function(
         p <- p + theme(axis.text.x = element_text(angle = angle_x_labs, hjust = 1))
     }
     p + ggtitle(title)
+}
+
+# get a plot legend for use in package gridExtra
+get_legend <- function(myggplot) {
+    tmp <- ggplot_gtable(ggplot_build(myggplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
 }
