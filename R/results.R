@@ -2,34 +2,49 @@
 
 # an xlsx save function (see NC code)
 
-# Plotting Distributions --------------------------------------------------
+# Survey Representation --------------------------------------------------
 
-# TODO: get a simpler distribution plotting function(s) for use in CO
+# get distributions for a demographic variable for survey vs. population
+compare_demo <- function(var, svy_data, pop_data) {
+    var <- enquo(var)
+    svy_pct <- svy_data %>%
+        count(!! var) %>% 
+        filter(!is.na(!! var)) %>% 
+        mutate(pct = n / sum(n), grp = "Survey")
+    pop_pct <- pop_data %>%
+        group_by(!! var) %>% 
+        summarise(n = sum(stwt)) %>% # OIA needs to be weighted
+        filter(!is.na(!! var)) %>%
+        mutate(pct = n / sum(n), grp = "Population")
+    bind_rows(svy_pct, pop_pct)
+}
 
-# a plot function here for survey weighting
-colors_for_fig <- c("#0082B5", "#33c5ff") # medium blue
-drop_cnty <- function(x) as.character(x) %>% str_remove("County") %>% str_trim()
-
-# function from AZ, overly complex I think
-compare_pct <- function(var, title, wt = NULL, use_legend = FALSE, angle = 0, hjust = 0.5) {
-    x <- data.frame(cat = names(demo[[var]]), population = demo[[var]], 
-                    survey = weights::wpct(svy$person[[var]], wt)) %>%
-        gather(grp, pct, population, survey)
-    if (var == "race") x <- mutate(x, cat = fct_other(cat, keep = c("Hispanic", "White")))
-    if (var == "avid") x <- mutate(x, cat = fct_recode(cat, `5-9` = "5-8"))
-    if (var == "county") x <- mutate(x, cat = drop_cnty(cat))
-    if (var == "income") x <- mutate(x, cat = fct_relevel(cat, c("0-50K", "50K-100K", "100K+")))
+# compare demographic distributions in a report-ready plot
+plot_demo <- function(
+    df_demo, var, title, hide_legend = TRUE, angle_x_labs = NULL
+) {
+    # make plot
+    var <- enquo(var)
+    p <- df_demo %>%
+        ggplot(aes(!! var, pct, fill = grp)) +
+        geom_col(position = "dodge")
     
-    plt <- ggplot(x, aes(cat, pct ,fill = grp)) +
-        geom_col(position = "dodge") +
-        ggtitle(title) +
-        theme(axis.text.x = element_text(angle = angle, hjust = hjust),
-              axis.title = element_blank(),
-              legend.title = element_blank(),
-              legend.position = "bottom", 
-              plot.title = element_text(size = 10))  +
-        scale_fill_manual(values = colors_for_fig) +
-        scale_y_continuous(labels = scales::percent)
-    if (!use_legend) plt <- plt + guides(fill = FALSE, color = FALSE)
-    plt
+    # customize appearance for report
+    p <- p +
+        scale_fill_manual(values = c("#0082B5", "#33c5ff")) +
+        scale_y_continuous(labels = scales::percent) +
+        theme_minimal() +
+        theme(
+            panel.grid.major.x  = element_blank(),
+            axis.title = element_blank(),
+            legend.title = element_blank(),
+            plot.title = element_text(size = 11)
+        )
+    if (hide_legend) {
+        p <- p + theme(legend.position = "none")
+    }
+    if (!is.null(angle_x_labs)) {
+        p <- p + theme(axis.text.x = element_text(angle = angle_x_labs, hjust = 1))
+    }
+    p + ggtitle(title)
 }
