@@ -4,8 +4,8 @@ source("R/workflow.R")
 
 # OIA
 run_script("code/oia/1-prep-oia.R")
-run_script("code/oia/2-spend-oia.R")
-run_script("code/oia/3-profile-oia.R")
+run_script("code/oia/2-spend-oia.R") # spending details by item
+run_script("code/oia/3-profile-oia.R") # tgtRate, spend2016, avgSpendPicnic (AZ)
 
 # initial CO svy testing
 run_script("code/0-svy-test/1-load-raw.R")
@@ -22,6 +22,9 @@ run_script("code/1-svy/6-weight.R")
 run_script("code/1-svy/7-recode-outliers.R") # output "svy-final.rds"
 # save zipped file by hand for "data-work/1-svy/svy-final-csv/"
 
-rmarkdown::render("code/1-svy/flag-summary.Rmd") # includes stats for report
-rmarkdown::render("code/1-svy/weight-summary.Rmd") # includes stats/figures for report
+# summaries with stats/figures for report
+rmarkdown::render("code/1-svy/flag-summary.Rmd")
+rmarkdown::render("code/1-svy/weight-summary.Rmd")
+
+# initial outlier work
 rmarkdown::render("code/1-svy/outlier-testing.Rmd")

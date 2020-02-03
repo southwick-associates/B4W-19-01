@@ -28,7 +28,7 @@ tukey_outlier <- function(
     ifelse(is.na(x) | (x < top & x > bottom), FALSE, TRUE)
 }
 
-# get the top (non-outlier) value for top-coding
+# get the largest (non-outlier) value for top-coding
 tukey_top <- function(x, k = 1.5, apply_log = FALSE, ignore_zero = FALSE) {
     if (ignore_zero) x <- ifelse(x == 0, NA, x)
     if (apply_log) x <- log(x)
@@ -37,9 +37,11 @@ tukey_top <- function(x, k = 1.5, apply_log = FALSE, ignore_zero = FALSE) {
     exp(quartiles[2] + k * iqr)
 }
 
-
 # Summarizing -------------------------------------------------------------
+# to be run after an "is_outlier" variable is added to the data frame
+# - see code/1-svy/7-recode-outliers.R
 
+# make a plot of distributions with outliers identified
 outlier_plot <- function(df, var = "days", grps = "act") {
     cnts <- count_(df, c(grps, var, "is_outlier"))
     df %>%
@@ -50,6 +52,7 @@ outlier_plot <- function(df, var = "days", grps = "act") {
         scale_y_log10()
 }
 
+# identify the percentage of values flagged as outliers
 outlier_pct <- function(df, ...) {
     grps <- enquos(...)
     df %>%
@@ -59,6 +62,7 @@ outlier_pct <- function(df, ...) {
         filter(is_outlier)
 }
 
+# compare averages with (newvar) vs. withoout (oldvar) outliers
 outlier_mean_compare <- function(
     df, oldvar = "days", newvar = "days_cleaned", ...
 ) {
