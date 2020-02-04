@@ -22,21 +22,25 @@ vrid_wt <- select(svy$person, Vrid, weight)
 act <- left_join(svy$act, vrid_wt) %>% filter(is_targeted)
 
 group_by(act, act, part) %>%
-    summarise(n = sum(weight)) %>%
-    mutate(pct = n / sum(n)) %>%
+    summarise(n = n(), wtn = sum(weight)) %>%
+    mutate(pct = wtn / sum(wtn), n = sum(n)) %>%
     filter(part == "Checked") %>%
     knitr::kable()
 ```
 
 ## waterRate
 
-These look similar to Eric's, but a bit different, particularly for fishing and watersports. Note that water sports not being 100% might be expected for things like swimming: Some people might only do that in pools.
+These look similar to Eric's, but a bit different, particularly for fishing and watersports. A couple notes: 
+
+- Water sports not being 100% might be expected for things like swimming: Some people might only do that in pools.
+
+- People who say "Not Sure" are treated as "No" for water-level participation.
 
 ```{r}
 filter(act, part == "Checked", !is.na(part_water)) %>%
     group_by(act, part_water) %>%
-    summarise(n = sum(weight)) %>%
-    mutate(pct = n / sum(n)) %>%
+    summarise(n = n(), wtn = sum(weight)) %>%
+    mutate(pct = wtn / sum(wtn), n = sum(n)) %>%
     filter(part_water == "Yes") %>%
     knitr::kable()
 ```
