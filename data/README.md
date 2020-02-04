@@ -17,3 +17,8 @@ Stored on O365: [OIA 2016 > Analysis Resources](https://southwickassociatesinc.s
 - oia-activities.xlsx: OIA survey activity info
 - results.RDATA: OIA survey results
 - svy-wtd.RDATA: OIA survey data
+
+### Misc
+
+- usfws-profiles.xlsx: Average estimated spending per day (by item) for fish vs. hunt vs. wildlife viewing in Colorado
+    + From previous project: [O365 > CO-SCORP-18-01 > Analysis](https://southwickassociatesinc.sharepoint.com/:f:/s/co-scorp-18-01/EhKdG4KGp6NMtyy9KvFw5m4B9PnrF-POwxoBCp9o1z-4xg?e=lUwfPU). Pulled together from work done by Tom in 2016 Fish Hunt WW profiles.xlsx

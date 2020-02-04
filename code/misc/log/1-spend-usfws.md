@@ -1,6 +1,26 @@
+1-spend-usfws.R
+================
+danka
+Tue Feb 04 16:26:09 2020
+
+``` r
 # spending for fishing/hunting/wildlife watching
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 
 # Load Data ---------------------------------------------------------------
@@ -16,7 +36,15 @@ spend2016 <- tibble::tribble(
     "wildlife", 863281732
 )
 knitr::kable(spend2016, format.args = list(big.mark = ","))
+```
 
+| act      |       spend |
+| :------- | ----------: |
+| fish     | 660,381,823 |
+| hunt     | 530,228,764 |
+| wildlife | 863,281,732 |
+
+``` r
 # spending profiles (per day by item) for fish, hunt, wildlife watching
 # - based on region 8 (mountain) pulled together by Tom in 2018
 #   2016 Fish Hunt WW profiles.xlsx
@@ -49,5 +77,18 @@ plot_spend <- function(df) {
         ggtitle("Spending in CO in 2016")
 }
 filter(spend2016, act == "hunt") %>% plot_spend()
+```
+
+![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
 filter(spend2016, act == "fish") %>% plot_spend()
+```
+
+![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+
+``` r
 filter(spend2016, act == "wildlife") %>% plot_spend()
+```
+
+![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
