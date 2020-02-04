@@ -1,11 +1,19 @@
 
 ## Raw Data
 
-Data used only as input to analysis:
+Data used only as input to analysis.
+
+### CO Svy
 
 - 2019-12-31 (etc.): CO survey data
 - act_labs.xlsx: CO survey activity labels
 - basin_labs.xlsx: CO survey basin labels
-- oia-activities.xlsx: OIA survey activity info
 - pipe_labs.xlsx: CO survey activity piping labels
-- svy-wtd.RDATA: OIA survey data (from server: E:/SA/Data-production/OIA_Rec_Econ_2016/Survey/)
+
+### OIA
+
+Stored on O365: [OIA 2016 > Analysis Resources](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EdZ4EMXUfXtKsEurnqCqlbcBbxarVPTtLkyCNiYti18vUA?e=zvmc87):
+
+- oia-activities.xlsx: OIA survey activity info
+- results.RDATA: OIA survey results
+- svy-wtd.RDATA: OIA survey data

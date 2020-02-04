@@ -5,7 +5,7 @@
 # Survey Representation --------------------------------------------------
 # - see code/1-svy/weight-summary.Rmd
 
-# get distributions for a demographic variable for survey vs. population
+# compare distributions for a demographic variable (survey vs. population)
 compare_demo <- function(var, svy_data, pop_data) {
     var <- enquo(var)
     svy_pct <- svy_data %>%
@@ -21,6 +21,7 @@ compare_demo <- function(var, svy_data, pop_data) {
 }
 
 # compare demographic distributions in a report-ready plot
+# - uses output of compare_demo()
 plot_demo <- function(
     df_demo, var, title, hide_legend = TRUE, angle_x_labs = NULL
 ) {
@@ -41,8 +42,7 @@ plot_demo <- function(
             panel.grid.major.x  = element_blank(),
             panel.grid.minor.y = element_blank(),
             legend.title = element_blank(),
-            legend.position = "top",
-            legend.text.align = 0
+            legend.position = "top"
         )
     if (hide_legend) {
         p <- p + theme(legend.position = "none")
@@ -53,9 +53,10 @@ plot_demo <- function(
     p + ggtitle(title)
 }
 
-# get a plot legend for use in package gridExtra
+# get a legend for use in multi-plot figures (package gridExtra)
+# - uses output of plot_demo()
 get_legend <- function(myggplot) {
     tmp <- ggplot_gtable(ggplot_build(myggplot))
     leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-    legend <- tmp$grobs[[leg]]
+    tmp$grobs[[leg]]
 }

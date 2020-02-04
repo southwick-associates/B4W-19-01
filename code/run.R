@@ -2,10 +2,14 @@
 
 source("R/workflow.R")
 
+# Miscellaneous source data
+run_script("code/misc/1-spend-usfws.R") # spend2016 (fish, hunt, wildlife watching)
+run_script("code/misc/2-spend-az-picnic.R") # avgSpendPicnic
+
 # OIA
 run_script("code/oia/1-prep-oia.R")
 run_script("code/oia/2-spend-oia.R") # spending details by item
-run_script("code/oia/3-profile-oia.R") # tgtRate, spend2016, avgSpendPicnic (AZ)
+run_script("code/oia/3-profile-oia.R") # tgtRate, spend2016
 
 # initial CO svy testing
 run_script("code/0-svy-test/1-load-raw.R")

@@ -5,6 +5,7 @@ For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01
 
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
 - OIA-based profiles: TODO
+- Report figures: [out/fig](out/fig)
 
 The analysis can be reproduced from `code/run.R`.
 
