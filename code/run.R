@@ -2,14 +2,21 @@
 
 source("R/workflow.R")
 
-# Miscellaneous source data
-run_script("code/misc/1-spend-usfws.R") # spend2016 (fish, hunt, wildlife watching)
-run_script("code/misc/2-spend-az-picnic.R") # avgSpendPicnic
+# TODO:
+# - code/oia/2-spend-oia.R
+# - code/misc/2-spend-az-picnic.R
+# - code/misc/3-year-adjust
+# - code/misc/4-profile-2019.R: probably convert to 2019 here (ask Eric)
 
 # OIA
-run_script("code/oia/1-prep-oia.R")
-run_script("code/oia/2-spend-oia.R") # spending details by item
-run_script("code/oia/3-profile-oia.R") # tgtRate, spend2016
+run_script("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
+run_script("code/oia/2-spend-oia.R") # oia-spend2016
+
+# Misc. data & final profiles
+run_script("code/misc/1-spend-usfws.R") # usfws-spend2016
+run_script("code/misc/2-spend-az-picnic.R") # az-picnic-avgSpend2018
+run_script("code/misc/3-year-adjust") # cpi, pop
+run_script("code/misc/4-profile-2019.R") # profile-2019.xlsx
 
 # CO svy initial testing
 run_script("code/0-svy-test/1-load-raw.R")
@@ -23,7 +30,7 @@ run_script("code/1-svy/3-flags.R")
 run_script("code/1-svy/4-clean.R")
 run_script("code/1-svy/5-recode-demographics.R")
 run_script("code/1-svy/6-weight.R")
-run_script("code/1-svy/7-recode-outliers.R") # output "svy-final.rds"
+run_script("code/1-svy/7-recode-outliers.R") # svy-final.rds
 # save zipped file by hand for "data-work/1-svy/svy-final-csv/"
 
 # summaries with stats/figures for report

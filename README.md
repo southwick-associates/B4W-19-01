@@ -5,9 +5,10 @@ For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01
 
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
 - OIA-based tgtRate: 77.1% (higher than OIA-reported "All activities" of 71.2% which ignore team & individual sports)
-- spend2019: Incorporates a number of data sources:
-    + Spending uses AZ 2018 survey (for picnic), USFWS 2016 national survey (for fish/hunt/wildlife), and OIA 2016 for the rest
-    + All estimates are brought to 2019 by (1) cpi-adjusting to account for inflation, and (2) population adjusting to reflect CO's increasing population (assuming participation rates remain the same)
+- Spending profiles: [out/profile-2019.xlsx]() Incorporates a number of data sources:
+    + Picnic Average Spending: AZ 2018 survey
+    + Total (non-picnic) Spending: USFWS 2016 national survey (for fish/hunt/wildlife) and OIA 2016 for the rest
+    + All estimates are brought to 2019 by (1) cpi-adjusting to account for inflation (cpi source), and (2) population adjusting to reflect CO's increasing population (US Census), assuming participation rates remain the same.
 - Report figures: [out/fig](out/fig)
 
 The analysis can be reproduced from `code/run.R`.
