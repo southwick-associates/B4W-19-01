@@ -11,7 +11,7 @@ run_script("code/oia/1-prep-oia.R")
 run_script("code/oia/2-spend-oia.R") # spending details by item
 run_script("code/oia/3-profile-oia.R") # tgtRate, spend2016
 
-# initial CO svy testing
+# CO svy initial testing
 run_script("code/0-svy-test/1-load-raw.R")
 run_script("code/0-svy-test/2-check-svy.R")
 
