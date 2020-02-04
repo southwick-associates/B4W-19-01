@@ -8,8 +8,14 @@ library(tidyverse)
 svy_oia <- readRDS("data-work/oia/oia-co.rds")
 count(svy_oia, in_co_pop)
 
+# This rate is higher than the "All activities" reported in OIA
+#  because those OIA numbers don't count team & individual sports (included here)
 svy_oia %>%
     group_by(in_co_pop) %>%
     summarise(n = n(), wtn = sum(stwt)) %>%
     mutate(pct = wtn / sum(wtn)) %>%
     knitr::kable()
+
+# Spend2016 ---------------------------------------------------------------
+
+
