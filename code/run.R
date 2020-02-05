@@ -8,6 +8,13 @@ source("R/workflow.R")
 # - code/misc/3-year-adjust
 # - code/misc/4-profile-2019.R: probably convert to 2019 here (ask Eric)
 
+# - maybe update demographic figure to make gender thinner and income wider
+#   proably make bars thinner (they have alot of visual weight)
+#   could be generally a smaller figure as well
+#   probably use "Other" for "Not white or Hispanic"
+#   maybe larger margins between subplots
+#   check SA branding doc for recommendation on color shading
+
 # OIA
 run_script("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
 run_script("code/oia/2-spend-oia.R") # oia-spend2016

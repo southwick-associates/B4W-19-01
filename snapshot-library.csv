@@ -2,6 +2,7 @@
 "acepack","1.4.1"
 "anesrake","0.80"
 "checkmate","1.8.5"
+"cowplot","0.9.3"
 "data.table","1.11.4"
 "Formula","1.2-3"
 "gdata","2.18.0"

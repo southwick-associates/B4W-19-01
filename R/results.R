@@ -29,7 +29,7 @@ plot_demo <- function(
     var <- enquo(var)
     p <- df_demo %>%
         ggplot(aes(!! var, pct, fill = grp)) +
-        geom_col(position = "dodge")
+        geom_col(position = "dodge", width = 0.7)
     
     # customize appearance for report
     p <- p +
@@ -42,7 +42,8 @@ plot_demo <- function(
             panel.grid.major.x  = element_blank(),
             panel.grid.minor.y = element_blank(),
             legend.title = element_blank(),
-            legend.position = "top"
+            legend.position = "top",
+            plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm")
         )
     if (hide_legend) {
         p <- p + theme(legend.position = "none")
@@ -53,7 +54,7 @@ plot_demo <- function(
     p + ggtitle(title)
 }
 
-# get a legend for use in multi-plot figures (package gridExtra)
+# get a legend for use in multi-plot figures
 # - uses output of plot_demo()
 get_legend <- function(myggplot) {
     tmp <- ggplot_gtable(ggplot_build(myggplot))

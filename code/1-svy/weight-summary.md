@@ -1,17 +1,25 @@
 Summarize CO survey weighting
 ================
-February 03, 2020
+February 05, 2020
 
 ``` r
 library(tidyverse)
 source("../../R/results.R")
+svy_data <- readRDS("../../data-work/1-svy/svy-final.rds")$person
+pop_data <- readRDS("../../data-work/oia/oia-co.rds") %>% filter(in_co_pop)
+
+# use "Other" for third race category
+recode_race <- function(df) {
+    mutate(df, race_weight = recode_factor(race_weight, `Not white or Hispanic` = "Other") %>%
+               factor(levels = c("White", "Hispanic", "Other")))
+}
+svy_data <- recode_race(svy_data)
+pop_data <- recode_race(pop_data)
 ```
 
 ## Weight Summary
 
 ``` r
-svy_data <- readRDS("../../data-work/1-svy/svy-final.rds")$person
-pop_data <- readRDS("../../data-work/oia/oia-co.rds") %>% filter(in_co_pop)
 summary(svy_data$weight)
 ```
 
@@ -35,28 +43,25 @@ dataset:
 ``` r
 figs <- list(
     compare_demo(age_weight, svy_data, pop_data) %>% plot_demo(age_weight, "Age"),
+    compare_demo(race_weight, svy_data, pop_data) %>% plot_demo(race_weight, "Race"),
     compare_demo(sex, svy_data, pop_data) %>% plot_demo(sex, "Gender"),
-    compare_demo(income_weight, svy_data, pop_data) %>% plot_demo(income_weight, "Income", angle_x_labs = 30),
-    compare_demo(race_weight, svy_data, pop_data) %>% plot_demo(race_weight, "Race")
+    compare_demo(income_weight, svy_data, pop_data) %>% plot_demo(income_weight, "Income")
 )
-gridExtra::grid.arrange(grobs = figs, ncol = 2) %>%
-    ggsave("../../out/fig/demorep.png", ., width = 6.5, units = "in")
-```
+f1 <- cowplot::plot_grid(figs[[1]], figs[[2]], rel_widths = c(0.5, 0.5), ncol = 2)
+f2 <- cowplot::plot_grid(figs[[3]], figs[[4]], rel_widths = c(0.3, 0.7), ncol = 2)
 
-    Saving 6.5 x 5 in image
-
-![](weight-summary_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
-
-``` r
 # legend
-compare_demo(sex, svy_data, pop_data) %>% 
+f3 <- compare_demo(sex, svy_data, pop_data) %>% 
     plot_demo(sex, "", hide_legend = FALSE) %>%
     get_legend() %>%
-    gridExtra:::grid.arrange() %>%
-    ggsave("../../out/fig/demorep-legend.png", ., height = 0.5, width = 6.5, units = "in")
+    cowplot::plot_grid()
+
+figs_out <- cowplot::plot_grid(f1, f2, f3, nrow = 3, rel_heights = c(0.4, 0.4, 0.1))
+ggsave("../../out/fig/demorep.png", figs_out, width = 6.5, height = 4.5, units = "in")
+figs_out
 ```
 
-![](weight-summary_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+![](weight-summary_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Survey
 
@@ -80,8 +85,8 @@ sapply(wt_vars, function(x) weights::wpct(svy_data[[x]]))
     0.06858594 
     
     $race_weight
-                    White              Hispanic Not white or Hispanic 
-               0.82387807            0.09652837            0.07959356 
+         White   Hispanic      Other 
+    0.82387807 0.09652837 0.07959356 
 
 ### Target Pop
 
@@ -104,5 +109,5 @@ sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
     0.08898309 
     
     $race_weight
-                    White              Hispanic Not white or Hispanic 
-               0.73559778            0.17719770            0.08720452
+         White   Hispanic      Other 
+    0.73559778 0.17719770 0.08720452
