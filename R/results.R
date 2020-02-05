@@ -1,6 +1,40 @@
 # functions for results
 
-# an xlsx save function (see NC code)
+# Excel Output ------------------------------------------------------------
+
+#' Initialize an Excel Workbook with a README tab
+#' 
+#' The README sheet is intended to serve as documentation for the results 
+#' stored in the Excel file.
+#' 
+#' - filename: path where the Excel workbook will be written
+initialize_workbook <- function(filename) {
+    if (file.exists(filename)) {
+        # an existing file won't be overwritten
+        return(invisible())
+    }
+    wb <- openxlsx::createWorkbook()
+    openxlsx::addWorksheet(wb, "README")
+    openxlsx::saveWorkbook(wb, filename)
+}
+
+#' Write a data frame to an Excel tab
+#' 
+#' Requires an existing Excel file, preferably created using initialize_workbook()
+#' The selected tab will be removed (if it already exists) and a new tab will 
+#' be written with the selected data frame.
+#' 
+#' - df: data frame to write to the Excel worksheet
+#' - tabname: name to use for Excel worksheet
+write_table <- function(df, tabname, filename) {
+    wb <- openxlsx::loadWorkbook(filename)
+    if (tabname %in% openxlsx::getSheetNames(filename)) {
+        openxlsx::removeWorksheet(wb, tabname)
+    }
+    openxlsx::addWorksheet(wb, tabname)
+    openxlsx::writeData(wb, sheet = tabname, df)
+    openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
+}
 
 # Survey Representation --------------------------------------------------
 # - see code/1-svy/weight-summary.Rmd
