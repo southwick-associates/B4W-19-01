@@ -67,7 +67,7 @@ Some thoughts on whether the implan preparation should be done in R:
 
 - The "conversion" step: [data/implan/implan-relate.xlsx](data/implan/implan-relate.xlsx) is used to convert spending by item (e.g., "food") to spending by Implan category (e.g., "Food - Groceries")
 - The "staging" step [data/implan/implan-sectoring.xlsx](data/implan/implan-sectoring.xlsx) which is used to allocate Implan categories to [Sectors](https://implanhelp.zendesk.com/hc/en-us/articles/115009674428-IMPLAN-Sectoring-NAICS-Correspondences)
-- The "event" (wording???) step which places implan sectors into 2 tabs (Industry, Commercial) in a structure used for input into Implan models, using an Excel template: [data/implan/implan_import_template.xls](implan_import_template.xls)
+- The "event" (wording???) step which places implan sectors into 2 tabs (Industry, Commercial) in a structure used for input into Implan models, using an Excel template: [data/implan/implan_import_template.xls](data/implan/implan_import_template.xls)
 
 Advantages of R approach:
 

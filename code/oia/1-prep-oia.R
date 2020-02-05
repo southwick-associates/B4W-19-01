@@ -14,7 +14,7 @@ source("R/prep-svy.R")
 read_excel("data/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
 
 # using an approximate correspondence with the OIA survey activity questions
-oia_activities <- read_excel("data/oia-activities.xlsx", sheet = "oia-screener")
+oia_activities <- read_excel("data/oia/oia-activities.xlsx", sheet = "oia-screener")
 knitr::kable(oia_activities)
 
 # variable names from OIA svy that represent activities in CO survey screener
@@ -25,7 +25,7 @@ co_activities <- oia_activities %>%
 # Load OIA Svy Data ---------------------------------------------------------------
 
 # pull in OIA 2016 survey data for CO residents
-load("data/svy-wtd.RDATA")
+load("data/oia/svy-wtd.RDATA")
 
 # data representative of the whole Colorado resident population
 svy_all <- svy_wtd %>%
