@@ -61,12 +61,12 @@ Details included in [data/README.md](data/README.md). Overview:
 - US Census: population estimates
 - Federal Reserve Bank: CPI estimates
 
-## Implan
+## Implan Input
 
 Some thoughts on whether the implan preparation should be done in R:
 
 - The "conversion" step: [data/implan/implan-relate.xlsx](data/implan/implan-relate.xlsx) is used to convert spending by item (e.g., "food") to spending by Implan category (e.g., "Food - Groceries")
-- The "staging" step [data/implan/implate-sectroing.xlsx](data/implan/implate-sectroing.xlsx) which is used to allocate Implan categories to [Sectors](https://implanhelp.zendesk.com/hc/en-us/articles/115009674428-IMPLAN-Sectoring-NAICS-Correspondences)
+- The "staging" step [data/implan/implate-sectoring.xlsx](data/implan/implate-sectoring.xlsx) which is used to allocate Implan categories to [Sectors](https://implanhelp.zendesk.com/hc/en-us/articles/115009674428-IMPLAN-Sectoring-NAICS-Correspondences)
 - The "event" (wording???) step which places implan sectors into 2 tabs (Industry, Commercial) in a structure used for input into Implan models, using an Excel template: [data/implan/implate_import_template.xls](implate_import_template.xls)
 
 Advantages of R approach:
