@@ -4,7 +4,7 @@
 For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01 project:
 
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
-- OIA-based tgtRate: 77.1% (higher than OIA-reported "All activities" of 71.2% which ignore team & individual sports)
+- OIA-based tgtRate: 77.1%
 - Spending profiles: [out/profile-2019.xlsx](out/profile-2019.xlsx)
 - Report figures: [out/fig](out/fig)
 
