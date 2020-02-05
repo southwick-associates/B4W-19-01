@@ -49,9 +49,14 @@ Days outliers were identified using [Tukey's rule]( https://en.wikipedia.org/wik
 For a code summary:  [code/1-svy/log/7-recode-outliers.md](code/1-svy/log/7-recode-outliers.md). 
 Initial work is available here: [code/1-svy/outlier-testing.md](code/1-svy/outlier-testing.md)
 
-## OIA Survey Data
+## Secondary Data Sources
 
-Using OIA 2016 survey data stored/documented on [O365 > OIA 2016 > Analysis Resources](https://southwickassociatesinc.sharepoint.com/:w:/s/oia2016-001recreationeconreport/EdZ4EMXUfXtKsEurnqCqlbcBbxarVPTtLkyCNiYti18vUA?e=zvmc87):
+Details included in [data/README.md](data/README.md). Overview:
 
-- Define the CO survey target population (and subsequent weighting)
-- Produce spending profiles
+- OIA 2016 Survey
+    + Define the CO survey target population (and subsequent weighting)
+    + Produce spending profiles
+- USFWS Nat Survey: spending profiles for fish/hunt/wildlife
+- AZ 2018 Survey: picnic spending profile
+- US Census: population estimates
+- Federal Reserve Bank: CPI estimates
