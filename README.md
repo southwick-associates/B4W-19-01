@@ -72,11 +72,12 @@ Some thoughts on whether the implan preparation should be done in R:
 Advantages of R approach:
 
 - Separates data (spending, conversion, staging) from the workflow (R code)
-- It's less error-prone
 - It scales much better
 - It's more generalizable (i.e., should be easier to implement in new projects)
+- It should be less error-prone
 
 Disadvantages of R approach: 
 
 - Not all analysts know R
 - It's different from what we've done in the past
+- The XLConnect package has an extra dependency: java runtime environment
