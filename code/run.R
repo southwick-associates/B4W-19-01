@@ -3,9 +3,8 @@
 source("R/workflow.R")
 
 # TODO:
-# - code/misc/2-spend-az-picnic.R
-# - code/misc/3-year-adjust
-# - code/misc/4-profile-2019.R: probably convert to 2019 here (ask Eric)
+# - code/misc/2-year-adjust
+# - code/misc/3-profile-2019.R: probably convert to 2019 here (ask Eric)
 # - implan decisions
 
 # OIA
@@ -14,9 +13,8 @@ run_script("code/oia/2-spend-oia.R") # oia-spend2016
 
 # Misc. data & final profiles
 run_script("code/misc/1-spend-usfws.R") # usfws-spend2016
-run_script("code/misc/2-spend-az-picnic.R") # az-picnic-avgSpend2018
-run_script("code/misc/3-year-adjust.R") # cpi, pop
-run_script("code/misc/4-profile-2019.R") # profile-2019.xlsx
+run_script("code/misc/2-year-adjust.R") # cpi, pop
+run_script("code/misc/3-profile-2019.R") # profile-2019.xlsx
 
 # (maybe) Implan input preparation
 # run_script("code/implan/1-implan-convet.R")

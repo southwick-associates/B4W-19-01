@@ -57,7 +57,8 @@ vehicle <- x %>%
 # Save & Summarize ---------------------------------------------------------
 
 spend <- bind_rows(trip, equip, vehicle) %>%
-    rename(act = co_activity)
+    rename(act = co_activity) %>%
+    mutate(year = 2016)
 saveRDS(spend, "data-work/oia/spend2016.rds")
 
 # these will mostly match the categories reported in OIA 2016 for Colorado

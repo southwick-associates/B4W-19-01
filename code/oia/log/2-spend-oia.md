@@ -1,7 +1,7 @@
 2-spend-oia.R
 ================
 danka
-Wed Feb 05 15:59:17 2020
+Wed Feb 05 17:15:54 2020
 
 ``` r
 # get OIA spending by item in CO
@@ -63,7 +63,8 @@ vehicle <- x %>%
 # Save & Summarize ---------------------------------------------------------
 
 spend <- bind_rows(trip, equip, vehicle) %>%
-    rename(act = co_activity)
+    rename(act = co_activity) %>%
+    mutate(year = 2016)
 saveRDS(spend, "data-work/oia/spend2016.rds")
 
 # these will mostly match the categories reported in OIA 2016 for Colorado

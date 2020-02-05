@@ -18,4 +18,6 @@ svy_oia %>%
 
 # Spend2016 ---------------------------------------------------------------
 
-
+# AZ picnic
+readRDS("data/misc/spend_picnic.rds")$avg %>%
+    mutate(act = "picnic", year = 2018, type = "trip")

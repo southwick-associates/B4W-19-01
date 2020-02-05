@@ -27,7 +27,8 @@ run_script <- function(script_path) {
     # - a files folder will be produced if figures are included in the md file
     # - and it needs to be moved along with the md file
     old <- file.path(indir, paste0(script_name, "_files"))
-    new <- file.path(outdir, paste0(script_name, "_files"))
-    file.copy(old, new, recursive = TRUE)
-    unlink(old, recursive = TRUE)
+    if (file.exists(old)){
+        file.copy(old, outdir, recursive = TRUE)
+        unlink(old, recursive = TRUE)
+    }
 }

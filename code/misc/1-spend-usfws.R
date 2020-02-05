@@ -34,7 +34,7 @@ spend_avg <- spend_avg %>%
 # allocate totals by item
 spend2016 <- spend_avg %>%
     full_join(spend2016, by = "act") %>%
-    mutate(spend = spend * pct) %>%
+    mutate(spend = spend * pct, year = 2016) %>%
     select(-spend_per_day, -pct)
 
 # Save & Summarize -----------------------------------------------------------

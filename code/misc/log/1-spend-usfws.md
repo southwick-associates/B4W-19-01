@@ -1,7 +1,7 @@
 1-spend-usfws.R
 ================
 danka
-Wed Feb 05 15:58:44 2020
+Wed Feb 05 17:15:06 2020
 
 ``` r
 # spending for fishing/hunting/wildlife watching
@@ -48,7 +48,7 @@ spend_avg <- spend_avg %>%
 # allocate totals by item
 spend2016 <- spend_avg %>%
     full_join(spend2016, by = "act") %>%
-    mutate(spend = spend * pct) %>%
+    mutate(spend = spend * pct, year = 2016) %>%
     select(-spend_per_day, -pct)
 
 # Save & Summarize -----------------------------------------------------------
