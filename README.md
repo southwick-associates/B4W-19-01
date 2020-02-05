@@ -6,6 +6,7 @@ For Southwick internal use only; Dan's portion of the analysis for the B4W-19-01
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
 - OIA-based tgtRate: 77.1%
 - Spending profiles: [out/profile-2019.xlsx](out/profile-2019.xlsx)
+- Implan input: 
 - Report figures: [out/fig](out/fig)
 
 The analysis can be reproduced from `code/run.R`.
@@ -63,15 +64,17 @@ Details included in [data/README.md](data/README.md). Overview:
 
 ## Implan Input
 
-Some thoughts on whether the implan preparation should be done in R:
+Prepare implan model input using a sequence of 3 steps:
 
-- The "conversion" step: [data/implan/implan-relate.xlsx](data/implan/implan-relate.xlsx) is used to convert spending by item (e.g., "food") to spending by Implan category (e.g., "Food - Groceries")
-- The "staging" step [data/implan/implan-sectoring.xlsx](data/implan/implan-sectoring.xlsx) which is used to allocate Implan categories to [Sectors](https://implanhelp.zendesk.com/hc/en-us/articles/115009674428-IMPLAN-Sectoring-NAICS-Correspondences)
-- The "event" (wording???) step which places implan sectors into 2 tabs (Industry, Commercial) in a structure used for input into Implan models, using an Excel template: [data/implan/implan_import_template.xls](data/implan/implan_import_template.xls)
+1. Convert: [data/implan/implan-convert.xlsx](data/implan/implan-convert.xlsx) is used to convert spending by item (e.g., "food") to spending by Implan category (e.g., "Food - Groceries")
+2. Stage: [data/implan/implan-stage.xlsx](data/implan/implan-stage.xlsx) which is used to allocate Implan categories to [Sectors](https://implanhelp.zendesk.com/hc/en-us/articles/115009674428-IMPLAN-Sectoring-NAICS-Correspondences)
+3. Import: places implan sectors into 2 tabs (Industry, Commercial) in a structure used for input into Implan models, based on an Excel template: [data/implan/implan_import_template.xls](data/implan/implan_import_template.xls)
+
+### Dan Thoughts
 
 Advantages of R approach:
 
-- Separates data (spending, conversion, staging) from the workflow (R code)
+- Separates data (spend, convert, stage) from the workflow (R code)
 - It scales much better
 - It's more generalizable (i.e., should be easier to implement in new projects)
 - It should be less error-prone
@@ -79,5 +82,5 @@ Advantages of R approach:
 Disadvantages of R approach: 
 
 - Not all analysts know R
-- It's different from what we've done in the past
+- It's different from what we've done in the past (which just uses Excel)
 - The XLConnect package has an extra dependency: java runtime environment

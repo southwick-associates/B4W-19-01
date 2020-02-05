@@ -1,27 +1,14 @@
 1-spend-usfws.R
 ================
 danka
-Tue Feb 04 16:26:09 2020
+Wed Feb 05 15:58:44 2020
 
 ``` r
 # spending for fishing/hunting/wildlife watching
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 library(readxl)
+source("R/explore.R")
 
 # Load Data ---------------------------------------------------------------
 
@@ -48,7 +35,7 @@ knitr::kable(spend2016, format.args = list(big.mark = ","))
 # spending profiles (per day by item) for fish, hunt, wildlife watching
 # - based on region 8 (mountain) pulled together by Tom in 2018
 #   2016 Fish Hunt WW profiles.xlsx
-spend_avg <- read_excel("data/usfws-profiles-co.xlsx", sheet = "spend-profiles")
+spend_avg <- read_excel("data/misc/usfws-profiles-co.xlsx", sheet = "spend-profiles")
 
 # Allocate by Item -----------------------------------------------------------
 
@@ -68,27 +55,9 @@ spend2016 <- spend_avg %>%
 
 saveRDS(spend2016, "data-work/misc/usfws-spend2016.rds")
 
-plot_spend <- function(df) {
-    ggplot(df, aes(item, spend, fill = type)) +
-        geom_col() +
-        facet_wrap(~ act) +
-        coord_flip() +
-        scale_y_continuous(labels = scales::comma) +
-        ggtitle("Spending in CO in 2016")
+for (i in c("hunt", "fish", "wildlife")) {
+    filter(spend2016, act == i) %>% plot_spend() %>% print()
 }
-filter(spend2016, act == "hunt") %>% plot_spend()
 ```
 
-![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
-
-``` r
-filter(spend2016, act == "fish") %>% plot_spend()
-```
-
-![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
-
-``` r
-filter(spend2016, act == "wildlife") %>% plot_spend()
-```
-
-![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->![](1-spend-usfws_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->

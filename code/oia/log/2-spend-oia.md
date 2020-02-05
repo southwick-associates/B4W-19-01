@@ -1,3 +1,9 @@
+2-spend-oia.R
+================
+danka
+Wed Feb 05 15:59:17 2020
+
+``` r
 # get OIA spending by item in CO
 
 library(tidyverse)
@@ -67,7 +73,20 @@ spend %>%
     group_by(act) %>%
     summarise(sum(spend)) %>%
     knitr::kable(format.args = list(big.mark = ","))
+```
 
+| act   |    sum(spend) |
+| :---- | ------------: |
+| bike  | 1,957,056,509 |
+| camp  | 4,244,549,771 |
+| snow  | 7,491,859,198 |
+| trail | 7,078,021,722 |
+| water | 2,137,155,597 |
+
+``` r
 for (i in unique(spend$act)) {
     filter(spend, act == i) %>% plot_spend() %>% print()
 }
+```
+
+![](2-spend-oia_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->![](2-spend-oia_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->![](2-spend-oia_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->![](2-spend-oia_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->![](2-spend-oia_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->

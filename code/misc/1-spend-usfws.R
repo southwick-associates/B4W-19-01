@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(readxl)
+source("R/explore.R")
 
 # Load Data ---------------------------------------------------------------
 
@@ -20,7 +21,7 @@ knitr::kable(spend2016, format.args = list(big.mark = ","))
 # spending profiles (per day by item) for fish, hunt, wildlife watching
 # - based on region 8 (mountain) pulled together by Tom in 2018
 #   2016 Fish Hunt WW profiles.xlsx
-spend_avg <- read_excel("data/usfws-profiles-co.xlsx", sheet = "spend-profiles")
+spend_avg <- read_excel("data/misc/usfws-profiles-co.xlsx", sheet = "spend-profiles")
 
 # Allocate by Item -----------------------------------------------------------
 
@@ -40,14 +41,6 @@ spend2016 <- spend_avg %>%
 
 saveRDS(spend2016, "data-work/misc/usfws-spend2016.rds")
 
-plot_spend <- function(df) {
-    ggplot(df, aes(item, spend, fill = type)) +
-        geom_col() +
-        facet_wrap(~ act) +
-        coord_flip() +
-        scale_y_continuous(labels = scales::comma) +
-        ggtitle("Spending in CO in 2016")
+for (i in c("hunt", "fish", "wildlife")) {
+    filter(spend2016, act == i) %>% plot_spend() %>% print()
 }
-filter(spend2016, act == "hunt") %>% plot_spend()
-filter(spend2016, act == "fish") %>% plot_spend()
-filter(spend2016, act == "wildlife") %>% plot_spend()
