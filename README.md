@@ -5,7 +5,7 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
 - OIA-based tgtRate: 77.1%
-- Spending profiles: [out/profile-2019.xlsx](out/profile-2019.xlsx)
+- Spending profile data: [out/profiles.xlsx](out/profiles.xlsx)
 - Implan input: 
 - Report figures: [out/fig](out/fig)
 
