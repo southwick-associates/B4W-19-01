@@ -4,10 +4,9 @@
 
 # get adjustment factor based on an annual change (e.g., cpi)
 get_year_adjust <- function(df, year_reference, year_target) {
-    # assumes the metric variable has the same name as the data frame
-    var <- deparse(substitute(df))
+    varname <- deparse(substitute(df)) # i.e., variable has same name as df
     df <- filter(df, year %in% c(year_reference, year_target))
-    df$adjust <- df[[var]] / lag(df[[var]])
+    df$adjust <- df[[varname]] / lag(df[[varname]])
     df$adjust[2]
 }
 

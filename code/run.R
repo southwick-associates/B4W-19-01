@@ -2,11 +2,6 @@
 
 source("R/workflow.R")
 
-# TODO:
-# - code/misc/2-year-adjust
-# - code/misc/3-profile-2019.R: probably convert to 2019 here (ask Eric)
-# - implan decisions
-
 # OIA
 run_script("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
 run_script("code/oia/2-spend-oia.R") # oia-spend2016
@@ -16,6 +11,7 @@ run_script("code/misc/1-spend-usfws.R") # usfws-spend2016
 run_script("code/misc/2-year-adjust.R") # cpi, pop
 run_script("code/misc/3-profile.R") # pulling profiles together
 
+# TODO: start here ("R/implan.R")
 # (maybe) Implan input preparation
 # run_script("code/implan/1-implan-convet.R")
 # run_script("code/implan/2-implan-stage.R")

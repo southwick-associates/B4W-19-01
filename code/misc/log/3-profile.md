@@ -1,7 +1,7 @@
 3-profile.R
 ================
 danka
-Thu Feb 06 16:50:36 2020
+Thu Feb 06 17:08:54 2020
 
 ``` r
 # pull together spending profiles
