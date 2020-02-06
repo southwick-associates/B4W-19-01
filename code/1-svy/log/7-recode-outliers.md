@@ -1,13 +1,27 @@
 7-recode-outliers.R
 ================
 danka
-Thu Feb 06 12:15:13 2020
+Thu Feb 06 13:34:35 2020
 
 ``` r
 # identify days outliers using tukey's rule
 # also filtering out respondents flagged for suspicion
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 source("R/outliers.R")
 source("R/prep-svy.R")
 svy <- readRDS("data-work/1-svy/svy-weight.rds")

@@ -24,3 +24,12 @@ left_join(x, y) %>%
     ) %>%
     write_csv("tmp-days-compare.csv")
 
+## Sample sizes
+# basinRate
+count(svy$basin, act)
+
+# shareDaysBasin
+svy$basin %>%
+    filter(!is.na(days_water), days_water != 0) %>%
+    count(act, basin) %>%
+    spread(act, n, fill = 0)
