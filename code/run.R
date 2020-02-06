@@ -14,7 +14,7 @@ run_script("code/oia/2-spend-oia.R") # oia-spend2016
 # Misc. data & final profiles
 run_script("code/misc/1-spend-usfws.R") # usfws-spend2016
 run_script("code/misc/2-year-adjust.R") # cpi, pop
-run_script("code/misc/3-profile-2019.R") # profile-2019.xlsx
+run_script("code/misc/3-profile.R") # pulling profiles together
 
 # (maybe) Implan input preparation
 # run_script("code/implan/1-implan-convet.R")

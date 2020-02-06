@@ -1,5 +1,16 @@
 # functions for results
 
+# Profiling ---------------------------------------------------------------
+
+# get adjustment factor based on an annual change (e.g., cpi)
+get_year_adjust <- function(df, year_reference, year_target) {
+    # assumes the metric variable has the same name as the data frame
+    var <- deparse(substitute(df))
+    df <- filter(df, year %in% c(year_reference, year_target))
+    df$adjust <- df[[var]] / lag(df[[var]])
+    df$adjust[2]
+}
+
 # Excel Output ------------------------------------------------------------
 
 #' Initialize an Excel Workbook with a README tab

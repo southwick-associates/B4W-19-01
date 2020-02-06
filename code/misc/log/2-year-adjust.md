@@ -1,12 +1,26 @@
 2-year-adjust.R
 ================
 danka
-Thu Feb 06 15:27:06 2020
+Thu Feb 06 15:45:07 2020
 
 ``` r
 # get population and CPI for adjusting spending to 2019
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 source("R/results.R")
 
@@ -19,17 +33,17 @@ pop19 <- read_excel(
 ) %>%
     filter(state == ".Colorado") %>%
     mutate(year = 2019) %>%
-    select(year, pop_adult = adult)
+    select(year, pop = adult)
 
 # CO adult population 2010-2018
 # - codebook: data/census/sc-est...pdf
 pop10 <- read_csv("data/census/sc-est2018-agesex-civ.csv") %>%
     filter(AGE >= 18, NAME == "Colorado", SEX == 0, AGE != 999) %>%
     select(AGE, POPEST2010_CIV:POPEST2018_CIV) %>%
-    gather(year, pop_adult, -AGE) %>%
+    gather(year, pop, -AGE) %>%
     mutate(year = str_remove(year, "POPEST") %>% str_remove("_CIV") %>% as.numeric()) %>%
     group_by(year) %>%
-    summarise(pop_adult = sum(pop_adult))
+    summarise(pop = sum(pop))
 ```
 
     ## Parsed with column specification:
@@ -56,7 +70,7 @@ pop10 <- read_csv("data/census/sc-est2018-agesex-civ.csv") %>%
 ``` r
 # combine
 pop <- bind_rows(pop10, pop19)
-ggplot(pop, aes(year, pop_adult)) + geom_col() + ggtitle("CO Adult Population")
+ggplot(pop, aes(year, pop)) + geom_col() + ggtitle("CO Adult Population")
 ```
 
 ![](2-year-adjust_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->

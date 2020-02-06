@@ -30,7 +30,6 @@ From [US Census](https://www.census.gov/data/tables/time-series/demo/popest/2010
 - usfws-profiles.xlsx: Average estimated spending per day (by item) for fish vs. hunt vs. wildlife viewing in Colorado
     + From previous project: [O365 > CO-SCORP-18-01 > Analysis](https://southwickassociatesinc.sharepoint.com/:f:/s/co-scorp-18-01/EhKdG4KGp6NMtyy9KvFw5m4B9PnrF-POwxoBCp9o1z-4xg?e=lUwfPU). Pulled together from work done by Tom in 2016 Fish Hunt WW profiles.xlsx
     
-
-
 - spend-picnic.rds: Picnic spending from 2018 AZ project
 
+- Participation Profiles - B4W coh2o: From Eric, participation estimates based on CO survey

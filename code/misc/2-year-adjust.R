@@ -13,21 +13,21 @@ pop19 <- read_excel(
 ) %>%
     filter(state == ".Colorado") %>%
     mutate(year = 2019) %>%
-    select(year, pop_adult = adult)
+    select(year, pop = adult)
 
 # CO adult population 2010-2018
 # - codebook: data/census/sc-est...pdf
 pop10 <- read_csv("data/census/sc-est2018-agesex-civ.csv") %>%
     filter(AGE >= 18, NAME == "Colorado", SEX == 0, AGE != 999) %>%
     select(AGE, POPEST2010_CIV:POPEST2018_CIV) %>%
-    gather(year, pop_adult, -AGE) %>%
+    gather(year, pop, -AGE) %>%
     mutate(year = str_remove(year, "POPEST") %>% str_remove("_CIV") %>% as.numeric()) %>%
     group_by(year) %>%
-    summarise(pop_adult = sum(pop_adult))
+    summarise(pop = sum(pop))
 
 # combine
 pop <- bind_rows(pop10, pop19)
-ggplot(pop, aes(year, pop_adult)) + geom_col() + ggtitle("CO Adult Population")
+ggplot(pop, aes(year, pop)) + geom_col() + ggtitle("CO Adult Population")
 
 # CPI ---------------------------------------------------------------------
 # https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-
