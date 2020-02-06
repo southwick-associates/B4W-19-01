@@ -56,7 +56,7 @@ Details included in [data/README.md](data/README.md). Overview:
 
 - OIA 2016 Survey
     + Define the CO survey target population (and subsequent weighting)
-    + Produce spending profiles
+    + Outdoor Rec spending in CO
 - USFWS Nat Survey: spending profiles for fish/hunt/wildlife
 - AZ 2018 Survey: picnic spending profile
 - US Census: population estimates
