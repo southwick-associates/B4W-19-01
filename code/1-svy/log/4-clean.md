@@ -1,7 +1,7 @@
 4-clean.R
 ================
 danka
-Thu Jan 30 15:13:16 2020
+Thu Feb 06 12:14:32 2020
 
 ``` r
 # clean survey data
@@ -9,12 +9,27 @@ Thu Jan 30 15:13:16 2020
 # 0. Drop those who checked "none" for activities
 # 1. Set fishing/water activities participation along water
 # 2. Set days to missing where days_water > days
+# 2a. Set basin days to missing that are flagged "high" or "low"
 # 3. Recode those who entered "none" for basins
 #    act$part_water = "No", act$days_water = NA
 # 4. Add act$is_targeted to identify 9 activities of interest for the study
 # 5. Set obvious days outliers to missing (i.e, those > 365)
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 source("R/prep-svy.R") # functions
 svy <- readRDS("data-work/1-svy/svy-reshape.rds")
 
@@ -105,6 +120,49 @@ svy$basin <- bind_rows(
     ## Warning: Column `Vrid` has different attributes on LHS and RHS of join
 
 ``` r
+# 2a. Basin Days Recoding -------------------------------------------------
+
+# Basin days can be highly inconsistent with water days
+# All basin days where this occurs are set to missing (unreliable)
+
+# - get relevant sums
+days_act <- svy$act %>%
+    filter(!is.na(days_water), days_water != 0)
+days_basin <- svy$basin %>% 
+    group_by(Vrid, act) %>% 
+    summarise(days_water = sum(days_water, na.rm = TRUE)) %>%
+    ungroup() 
+
+# - get difference (basin - days_water)
+basin_diff <- days_act %>%
+    inner_join(days_basin, by = c("Vrid", "act"), suffix = c(".all", ".basin")) %>%
+    mutate(
+        diff = days_water.basin - days_water.all, 
+        ratio = days_water.basin / days_water.all
+) 
+
+# - identify inconsistencies
+flagged <- bind_rows(
+    filter(basin_diff, days_water.basin >= 5, ratio >= 2) %>% mutate(flag = "high"),
+    filter(basin_diff, days_water.all >= 5, ratio <= 0.5) %>% mutate(flag = "low")
+)
+count(flagged, flag)
+```
+
+    ## # A tibble: 2 x 2
+    ##   flag      n
+    ##   <chr> <int>
+    ## 1 high     38
+    ## 2 low     368
+
+``` r
+# - set flagged to missing
+svy$basin <- bind_rows(
+    anti_join(svy$basin, flagged, by = c("Vrid", "act")),
+    semi_join(svy$basin, flagged, by = c("Vrid", "act")) %>%
+        mutate(days_water = NA)
+)
+
 # 3. Recode "none" in basins ----------------------------------------------
 
 # The basins completey cover NE, so those who enter "none" shouldn't be
@@ -116,16 +174,16 @@ no_basin
     ## # A tibble: 96 x 5
     ##    Vrid  act   basin part    days_water
     ##    <chr> <chr> <chr> <chr>        <dbl>
-    ##  1 152   trail none  Checked         NA
-    ##  2 305   trail none  Checked         NA
-    ##  3 223   bike  none  Checked         NA
-    ##  4 367   bike  none  Checked         NA
-    ##  5 432   bike  none  Checked         NA
-    ##  6 531   bike  none  Checked         NA
-    ##  7 605   bike  none  Checked         NA
-    ##  8 736   bike  none  Checked         NA
-    ##  9 800   bike  none  Checked         NA
-    ## 10 329   camp  none  Checked         NA
+    ##  1 223   bike  none  Checked         NA
+    ##  2 736   bike  none  Checked         NA
+    ##  3 329   camp  none  Checked         NA
+    ##  4 371   camp  none  Checked         NA
+    ##  5 500   camp  none  Checked         NA
+    ##  6 588   camp  none  Checked         NA
+    ##  7 730   camp  none  Checked         NA
+    ##  8 987   camp  none  Checked         NA
+    ##  9 1099  camp  none  Checked         NA
+    ## 10 1462  camp  none  Checked         NA
     ## # ... with 86 more rows
 
 ``` r
@@ -188,11 +246,9 @@ filter(svy$act, days > 365 | days_water > 365)
 filter(svy$basin, days_water > 365)
 ```
 
-    ## # A tibble: 2 x 5
-    ##   Vrid  act   basin    part    days_water
-    ##   <chr> <chr> <chr>    <chr>        <dbl>
-    ## 1 1345  trail metro    Checked     120621
-    ## 2 1464  fish  n platte Checked        661
+    ## # A tibble: 0 x 5
+    ## # ... with 5 variables: Vrid <chr>, act <chr>, basin <chr>, part <chr>,
+    ## #   days_water <dbl>
 
 ``` r
 set_missing <- function(x) ifelse(!is.na(x) & x > 365, NA, x)
@@ -281,7 +337,7 @@ glimpse(svy$basin)
     ## $ act        <chr> "trail", "trail", "trail", "trail", "trail", "trail...
     ## $ basin      <chr> "arkansas", "arkansas", "arkansas", "arkansas", "ar...
     ## $ part_water <chr> "Checked", "Unchecked", "Unchecked", "Checked", "Un...
-    ## $ days_water <dbl> 5, NA, NA, 8, NA, 1, NA, 12, NA, NA, NA, 2, NA, NA,...
+    ## $ days_water <dbl> 5, NA, NA, 8, NA, 1, NA, 12, NA, NA, 2, NA, NA, 2, ...
 
 ``` r
 saveRDS(svy, "data-work/1-svy/svy-clean.rds")

@@ -1,7 +1,7 @@
 
 ## Overview
 
-For Southwick internal use only; Dan's portion of the analysis for the [O365 > B4W-19-01](https://southwickassociatesinc.sharepoint.com/sites/B4W-19-01/Shared%20Documents/Forms/AllItems.aspx) project:
+For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-01](https://southwickassociatesinc.sharepoint.com/sites/B4W-19-01/Shared%20Documents/Forms/AllItems.aspx) project:
 
 - CO survey prep: [data-work/1-svy/svy-final-csv.zip](data-work/1-svy/svy-final-csv.zip)
 - OIA-based tgtRate: 77.1%

@@ -1,7 +1,7 @@
 6-weight.R
 ================
 danka
-Thu Jan 30 15:13:21 2020
+Thu Feb 06 12:15:03 2020
 
 ``` r
 # weight survey using OIA
@@ -303,6 +303,6 @@ sapply(names(svy), function(nm) {
     ##  6 129   trail arkansas Checked             1
     ##  7 131   trail arkansas Unchecked          NA
     ##  8 140   trail arkansas Checked            12
-    ##  9 152   trail arkansas Unchecked          NA
-    ## 10 157   trail arkansas Unchecked          NA
+    ##  9 157   trail arkansas Unchecked          NA
+    ## 10 159   trail arkansas Unchecked          NA
     ## # ... with 24,164 more rows

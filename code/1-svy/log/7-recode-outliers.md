@@ -1,27 +1,13 @@
 7-recode-outliers.R
 ================
 danka
-Fri Jan 31 16:00:44 2020
+Thu Feb 06 12:15:13 2020
 
 ``` r
 # identify days outliers using tukey's rule
 # also filtering out respondents flagged for suspicion
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 source("R/outliers.R")
 source("R/prep-svy.R")
 svy <- readRDS("data-work/1-svy/svy-weight.rds")
@@ -172,17 +158,17 @@ outlier_pct(x, act, basin) %>% ungroup() %>% select(-n, -is_outlier) %>%
     spread(basin, pct_outliers, fill = 0) %>% knitr::kable()
 ```
 
-| act      | arkansas |  colorado | gunnison |     metro | n platte |        rio | s platte | southwest | yampa |
-| :------- | -------: | --------: | -------: | --------: | -------: | ---------: | -------: | --------: | ----: |
-| bike     | 0.000000 | 0.0000000 | 0.000000 |  0.000000 | 0.000000 |  33.333333 | 5.769231 | 14.285714 |     0 |
-| camp     | 3.030303 | 0.9615385 | 2.040816 |  4.166667 | 6.666667 |   0.000000 | 5.405405 |  5.555556 |     0 |
-| fish     | 1.538461 | 1.3888889 | 2.439024 |  2.941177 | 6.666667 |   0.000000 | 2.898551 |  0.000000 |     0 |
-| hunt     | 0.000000 | 0.0000000 | 0.000000 |  0.000000 | 0.000000 |   0.000000 | 0.000000 | 66.666667 |     0 |
-| picnic   | 1.769912 | 1.3157895 | 0.000000 |  2.419355 | 3.636364 |   7.142857 | 2.312139 |  0.000000 |     0 |
-| snow     | 0.000000 | 0.0000000 | 0.000000 | 50.000000 | 0.000000 | 100.000000 | 0.000000 |  0.000000 |   100 |
-| trail    | 0.000000 | 0.0000000 | 0.000000 |  1.265823 | 2.857143 |   0.000000 | 0.000000 |  4.347826 |     0 |
-| water    | 2.083333 | 6.1855670 | 0.000000 |  0.000000 | 3.846154 |  10.000000 | 0.000000 |  0.000000 |     0 |
-| wildlife | 0.000000 | 3.0303030 | 2.173913 |  0.000000 | 5.000000 |   0.000000 | 6.140351 |  0.000000 |     0 |
+| act      | arkansas | colorado | gunnison |     metro | n platte |        rio | s platte | southwest | yampa |
+| :------- | -------: | -------: | -------: | --------: | -------: | ---------: | -------: | --------: | ----: |
+| bike     | 0.000000 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |  50.000000 | 6.250000 | 20.000000 |     0 |
+| camp     | 3.125000 | 3.061224 | 2.040816 |  4.166667 | 6.896552 |   0.000000 | 5.555556 | 11.764706 |     0 |
+| fish     | 1.639344 | 1.492537 | 2.702703 |  3.225807 | 3.571429 |   0.000000 | 1.538461 |  0.000000 |     0 |
+| hunt     | 0.000000 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |   0.000000 | 0.000000 | 66.666667 |     0 |
+| picnic   | 1.818182 | 1.470588 | 0.000000 |  1.709402 | 4.081633 |   7.692308 | 2.395210 |  0.000000 |     0 |
+| snow     | 0.000000 | 0.000000 | 0.000000 | 50.000000 | 0.000000 | 100.000000 | 0.000000 | 20.000000 |   100 |
+| trail    | 0.000000 | 1.052632 | 0.000000 |  1.315789 | 3.125000 |   5.263158 | 0.000000 |  4.761905 |    20 |
+| water    | 2.272727 | 2.409639 | 0.000000 |  0.000000 | 0.000000 |  11.111111 | 0.000000 |  0.000000 |     0 |
+| wildlife | 0.000000 | 1.176471 | 0.000000 |  0.000000 | 3.030303 |   0.000000 | 5.504587 |  0.000000 |     0 |
 
 ``` r
 outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
@@ -192,82 +178,82 @@ outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
 | act      | basin     | days\_water | days\_cleaned |
 | :------- | :-------- | ----------: | ------------: |
 | bike     | arkansas  |   23.714286 |     23.714286 |
-| bike     | colorado  |    8.936170 |      8.936170 |
-| bike     | metro     |    9.527273 |      9.527273 |
-| bike     | n platte  |    3.538461 |      3.538461 |
-| bike     | rio       |    3.333333 |      3.333333 |
-| bike     | s platte  |   20.000000 |     11.899456 |
-| bike     | southwest |   11.571429 |      5.878381 |
+| bike     | colorado  |    9.523810 |      9.523810 |
+| bike     | metro     |    9.538462 |      9.538462 |
+| bike     | n platte  |    3.500000 |      3.500000 |
+| bike     | rio       |    5.000000 |      5.000000 |
+| bike     | s platte  |   21.250000 |     11.366720 |
+| bike     | southwest |   15.400000 |      6.352847 |
 | bike     | yampa     |    8.333333 |      8.333333 |
-| camp     | arkansas  |    4.106061 |      4.083765 |
-| camp     | colorado  |    3.673077 |      3.526579 |
+| camp     | arkansas  |    4.171875 |      4.148882 |
+| camp     | colorado  |    3.653061 |      3.387966 |
 | camp     | gunnison  |    4.816326 |      4.607433 |
 | camp     | metro     |    4.375000 |      2.524519 |
-| camp     | n platte  |   18.366667 |      6.708077 |
-| camp     | rio       |    3.148148 |      3.148148 |
-| camp     | s platte  |    5.432432 |      4.338607 |
-| camp     | southwest |    9.888889 |      4.593076 |
+| camp     | n platte  |   18.310345 |      5.798406 |
+| camp     | rio       |    3.269231 |      3.269231 |
+| camp     | s platte  |    5.486111 |      4.361902 |
+| camp     | southwest |   10.411765 |      3.978083 |
 | camp     | yampa     |    3.681818 |      3.681818 |
-| fish     | arkansas  |    8.969231 |      6.879256 |
-| fish     | colorado  |    6.486111 |      6.428268 |
-| fish     | gunnison  |    5.024390 |      4.654223 |
-| fish     | metro     |    7.441177 |      4.841923 |
-| fish     | n platte  |    4.233333 |      3.884282 |
-| fish     | s platte  |    8.840580 |      7.289855 |
+| fish     | arkansas  |    9.524590 |      7.205865 |
+| fish     | colorado  |    6.716418 |      6.654258 |
+| fish     | gunnison  |    5.108108 |      4.697922 |
+| fish     | metro     |    8.096774 |      5.381784 |
+| fish     | n platte  |    3.428571 |      2.939775 |
+| fish     | s platte  |    6.723077 |      5.889774 |
 | fish     | southwest |    6.250000 |      6.250000 |
-| fish     | yampa     |    5.833333 |      5.833333 |
+| fish     | yampa     |    6.058823 |      6.058823 |
 | hunt     | arkansas  |    9.833333 |      9.833333 |
-| hunt     | colorado  |    4.941177 |      4.941177 |
+| hunt     | colorado  |    5.000000 |      5.000000 |
 | hunt     | gunnison  |    3.250000 |      3.250000 |
 | hunt     | n platte  |    1.666667 |      1.666667 |
-| hunt     | rio       |    6.800000 |      6.800000 |
+| hunt     | rio       |    6.750000 |      6.750000 |
 | hunt     | s platte  |    5.111111 |      5.111111 |
 | hunt     | southwest |    1.333333 |      1.333333 |
 | hunt     | yampa     |    7.500000 |      7.500000 |
-| picnic   | arkansas  |    6.150442 |      5.498706 |
-| picnic   | colorado  |    6.473684 |      5.617128 |
-| picnic   | gunnison  |    2.916667 |      2.916667 |
-| picnic   | metro     |   12.564516 |      8.646153 |
-| picnic   | n platte  |    9.327273 |      4.869153 |
-| picnic   | rio       |    4.392857 |      3.415265 |
-| picnic   | s platte  |    7.404624 |      5.322010 |
-| picnic   | southwest |    4.870968 |      4.870968 |
-| picnic   | yampa     |    2.724138 |      2.724138 |
+| picnic   | arkansas  |    6.200000 |      5.530489 |
+| picnic   | colorado  |    6.838235 |      5.880907 |
+| picnic   | gunnison  |    2.978723 |      2.978723 |
+| picnic   | metro     |   13.153846 |     12.764211 |
+| picnic   | n platte  |   10.204082 |      4.644688 |
+| picnic   | rio       |    4.346154 |      3.293362 |
+| picnic   | s platte  |    7.491018 |      5.333579 |
+| picnic   | southwest |    4.965517 |      4.965517 |
+| picnic   | yampa     |    2.666667 |      2.666667 |
 | snow     | arkansas  |    2.833333 |      2.833333 |
-| snow     | colorado  |    2.461539 |      2.461539 |
+| snow     | colorado  |    2.291667 |      2.291667 |
 | snow     | gunnison  |    2.750000 |      2.750000 |
 | snow     | metro     |    1.500000 |      1.500000 |
 | snow     | n platte  |    2.250000 |      2.250000 |
 | snow     | rio       |    1.000000 |      1.000000 |
-| snow     | southwest |    2.000000 |      2.000000 |
+| snow     | southwest |    1.600000 |      1.146873 |
 | snow     | yampa     |    5.000000 |      5.000000 |
-| trail    | arkansas  |    6.803571 |      6.803571 |
-| trail    | colorado  |    4.940000 |      4.940000 |
-| trail    | gunnison  |    3.942857 |      3.942857 |
-| trail    | metro     |   14.468354 |     13.329904 |
-| trail    | n platte  |   16.257143 |      9.022954 |
-| trail    | rio       |    3.000000 |      3.000000 |
-| trail    | s platte  |    6.377778 |      6.377778 |
-| trail    | southwest |    4.130435 |      3.902793 |
-| trail    | yampa     |    2.083333 |      2.083333 |
-| water    | arkansas  |    4.729167 |      4.703422 |
-| water    | colorado  |    6.412371 |      4.923561 |
-| water    | gunnison  |    3.157895 |      3.157895 |
-| water    | metro     |    8.333333 |      8.333333 |
-| water    | n platte  |    4.884615 |      4.683240 |
-| water    | rio       |    4.000000 |      3.845349 |
-| water    | s platte  |    7.452830 |      7.452830 |
-| water    | southwest |    7.777778 |      7.777778 |
-| water    | yampa     |    3.250000 |      3.250000 |
-| wildlife | arkansas  |    6.015385 |      6.015385 |
-| wildlife | colorado  |   10.989899 |      7.601464 |
-| wildlife | gunnison  |    4.652174 |      4.043478 |
-| wildlife | metro     |   10.192771 |     10.192771 |
-| wildlife | n platte  |    8.725000 |      5.636967 |
+| trail    | arkansas  |    6.745455 |      6.745455 |
+| trail    | colorado  |    4.905263 |      4.862123 |
+| trail    | gunnison  |    3.866667 |      3.866667 |
+| trail    | metro     |   14.763158 |     13.108629 |
+| trail    | n platte  |   15.593750 |      5.619853 |
+| trail    | rio       |    2.684210 |      2.675557 |
+| trail    | s platte  |    6.569767 |      6.569767 |
+| trail    | southwest |    4.285714 |      4.036392 |
+| trail    | yampa     |    2.000000 |      1.633603 |
+| water    | arkansas  |    4.977273 |      4.949187 |
+| water    | colorado  |    6.783132 |      6.162587 |
+| water    | gunnison  |    3.437500 |      3.437500 |
+| water    | metro     |    9.370370 |      9.370370 |
+| water    | n platte  |    4.500000 |      4.500000 |
+| water    | rio       |    4.166667 |      3.383542 |
+| water    | s platte  |    7.312500 |      7.312500 |
+| water    | southwest |    8.600000 |      8.600000 |
+| water    | yampa     |    3.000000 |      3.000000 |
+| wildlife | arkansas  |    5.953125 |      5.953125 |
+| wildlife | colorado  |    6.458824 |      5.351785 |
+| wildlife | gunnison  |    3.534884 |      3.534884 |
+| wildlife | metro     |   10.103896 |     10.103896 |
+| wildlife | n platte  |    8.303030 |      5.451567 |
 | wildlife | rio       |    3.550000 |      3.550000 |
-| wildlife | s platte  |    9.464912 |      6.791565 |
-| wildlife | southwest |    4.857143 |      4.857143 |
-| wildlife | yampa     |    2.333333 |      2.333333 |
+| wildlife | s platte  |    9.229358 |      6.697812 |
+| wildlife | southwest |    5.000000 |      5.000000 |
+| wildlife | yampa     |    2.200000 |      2.200000 |
 
 ``` r
 # clean-up
@@ -330,6 +316,6 @@ sapply(names(svy), function(nm) {
     ##  6 129   trail arkansas Checked             1
     ##  7 131   trail arkansas Unchecked          NA
     ##  8 140   trail arkansas Checked            12
-    ##  9 152   trail arkansas Unchecked          NA
-    ## 10 157   trail arkansas Unchecked          NA
+    ##  9 157   trail arkansas Unchecked          NA
+    ## 10 159   trail arkansas Unchecked          NA
     ## # ... with 22,157 more rows

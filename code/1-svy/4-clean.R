@@ -3,6 +3,7 @@
 # 0. Drop those who checked "none" for activities
 # 1. Set fishing/water activities participation along water
 # 2. Set days to missing where days_water > days
+# 2a. Set basin days to missing that are flagged "high" or "low"
 # 3. Recode those who entered "none" for basins
 #    act$part_water = "No", act$days_water = NA
 # 4. Add act$is_targeted to identify 9 activities of interest for the study
@@ -61,6 +62,41 @@ svy$act <- bind_rows(
 svy$basin <- bind_rows(
     anti_join(svy$basin, high_water_days, by = c("Vrid", "act")),
     semi_join(svy$basin, high_water_days, by = c("Vrid", "act")) %>%
+        mutate(days_water = NA)
+)
+
+# 2a. Basin Days Recoding -------------------------------------------------
+
+# Basin days can be highly inconsistent with water days
+# All basin days where this occurs are set to missing (unreliable)
+
+# - get relevant sums
+days_act <- svy$act %>%
+    filter(!is.na(days_water), days_water != 0)
+days_basin <- svy$basin %>% 
+    group_by(Vrid, act) %>% 
+    summarise(days_water = sum(days_water, na.rm = TRUE)) %>%
+    ungroup() 
+
+# - get difference (basin - days_water)
+basin_diff <- days_act %>%
+    inner_join(days_basin, by = c("Vrid", "act"), suffix = c(".all", ".basin")) %>%
+    mutate(
+        diff = days_water.basin - days_water.all, 
+        ratio = days_water.basin / days_water.all
+) 
+
+# - identify inconsistencies
+flagged <- bind_rows(
+    filter(basin_diff, days_water.basin >= 5, ratio >= 2) %>% mutate(flag = "high"),
+    filter(basin_diff, days_water.all >= 5, ratio <= 0.5) %>% mutate(flag = "low")
+)
+count(flagged, flag)
+
+# - set flagged to missing
+svy$basin <- bind_rows(
+    anti_join(svy$basin, flagged, by = c("Vrid", "act")),
+    semi_join(svy$basin, flagged, by = c("Vrid", "act")) %>%
         mutate(days_water = NA)
 )
 
