@@ -51,6 +51,15 @@ share %>%
     facet_wrap(~ act)
 ```
 
+## Profile Table
+
+```{r}
+select(share, act, basin, share) %>%
+    spread(act, share, fill = 0) %>%
+    knitr::kable()
+```
+
+
 ## Check
 
 ```{r}
@@ -59,12 +68,5 @@ summarise(share, sum(share)) %>%
 share %>%
     select(act, basin, n) %>%
     spread(act, n, fill = 0) %>%
-    knitr::kable(caption = "Sample size")
+    knitr::kable(caption = "Sample sizes")
 ```
-
-## Profile Table
-
-```{r}
-knitr::kable(share)
-```
-
