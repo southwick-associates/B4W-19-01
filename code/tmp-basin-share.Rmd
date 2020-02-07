@@ -1,0 +1,49 @@
+---
+title: "Getting basin share of days"
+date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+output: github_document
+---
+
+```{r setup, message=FALSE, include = FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+svy <- readRDS("../data-work/1-svy/svy-final.rds")
+svy$basin <- svy$basin %>%
+    left_join(select(svy$person, Vrid, weight))
+```
+
+## Calculate Share
+
+```{r}
+share <- svy$basin %>%
+    filter(!is.na(days_water), days_water != 0) %>%
+    group_by(act, basin) %>%
+    summarise(days_water = weighted.mean(days_water, weight), n = n()) %>%
+    mutate(share = days_water / sum(days_water))
+```
+
+## Plot
+
+```{r}
+share %>%
+    ggplot(aes(basin, share)) +
+    geom_col() +
+    coord_flip() +
+    facet_wrap(~ act)
+```
+
+## Sample Size
+
+```{r}
+summarise(share, samp_size = sum(n)) %>% knitr::kable()
+```
+
+## Profile Table
+
+```{r}
+knitr::kable(share)
+```
+
