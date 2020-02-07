@@ -12,20 +12,21 @@ svy$basin <- svy$basin %>%
 ## Calculate Share
 
 ``` r
-# basin rate for activity participants
+# basinRate(AB): basin rate for activity participants
 rate <- svy$basin %>%
     group_by(act, basin, part_water) %>%
     summarise(wtn = sum(weight)) %>%
     mutate(part_rate = wtn / sum(wtn)) %>%
     filter(part_water == "Checked")
 
-# average basin days (for those who visit the basin)
+# avgDays(AB): average basin days (for those who visit the basin)
 avgDays <- svy$basin %>%
     filter(!is.na(days_water), part_water == "Checked") %>%
     group_by(act, basin) %>%
     summarise(avgDays = weighted.mean(days_water, weight), n = n())
 
-# share of activity days for each basin
+# daysShare(AB): share of activity days for each basin
+# - so spend(AB) = spend(A) * daysShare(AB)
 share <- avgDays %>%
     left_join(select(rate, act, basin, part_rate)) %>%
     mutate(
@@ -46,25 +47,49 @@ share %>%
     facet_wrap(~ act)
 ```
 
-![](tmp-basin-share_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](tmp-basin-share_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-## Sample Size
+## Check
 
 ``` r
-summarise(share, samp_size = sum(n), sum(share)) %>% knitr::kable()
+summarise(share, sum(share)) %>%
+    knitr::kable(caption = "Check sums")
 ```
 
-| act      | samp\_size | sum(share) |
-| :------- | ---------: | ---------: |
-| bike     |        178 |          1 |
-| camp     |        401 |          1 |
-| fish     |        318 |          1 |
-| hunt     |         49 |          1 |
-| picnic   |        708 |          1 |
-| snow     |         52 |          1 |
-| trail    |        424 |          1 |
-| water    |        318 |          1 |
-| wildlife |        471 |          1 |
+| act      | sum(share) |
+| :------- | ---------: |
+| bike     |          1 |
+| camp     |          1 |
+| fish     |          1 |
+| hunt     |          1 |
+| picnic   |          1 |
+| snow     |          1 |
+| trail    |          1 |
+| water    |          1 |
+| wildlife |          1 |
+
+Check sums
+
+``` r
+share %>%
+    select(act, basin, n) %>%
+    spread(act, n, fill = 0) %>%
+    knitr::kable(caption = "Sample size")
+```
+
+| basin     | bike | camp | fish | hunt | picnic | snow | trail | water | wildlife |
+| :-------- | ---: | ---: | ---: | ---: | -----: | ---: | ----: | ----: | -------: |
+| arkansas  |   14 |   64 |   61 |    6 |    110 |    6 |    55 |    44 |       64 |
+| colorado  |   42 |   98 |   67 |   16 |    136 |   24 |    95 |    83 |       85 |
+| gunnison  |    0 |   49 |   37 |    4 |     47 |    8 |    30 |    16 |       43 |
+| metro     |   52 |   24 |   31 |    0 |    117 |    2 |    76 |    54 |       77 |
+| n platte  |   12 |   29 |   28 |    3 |     49 |    4 |    32 |    24 |       33 |
+| rio       |    2 |   26 |    0 |    4 |     26 |    2 |    19 |    18 |       20 |
+| s platte  |   48 |   72 |   65 |    9 |    167 |    0 |    86 |    48 |      109 |
+| southwest |    5 |   17 |   12 |    3 |     29 |    5 |    21 |    15 |       20 |
+| yampa     |    3 |   22 |   17 |    4 |     27 |    1 |    10 |    16 |       20 |
+
+Sample size
 
 ## Profile Table
 

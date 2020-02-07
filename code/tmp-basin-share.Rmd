@@ -18,20 +18,21 @@ svy$basin <- svy$basin %>%
 ## Calculate Share
 
 ```{r}
-# basin rate for activity participants
+# basinRate(AB): basin rate for activity participants
 rate <- svy$basin %>%
     group_by(act, basin, part_water) %>%
     summarise(wtn = sum(weight)) %>%
     mutate(part_rate = wtn / sum(wtn)) %>%
     filter(part_water == "Checked")
 
-# average basin days (for those who visit the basin)
+# avgDays(AB): average basin days (for those who visit the basin)
 avgDays <- svy$basin %>%
     filter(!is.na(days_water), part_water == "Checked") %>%
     group_by(act, basin) %>%
     summarise(avgDays = weighted.mean(days_water, weight), n = n())
 
-# share of activity days for each basin
+# daysShare(AB): share of activity days for each basin
+# - so spend(AB) = spend(A) * daysShare(AB)
 share <- avgDays %>%
     left_join(select(rate, act, basin, part_rate)) %>%
     mutate(
@@ -50,10 +51,15 @@ share %>%
     facet_wrap(~ act)
 ```
 
-## Sample Size
+## Check
 
 ```{r}
-summarise(share, samp_size = sum(n), sum(share)) %>% knitr::kable()
+summarise(share, sum(share)) %>%
+    knitr::kable(caption = "Check sums")
+share %>%
+    select(act, basin, n) %>%
+    spread(act, n, fill = 0) %>%
+    knitr::kable(caption = "Sample size")
 ```
 
 ## Profile Table
