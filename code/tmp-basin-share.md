@@ -29,25 +29,25 @@ share %>%
     facet_wrap(~ act)
 ```
 
-![](tmp-basin-share_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](tmp-basin-share_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-## Sample Size
+## Check - sum & sample size
 
 ``` r
-summarise(share, samp_size = sum(n)) %>% knitr::kable()
+summarise(share, samp_size = sum(n), sum(share)) %>% knitr::kable()
 ```
 
-| act      | samp\_size |
-| :------- | ---------: |
-| bike     |        172 |
-| camp     |        381 |
-| fish     |        308 |
-| hunt     |         44 |
-| picnic   |        679 |
-| snow     |         46 |
-| trail    |        398 |
-| water    |        304 |
-| wildlife |        452 |
+| act      | samp\_size | sum(share) |
+| :------- | ---------: | ---------: |
+| bike     |        172 |          1 |
+| camp     |        381 |          1 |
+| fish     |        308 |          1 |
+| hunt     |         44 |          1 |
+| picnic   |        679 |          1 |
+| snow     |         46 |          1 |
+| trail    |        398 |          1 |
+| water    |        304 |          1 |
+| wildlife |        452 |          1 |
 
 ## Profile Table
 

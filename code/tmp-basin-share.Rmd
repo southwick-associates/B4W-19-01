@@ -23,6 +23,8 @@ share <- svy$basin %>%
     group_by(act, basin) %>%
     summarise(days_water = weighted.mean(days_water, weight), n = n()) %>%
     mutate(share = days_water / sum(days_water))
+
+
 ```
 
 ## Plot
@@ -35,10 +37,10 @@ share %>%
     facet_wrap(~ act)
 ```
 
-## Sample Size
+## Check - sum & sample size
 
 ```{r}
-summarise(share, samp_size = sum(n)) %>% knitr::kable()
+summarise(share, samp_size = sum(n), sum(share)) %>% knitr::kable()
 ```
 
 ## Profile Table
