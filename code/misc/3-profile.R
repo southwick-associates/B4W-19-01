@@ -47,7 +47,7 @@ avgSpendPicnic <- spend_picnic %>%
     ) %>%
     left_join(co_prof, by = "act") %>%
     select(act, type, item, avgSpend2018 = avgSpend, Pop, tgtRate, svyRate, 
-           waterRate, waterShare, cpiAdjust)
+           waterRate, avgDays, waterShare, cpiAdjust)
 write_table(avgSpendPicnic, "avgSpendPicnic", outfile)
 
 # Spend2016 ---------------------------------------------------------------

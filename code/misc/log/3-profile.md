@@ -1,7 +1,7 @@
 3-profile.R
 ================
 danka
-Thu Feb 06 17:08:54 2020
+Fri Feb 07 10:40:44 2020
 
 ``` r
 # pull together spending profiles
@@ -83,7 +83,7 @@ avgSpendPicnic <- spend_picnic %>%
     ) %>%
     left_join(co_prof, by = "act") %>%
     select(act, type, item, avgSpend2018 = avgSpend, Pop, tgtRate, svyRate, 
-           waterRate, waterShare, cpiAdjust)
+           waterRate, avgDays, waterShare, cpiAdjust)
 write_table(avgSpendPicnic, "avgSpendPicnic", outfile)
 
 # Spend2016 ---------------------------------------------------------------
