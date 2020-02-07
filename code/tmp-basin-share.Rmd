@@ -21,10 +21,8 @@ svy$basin <- svy$basin %>%
 share <- svy$basin %>%
     filter(!is.na(days_water), days_water != 0) %>%
     group_by(act, basin) %>%
-    summarise(days_water = weighted.mean(days_water, weight), n = n()) %>%
+    summarise(days_water = sum(days_water * weight), n = n()) %>%
     mutate(share = days_water / sum(days_water))
-
-
 ```
 
 ## Plot
