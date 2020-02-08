@@ -69,7 +69,7 @@ get_varlabs <- function(
     df, func = function(x) separate(x, "lab", c("lab1", "lab2"), sep = ":"),
     dim_var = "lab1"
 ) {
-    varlabs <- readr::read_csv("data-work/1-svy/varlabs.csv")
+    varlabs <- readr::read_csv("data/interim/svy-varlabs.csv")
     out <- filter(varlabs, var %in% names(df)) %>%
         func()
     out[[dim_var]] <- clean_labels(out[[dim_var]], dim_var)
@@ -130,7 +130,7 @@ reshape_vars <- function(
 
 # Recode basin values into more useful dimension labels
 recode_basin <- function(df, dim_var = "lab1") {
-    basin_labs <- readxl::read_excel("data/basin_labs.xlsx")
+    basin_labs <- readxl::read_excel("data/raw/svy/basin_labs.xlsx")
     df$basin_long <- ifelse(
         stringr::str_detect(df[[dim_var]], "I did not"), "none", df[[dim_var]]
     )

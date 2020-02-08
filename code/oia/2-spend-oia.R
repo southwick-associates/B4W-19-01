@@ -3,18 +3,19 @@
 library(tidyverse)
 library(readxl)
 source("R/explore.R")
+outfile <- "data/interim/oia-spend2016.rds"
 
 # Load Data ---------------------------------------------------------------
 
 # 2016 OIA total spending
-load("data/oia/results.RDATA") # 3 lists: tot, stat, out
+load("data/raw/oia/results.RDATA") # 3 lists: tot, stat, out
 
 # relation table: to restrict to just those act1 activities targeted for colorado
-acts <- read_excel("data/oia/oia-activities.xlsx", sheet = "co-oia-acts") %>%
+acts <- read_excel("data/raw/oia/oia-activities.xlsx", sheet = "co-oia-acts") %>%
     filter(!is.na(co_activity))
 
 # vehicle relation table: an additional step is needed for vehicle spending
-vehicle_acts <- read_excel("data/oia/Vehicle_act1.xlsx", sheet = "vehicle_act1") %>%
+vehicle_acts <- read_excel("data/raw/oia/Vehicle_act1.xlsx", sheet = "vehicle_act1") %>%
     select(act_vehicle_all, act1)
 
 # Spending by CO activity -------------------------------------------------
@@ -59,7 +60,7 @@ vehicle <- x %>%
 spend <- bind_rows(trip, equip, vehicle) %>%
     rename(act = co_activity) %>%
     mutate(year = 2016)
-saveRDS(spend, "data-work/oia/spend2016.rds")
+saveRDS(spend, outfile)
 
 # these will mostly match the categories reported in OIA 2016 for Colorado
 # - snow will be a bit smaller since it excludes snowmobile

@@ -1,7 +1,7 @@
 1-prep-oia.R
 ================
 danka
-Wed Feb 05 17:15:30 2020
+Sat Feb 08 11:04:41 2020
 
 ``` r
 # prepare OIA survey data for CO analysis
@@ -10,14 +10,31 @@ Wed Feb 05 17:15:30 2020
 # - recode demographics for weighting CO survey data
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+
+    ## v ggplot2 3.0.0     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 source("R/prep-svy.R")
+
+outfile <- "data/interim/oia-co.rds"
+outfile_csv <- "data/interim/oia-co.csv"
 
 # Identify OIA Activities of Interest -------------------------------------
 
 # The CO 2019 survey has a target population of CO residents who engaged
 #  in at least one of 14 activities
-read_excel("data/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
+read_excel("data/raw/svy/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
 ```
 
 | var     | act        | lab1                                                                                                                                    |
@@ -39,7 +56,7 @@ read_excel("data/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
 
 ``` r
 # using an approximate correspondence with the OIA survey activity questions
-oia_activities <- read_excel("data/oia/oia-activities.xlsx", sheet = "oia-screener")
+oia_activities <- read_excel("data/raw/oia/oia-activities.xlsx", sheet = "oia-screener")
 knitr::kable(oia_activities)
 ```
 
@@ -81,7 +98,7 @@ co_activities <- oia_activities %>%
 # Load OIA Svy Data ---------------------------------------------------------------
 
 # pull in OIA 2016 survey data for CO residents
-load("data/oia/svy-wtd.RDATA")
+load("data/raw/oia/svy-wtd.RDATA") # svy_wtd
 
 # data representative of the whole Colorado resident population
 svy_all <- svy_wtd %>%
@@ -261,6 +278,6 @@ glimpse(svy_all)
     ## $ act.mtr.all_13  <fct> Checked, Unchecked, Unchecked, Unchecked, Unch...
 
 ``` r
-saveRDS(svy_all, "data-work/oia/oia-co.rds")
-write_csv(svy_all, "data-work/oia/oia-co.csv")
+saveRDS(svy_all, outfile)
+write_csv(svy_all, outfile_csv)
 ```

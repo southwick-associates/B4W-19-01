@@ -7,14 +7,17 @@ library(tidyverse)
 library(readxl)
 source("R/prep-svy.R")
 
+outfile <- "data/interim/oia-co.rds"
+outfile_csv <- "data/interim/oia-co.csv"
+
 # Identify OIA Activities of Interest -------------------------------------
 
 # The CO 2019 survey has a target population of CO residents who engaged
 #  in at least one of 14 activities
-read_excel("data/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
+read_excel("data/raw/svy/act_labs.xlsx") %>% filter(act != "none") %>% knitr::kable()
 
 # using an approximate correspondence with the OIA survey activity questions
-oia_activities <- read_excel("data/oia/oia-activities.xlsx", sheet = "oia-screener")
+oia_activities <- read_excel("data/raw/oia/oia-activities.xlsx", sheet = "oia-screener")
 knitr::kable(oia_activities)
 
 # variable names from OIA svy that represent activities in CO survey screener
@@ -25,7 +28,7 @@ co_activities <- oia_activities %>%
 # Load OIA Svy Data ---------------------------------------------------------------
 
 # pull in OIA 2016 survey data for CO residents
-load("data/oia/svy-wtd.RDATA")
+load("data/raw/oia/svy-wtd.RDATA") # svy_wtd
 
 # data representative of the whole Colorado resident population
 svy_all <- svy_wtd %>%
@@ -81,5 +84,5 @@ count(svy_all, race_weight, race)
 svy_all <- select(svy_all, Vrid:stwt, in_co_pop:race_weight, grp.nmtr.all_1:act.mtr.all_13)
 glimpse(svy_all)
 
-saveRDS(svy_all, "data-work/oia/oia-co.rds")
-write_csv(svy_all, "data-work/oia/oia-co.csv")
+saveRDS(svy_all, outfile)
+write_csv(svy_all, outfile_csv)
