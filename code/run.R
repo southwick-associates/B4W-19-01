@@ -26,10 +26,10 @@ rmarkdown::render("code/1-svy/flag-summary.Rmd")
 rmarkdown::render("code/1-svy/weight-summary.Rmd")
 rmarkdown::render("code/1-svy/outlier-testing.Rmd")
 
-# Spending: misc. data & final profiles
+# Spending: misc. data & final profiles/estimates
 run_script("code/misc/1-spend-usfws.R") # usfws-spend2016
 run_script("code/misc/2-year-adjust.R") # cpi, pop
-run_script("code/misc/3-profile.R") # pulling profiles together
+run_script("code/misc/3-profile.R") # out/profiles.xlsx
 run_script("code/misc/4-spend.R") # 2019 CO spending along waterways
 
 # Economic contributions
