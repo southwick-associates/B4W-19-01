@@ -6,10 +6,10 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 - CO survey prep: [data/processed/svy-csv.zip](data/processed/svy-csv.zip)
 - OIA-based tgtRate: 77.1%
 - Spending profile data: [out/profiles.xlsx](out/profiles.xlsx)
-- Implan input: TODO: [data/processed/contributions.xlsx](data/processed/contributions.xlsx)
+- Econ contributions: TODO: [data/processed/contributions.xlsx](data/processed/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
-The analysis can be reproduced from `code/run.R`.
+The analysis can be reproduced from [`code/run.R`](code/run.R).
 
 ### Software Environment
 
@@ -52,7 +52,7 @@ Initial work is available here: [code/summary/outlier-testing.md](code/summary/o
 
 ## Secondary Data Sources
 
-Details included in [data](data) README.md. Overview:
+Details included in [data](data)/README.md. Overview:
 
 - OIA 2016 Survey
     + Define the CO survey target population (and subsequent weighting)
