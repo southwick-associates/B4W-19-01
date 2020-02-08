@@ -52,7 +52,7 @@ Initial work is available here: [code/summary/outlier-testing.md](code/summary/o
 
 ## Secondary Data Sources
 
-Details included in [data/README.md](data/README.md). Overview:
+Details included in [data](data) README.md. Overview:
 
 - OIA 2016 Survey
     + Define the CO survey target population (and subsequent weighting)

@@ -4,7 +4,7 @@ library(tidyverse)
 library(readxl)
 
 infile <- "out/profiles.xlsx"
-outfile <- "data/interim/spend2019.rds"
+outfile <- "data/processed/spend2019.rds"
 
 # Calculate ---------------------------------------------------------------
 

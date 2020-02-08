@@ -1,7 +1,7 @@
 4-spend.R
 ================
 danka
-Sat Feb 08 11:18:05 2020
+Sat Feb 08 11:27:07 2020
 
 ``` r
 # 2019 CO spending along waterways
@@ -10,7 +10,7 @@ library(tidyverse)
 library(readxl)
 
 infile <- "out/profiles.xlsx"
-outfile <- "data/interim/spend2019.rds"
+outfile <- "data/processed/spend2019.rds"
 
 # Calculate ---------------------------------------------------------------
 
