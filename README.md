@@ -9,7 +9,7 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 - Econ contributions: TODO: [data/processed/contributions.xlsx](data/processed/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
-The analysis can be reproduced from [`code/run.R`](code/run.).
+The analysis can be reproduced from [`code/run.R`](code/run.R)
 
 ### Software Environment
 
