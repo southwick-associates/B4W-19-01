@@ -2,6 +2,8 @@
 # also filtering out respondents flagged for suspicion
 
 library(tidyverse)
+library(sastats)
+
 source("R/outliers.R")
 source("R/prep-svy.R")
 
