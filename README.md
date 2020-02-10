@@ -9,7 +9,7 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 - Econ contributions: TODO: [data/processed/contributions.xlsx](data/processed/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
-The analysis can be reproduced from [`code/run.R`](code/run.R).
+The analysis can be reproduced from [`code/run.R`](code/run.).
 
 ### Software Environment
 
@@ -31,7 +31,7 @@ The dataset was weighted on 4 demographic variables. For an overview:  [code/sum
 
 ### Respondent Flagging
 
-Flagging was done to (1) assign valid quotas for IPSOS, and (2) remove unreliable respondents. Data is stored in `out/svy`:
+Flagging was done to (1) assign valid quotas for IPSOS, and (2) remove unreliable respondents. Data is stored in [out/svy](out/svy):
 
 - `flags-all.csv`: all flagged values
 - `flags-core.csv`: respondents that didn't make the cut for the IPSOS quota

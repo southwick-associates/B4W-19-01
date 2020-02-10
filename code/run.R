@@ -1,6 +1,6 @@
 # run analysis
 
-source("R/workflow.R")
+source("R/workflow.R") # run_script()
 
 # OIA
 run_script("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
@@ -33,9 +33,13 @@ run_script("code/est/3-profile.R") # out/profiles.xlsx
 run_script("code/est/4-spend.R") # 2019 CO spending along waterways
 
 # TODO: start here
+# - maybe combine the first 3 scripts below into a single "implan-import.R"
+# - probably combine steps 4/5 into one "contributions.R"
+
 # Economic contributions
 run_script("code/implan/1-implan-convert.R")
 run_script("code/implan/2-implan-stage.R")
 run_script("code/implan/3-implan-import.R")
+# run implan externally & save it's output as csvs: data/raw/implan-out/
 run_script("code/implan/4-implan-export.R")
 run_script("code/implan/5-contributions.R") # data/processed/contributions.xlsx
