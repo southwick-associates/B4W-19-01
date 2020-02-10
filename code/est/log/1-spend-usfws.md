@@ -1,26 +1,12 @@
 1-spend-usfws.R
 ================
 danka
-Sat Feb 08 11:13:59 2020
+2020-02-10
 
 ``` r
 # spending for fishing/hunting/wildlife watching
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 library(readxl)
 source("R/explore.R")
 outfile <- "data/interim/usfws-spend2016.rds"

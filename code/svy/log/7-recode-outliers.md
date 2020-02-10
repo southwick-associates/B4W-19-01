@@ -1,27 +1,15 @@
 7-recode-outliers.R
 ================
 danka
-Sat Feb 08 11:07:16 2020
+2020-02-10
 
 ``` r
 # identify days outliers using tukey's rule
 # also filtering out respondents flagged for suspicion
 
 library(tidyverse)
-```
+library(sastats)
 
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 source("R/outliers.R")
 source("R/prep-svy.R")
 
@@ -75,6 +63,19 @@ outlier_pct(x, act) %>% knitr::kable()
 ``` r
 outlier_mean_compare(x, "days", "days_cleaned", act) %>% knitr::kable()
 ```
+
+    ## Warning: funs() is soft deprecated as of dplyr 0.8.0
+    ## Please use a list of either functions or lambdas: 
+    ## 
+    ##   # Simple named list: 
+    ##   list(mean = mean, median = median)
+    ## 
+    ##   # Auto named with `tibble::lst()`: 
+    ##   tibble::lst(mean, median)
+    ## 
+    ##   # Using lambdas
+    ##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+    ## This warning is displayed once per session.
 
 | act      |      days | days\_cleaned |
 | :------- | --------: | ------------: |
@@ -289,20 +290,20 @@ sapply(names(svy), function(nm) {
 
     ## $person
     ## # A tibble: 1,252 x 12
-    ##    Vrid  id    Vstatus sex   race  race_other hispanic age_weight
-    ##    <chr> <chr> <chr>   <fct> <fct> <chr>      <fct>    <fct>     
-    ##  1 98    C205~ Comple~ Fema~ White ""         No       35-54     
-    ##  2 99    C205~ Comple~ Fema~ Other unecessar~ No       35-54     
-    ##  3 100   C205~ Partial <NA>  <NA>  ""         <NA>     <NA>      
-    ##  4 101   C205~ Comple~ Male  White ""         No       35-54     
-    ##  5 102   C205~ Comple~ Fema~ Blac~ ""         No       35-54     
-    ##  6 103   C205~ Comple~ Male  White ""         No       18-34     
-    ##  7 105   C205~ Comple~ Male  White ""         No       18-34     
-    ##  8 106   C205~ Comple~ Fema~ Blac~ ""         No       35-54     
-    ##  9 107   C205~ Comple~ Male  White ""         Yes      35-54     
-    ## 10 108   C205~ Comple~ Fema~ Asian ""         Yes      18-34     
-    ## # ... with 1,242 more rows, and 4 more variables: income_weight <fct>,
-    ## #   race_weight <fct>, flag <dbl>, weight <dbl>
+    ##    Vrid  id    Vstatus sex   race  race_other hispanic age_weight income_weight
+    ##    <chr> <chr> <chr>   <chr> <chr> <chr>      <chr>    <chr>      <chr>        
+    ##  1 98    C205~ Comple~ Fema~ White ""         No       35-54      0-25K        
+    ##  2 99    C205~ Comple~ Fema~ Other "unecessa~ No       35-54      0-25K        
+    ##  3 100   C205~ Partial <NA>  <NA>  ""         <NA>     <NA>       <NA>         
+    ##  4 101   C205~ Comple~ Male  White ""         No       35-54      25-35K       
+    ##  5 102   C205~ Comple~ Fema~ Blac~ ""         No       35-54      50-75K       
+    ##  6 103   C205~ Comple~ Male  White ""         No       18-34      25-35K       
+    ##  7 105   C205~ Comple~ Male  White ""         No       18-34      50-75K       
+    ##  8 106   C205~ Comple~ Fema~ Blac~ ""         No       35-54      35-50K       
+    ##  9 107   C205~ Comple~ Male  White ""         Yes      35-54      25-35K       
+    ## 10 108   C205~ Comple~ Fema~ Asian ""         Yes      18-34      100-150K     
+    ## # ... with 1,242 more rows, and 3 more variables: race_weight <chr>, flag <dbl>,
+    ## #   weight <dbl>
     ## 
     ## $act
     ## # A tibble: 17,528 x 7

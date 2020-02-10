@@ -1,7 +1,7 @@
 2-year-adjust.R
 ================
 danka
-Sat Feb 08 11:14:54 2020
+2020-02-10
 
 ``` r
 # get population and CPI for adjusting spending to 2019
@@ -36,22 +36,22 @@ pop10 <- read_csv("data/external/sc-est2018-agesex-civ.csv") %>%
     ## Parsed with column specification:
     ## cols(
     ##   SUMLEV = col_character(),
-    ##   REGION = col_integer(),
-    ##   DIVISION = col_integer(),
-    ##   STATE = col_integer(),
+    ##   REGION = col_double(),
+    ##   DIVISION = col_double(),
+    ##   STATE = col_double(),
     ##   NAME = col_character(),
-    ##   SEX = col_integer(),
-    ##   AGE = col_integer(),
-    ##   ESTBASE2010_CIV = col_integer(),
-    ##   POPEST2010_CIV = col_integer(),
-    ##   POPEST2011_CIV = col_integer(),
-    ##   POPEST2012_CIV = col_integer(),
-    ##   POPEST2013_CIV = col_integer(),
-    ##   POPEST2014_CIV = col_integer(),
-    ##   POPEST2015_CIV = col_integer(),
-    ##   POPEST2016_CIV = col_integer(),
-    ##   POPEST2017_CIV = col_integer(),
-    ##   POPEST2018_CIV = col_integer()
+    ##   SEX = col_double(),
+    ##   AGE = col_double(),
+    ##   ESTBASE2010_CIV = col_double(),
+    ##   POPEST2010_CIV = col_double(),
+    ##   POPEST2011_CIV = col_double(),
+    ##   POPEST2012_CIV = col_double(),
+    ##   POPEST2013_CIV = col_double(),
+    ##   POPEST2014_CIV = col_double(),
+    ##   POPEST2015_CIV = col_double(),
+    ##   POPEST2016_CIV = col_double(),
+    ##   POPEST2017_CIV = col_double(),
+    ##   POPEST2018_CIV = col_double()
     ## )
 
 ``` r

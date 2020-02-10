@@ -14,7 +14,7 @@ cpi <- read_excel(outfile, sheet = "cpi")
 # CO svy profiles
 co_prof <- read_excel("data/raw/Participation Profiles - B4W coh2o.xlsx", 
            sheet = "StateWide Worksheet", skip = 1, n_max = 9) %>%
-    select(act = X__1, svyRate:tgtRate) %>%
+    select(act = ...1, svyRate:tgtRate) %>%
     mutate(act = str_replace(act, "picni", "picnic") %>% str_replace("wildl", "wildlife"))
 co_prof
 

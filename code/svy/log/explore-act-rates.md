@@ -1,26 +1,12 @@
 explore-act-rates.R
 ================
 danka
-Sat Feb 08 10:56:57 2020
+2020-02-10
 
 ``` r
 # some initial work in activity rates (screener)
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 source("R/prep-svy.R") # functions
 svy <- readRDS("data/interim/svy-reshape.rds")
 
@@ -63,11 +49,23 @@ svy$person <- left_join(svy$person, outdoors, by = "Vrid") %>%
 plot_choice(svy$person, outdoor, sex) + facet_wrap(~ sex)
 ```
 
+    ## Warning: Factor `sex` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+    
+    ## Warning: Factor `sex` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
 ![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 plot_choice(svy$person, outdoor, race) + facet_wrap(~ race)
 ```
+
+    ## Warning: Factor `race` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `race` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
 ![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
@@ -75,11 +73,23 @@ plot_choice(svy$person, outdoor, race) + facet_wrap(~ race)
 plot_choice(svy$person, outdoor, income) + facet_wrap(~ income)
 ```
 
+    ## Warning: Factor `income` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `income` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
 ![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
 ``` r
 plot_choice(svy$person, outdoor, age) + facet_wrap(~ age)
 ```
+
+    ## Warning: Factor `age` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `age` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
 ![](explore-act-rates_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
 

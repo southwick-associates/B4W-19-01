@@ -1,6 +1,6 @@
 Summarize CO survey weighting
 ================
-February 08, 2020
+February 10, 2020
 
 ``` r
 library(tidyverse)
@@ -47,6 +47,27 @@ figs <- list(
     compare_demo(sex, svy_data, pop_data) %>% plot_demo(sex, "Gender"),
     compare_demo(income_weight, svy_data, pop_data) %>% plot_demo(income_weight, "Income")
 )
+```
+
+    Warning: Factor `age_weight` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+
+    Warning: Factor `race_weight` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+    
+    Warning: Factor `race_weight` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+
+    Warning: Factor `sex` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+
+    Warning: Factor `income_weight` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+    
+    Warning: Factor `income_weight` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+
+``` r
 f1 <- cowplot::plot_grid(figs[[1]], figs[[2]], rel_widths = c(0.5, 0.5), ncol = 2)
 f2 <- cowplot::plot_grid(figs[[3]], figs[[4]], rel_widths = c(0.3, 0.7), ncol = 2)
 
@@ -55,7 +76,12 @@ f3 <- compare_demo(sex, svy_data, pop_data) %>%
     plot_demo(sex, "", hide_legend = FALSE) %>%
     get_legend() %>%
     cowplot::plot_grid()
+```
 
+    Warning: Factor `sex` contains implicit NA, consider using
+    `forcats::fct_explicit_na`
+
+``` r
 figs_out <- cowplot::plot_grid(f1, f2, f3, nrow = 3, rel_heights = c(0.4, 0.4, 0.1))
 ggsave("../../out/fig/demorep.png", figs_out, width = 6.5, height = 4.5, units = "in")
 figs_out
@@ -79,10 +105,8 @@ sapply(wt_vars, function(x) weights::wpct(svy_data[[x]]))
     0.4318374 0.5681626 
     
     $income_weight
-         0-25K     25-35K     35-50K     50-75K    75-100K   100-150K 
-    0.15071973 0.12785775 0.14309907 0.20491109 0.15071973 0.15410669 
-         150K+ 
-    0.06858594 
+         0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+    0.15071973 0.12785775 0.14309907 0.20491109 0.15071973 0.15410669 0.06858594 
     
     $race_weight
          White   Hispanic      Other 
@@ -103,10 +127,8 @@ sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
     0.51747 0.48253 
     
     $income_weight
-         0-25K     25-35K     35-50K     50-75K    75-100K   100-150K 
-    0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 
-         150K+ 
-    0.08898309 
+         0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+    0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
     
     $race_weight
          White   Hispanic      Other 

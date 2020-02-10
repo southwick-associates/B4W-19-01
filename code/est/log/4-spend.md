@@ -1,7 +1,7 @@
 4-spend.R
 ================
 danka
-Sat Feb 08 11:27:07 2020
+2020-02-10
 
 ``` r
 # 2019 CO spending along waterways

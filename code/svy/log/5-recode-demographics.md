@@ -1,7 +1,7 @@
 5-recode-demographics.R
 ================
 danka
-Sat Feb 08 10:59:19 2020
+2020-02-10
 
 ``` r
 # recode certain demographic variables for weighting
@@ -21,6 +21,12 @@ svy$person <- svy$person %>% recode_cat(
     newlab = c("18-34", "35-54", "55+")
 )
 ```
+
+    ## Warning: Factor `age_weight` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `age` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
     ## # A tibble: 8 x 3
     ##   age_weight age             n
@@ -43,6 +49,12 @@ svy$person <- svy$person %>% recode_cat(
     newlab = c("0-25K", "25-35K", "35-50K", "50-75K", "75-100K", "100-150K", "150K+")
 )
 ```
+
+    ## Warning: Factor `income_weight` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `income` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
     ## # A tibble: 9 x 3
     ##   income_weight income                   n
@@ -74,22 +86,31 @@ svy$person <- svy$person %>%
 count(svy$person, race_weight, race, hispanic)
 ```
 
+    ## Warning: Factor `race_weight` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `race` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
+    ## Warning: Factor `hispanic` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
     ## # A tibble: 13 x 4
-    ##    race_weight          race                                hispanic     n
-    ##    <fct>                <fct>                               <fct>    <int>
-    ##  1 White                White                               No        1043
-    ##  2 Hispanic             Asian                               Yes          1
-    ##  3 Hispanic             Native Hawaiian or Other Pacific I~ Yes          1
-    ##  4 Hispanic             Black/African-American              Yes          6
-    ##  5 Hispanic             White                               Yes         73
-    ##  6 Hispanic             American Indian/Alaska Native       Yes          5
-    ##  7 Hispanic             Other                               Yes         35
-    ##  8 Not white or Hispan~ Asian                               No          31
-    ##  9 Not white or Hispan~ Native Hawaiian or Other Pacific I~ No           2
-    ## 10 Not white or Hispan~ Black/African-American              No          43
-    ## 11 Not white or Hispan~ American Indian/Alaska Native       No           9
-    ## 12 Not white or Hispan~ Other                               No          15
-    ## 13 <NA>                 <NA>                                <NA>        95
+    ##    race_weight           race                                      hispanic     n
+    ##    <fct>                 <fct>                                     <fct>    <int>
+    ##  1 White                 White                                     No        1043
+    ##  2 Hispanic              Asian                                     Yes          1
+    ##  3 Hispanic              Native Hawaiian or Other Pacific Islander Yes          1
+    ##  4 Hispanic              Black/African-American                    Yes          6
+    ##  5 Hispanic              White                                     Yes         73
+    ##  6 Hispanic              American Indian/Alaska Native             Yes          5
+    ##  7 Hispanic              Other                                     Yes         35
+    ##  8 Not white or Hispanic Asian                                     No          31
+    ##  9 Not white or Hispanic Native Hawaiian or Other Pacific Islander No           2
+    ## 10 Not white or Hispanic Black/African-American                    No          43
+    ## 11 Not white or Hispanic American Indian/Alaska Native             No           9
+    ## 12 Not white or Hispanic Other                                     No          15
+    ## 13 <NA>                  <NA>                                      <NA>        95
 
 ``` r
 # save

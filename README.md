@@ -13,10 +13,7 @@ The analysis can be reproduced from [`code/run.R`](code/run.).
 
 ### Software Environment
 
-This project was setup using package [saproj](https://github.com/southwick-associates/saproj) with a [Southwick-specific R Setup](https://github.com/southwick-associates/R-setup). Two files shouldn't be edited by hand:
-
-- `.Rprofile` specifies R version and project library
-- `snapshot-library.csv` details project-specific packages
+The project was setup using package [renv]() which makes use of `.Rprofile` and `renv` files. You can use `renv::restore()` to set the project library used for this analysis.
 
 ## CO Survey Data
 

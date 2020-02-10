@@ -1254,7 +1254,7 @@ Vrid,act,part,part_water,days,days_water
 1350,trail,Unchecked,,,
 1351,trail,Checked,Yes,2,10
 1352,trail,Unchecked,,,
-1353,trail,Checked,Yes,1e3,150
+1353,trail,Checked,Yes,1000,150
 1354,trail,Checked,Yes,5,5
 1355,trail,Unchecked,,,
 1356,trail,Unchecked,,,
@@ -11915,7 +11915,7 @@ Vrid,act,part,part_water,days,days_water
 1027,wildlife,Unchecked,,,
 1028,wildlife,Unchecked,,,
 1029,wildlife,Unchecked,,,
-1030,wildlife,Checked,No,2e3,
+1030,wildlife,Checked,No,2000,
 1031,wildlife,Unchecked,,,
 1032,wildlife,Checked,No,1,
 1033,wildlife,Checked,Yes,250,50

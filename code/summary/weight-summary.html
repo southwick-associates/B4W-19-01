@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="summarize-co-survey-weighting">Summarize CO survey weighting</h1>
+<p>February 10, 2020</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">source</span>(<span class="st">&quot;../../R/results.R&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">svy_data &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../../data/processed/svy.rds&quot;</span>)<span class="op">$</span>person</a>
+<a class="sourceLine" id="cb1-4" title="4">pop_data &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../../data/interim/oia-co.rds&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(in_co_pop)</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co"># use &quot;Other&quot; for third race category</span></a>
+<a class="sourceLine" id="cb1-7" title="7">recode_race &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb1-8" title="8">    <span class="kw">mutate</span>(df, <span class="dt">race_weight =</span> <span class="kw">recode_factor</span>(race_weight, <span class="st">`</span><span class="dt">Not white or Hispanic</span><span class="st">`</span> =<span class="st"> &quot;Other&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="st">               </span><span class="kw">factor</span>(<span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;White&quot;</span>, <span class="st">&quot;Hispanic&quot;</span>, <span class="st">&quot;Other&quot;</span>)))</a>
+<a class="sourceLine" id="cb1-10" title="10">}</a>
+<a class="sourceLine" id="cb1-11" title="11">svy_data &lt;-<span class="st"> </span><span class="kw">recode_race</span>(svy_data)</a>
+<a class="sourceLine" id="cb1-12" title="12">pop_data &lt;-<span class="st"> </span><span class="kw">recode_race</span>(pop_data)</a></code></pre></div>
+<h2 id="weight-summary">Weight Summary</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">summary</span>(svy_data<span class="op">$</span>weight)</a></code></pre></div>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.3568  0.7408  0.9245  1.0000  1.1662  2.6893 
+</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">sd</span>(svy_data<span class="op">$</span>weight)</a></code></pre></div>
+<pre><code>[1] 0.4317299
+</code></pre>
+<h2 id="representation">Representation</h2>
+<p>There was a small amount of skew between the CO survey (valid) respondents and the target population defined using the OIA survey dataset:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">figs &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="kw">compare_demo</span>(age_weight, svy_data, pop_data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_demo</span>(age_weight, <span class="st">&quot;Age&quot;</span>),</a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="kw">compare_demo</span>(race_weight, svy_data, pop_data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_demo</span>(race_weight, <span class="st">&quot;Race&quot;</span>),</a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="kw">compare_demo</span>(sex, svy_data, pop_data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_demo</span>(sex, <span class="st">&quot;Gender&quot;</span>),</a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="kw">compare_demo</span>(income_weight, svy_data, pop_data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_demo</span>(income_weight, <span class="st">&quot;Income&quot;</span>)</a>
+<a class="sourceLine" id="cb6-6" title="6">)</a></code></pre></div>
+<pre><code>Warning: Factor `age_weight` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+
+Warning: Factor `race_weight` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+
+Warning: Factor `race_weight` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+
+Warning: Factor `sex` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+
+Warning: Factor `income_weight` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+
+Warning: Factor `income_weight` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">f1 &lt;-<span class="st"> </span>cowplot<span class="op">::</span><span class="kw">plot_grid</span>(figs[[<span class="dv">1</span>]], figs[[<span class="dv">2</span>]], <span class="dt">rel_widths =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-2" title="2">f2 &lt;-<span class="st"> </span>cowplot<span class="op">::</span><span class="kw">plot_grid</span>(figs[[<span class="dv">3</span>]], figs[[<span class="dv">4</span>]], <span class="dt">rel_widths =</span> <span class="kw">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>), <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co"># legend</span></a>
+<a class="sourceLine" id="cb8-5" title="5">f3 &lt;-<span class="st"> </span><span class="kw">compare_demo</span>(sex, svy_data, pop_data) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="st">    </span><span class="kw">plot_demo</span>(sex, <span class="st">&quot;&quot;</span>, <span class="dt">hide_legend =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="st">    </span><span class="kw">get_legend</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="st">    </span>cowplot<span class="op">::</span><span class="kw">plot_grid</span>()</a></code></pre></div>
+<pre><code>Warning: Factor `sex` contains implicit NA, consider using
+`forcats::fct_explicit_na`
+</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">figs_out &lt;-<span class="st"> </span>cowplot<span class="op">::</span><span class="kw">plot_grid</span>(f1, f2, f3, <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">rel_heights =</span> <span class="kw">c</span>(<span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>))</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">ggsave</span>(<span class="st">&quot;../../out/fig/demorep.png&quot;</span>, figs_out, <span class="dt">width =</span> <span class="fl">6.5</span>, <span class="dt">height =</span> <span class="fl">4.5</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)</a>
+<a class="sourceLine" id="cb10-3" title="3">figs_out</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<h3 id="survey">Survey</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">wt_vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;age_weight&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;income_weight&quot;</span>, <span class="st">&quot;race_weight&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">sapply</span>(wt_vars, <span class="cf">function</span>(x) weights<span class="op">::</span><span class="kw">wpct</span>(svy_data[[x]]))</a></code></pre></div>
+<pre><code>$age_weight
+    18-34     35-54       55+ 
+0.2766497 0.2944162 0.4289340 
+
+$sex
+     Male    Female 
+0.4318374 0.5681626 
+
+$income_weight
+     0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+0.15071973 0.12785775 0.14309907 0.20491109 0.15071973 0.15410669 0.06858594 
+
+$race_weight
+     White   Hispanic      Other 
+0.82387807 0.09652837 0.07959356 
+</code></pre>
+<h3 id="target-pop">Target Pop</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">sapply</span>(wt_vars, <span class="cf">function</span>(x) weights<span class="op">::</span><span class="kw">wpct</span>(pop_data[[x]], pop_data<span class="op">$</span>stwt))</a></code></pre></div>
+<pre><code>$age_weight
+    18-34     35-54       55+ 
+0.3514503 0.3486601 0.2998896 
+
+$sex
+   Male  Female 
+0.51747 0.48253 
+
+$income_weight
+     0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
+
+$race_weight
+     White   Hispanic      Other 
+0.73559778 0.17719770 0.08720452
+</code></pre>
+
+</body>
+</html>

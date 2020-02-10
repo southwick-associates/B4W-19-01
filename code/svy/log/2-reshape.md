@@ -1,7 +1,7 @@
 2-reshape.R
 ================
 danka
-Sat Feb 08 10:54:14 2020
+2020-02-10
 
 ``` r
 # reshape (i.e., tidy) survey data to facilitate analysis
@@ -13,20 +13,6 @@ Sat Feb 08 10:54:14 2020
 # - basin (person by activity by basin)
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
-
-    ## v ggplot2 3.0.0     v purrr   0.2.5
-    ## v tibble  1.4.2     v dplyr   0.7.6
-    ## v tidyr   0.8.1     v stringr 1.3.1
-    ## v readr   1.1.1     v forcats 0.3.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 source("R/prep-svy.R") # functions
 
 infile <- "data/interim/svy-raw.rds"
@@ -82,8 +68,8 @@ part <- svy %>%
     ##   lab = col_character()
     ## )
 
-    ## Warning: Expected 2 pieces. Additional pieces discarded in 14 rows [2, 3,
-    ## 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].
+    ## Warning: Expected 2 pieces. Additional pieces discarded in 14 rows [2, 3, 4, 5, 6,
+    ## 7, 8, 9, 10, 11, 12, 13, 14, 15].
 
     ## Warning: attributes are not identical across measure variables;
     ## they will be dropped
@@ -92,23 +78,23 @@ part <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 15 x 3
-    ##    act       dim_var                                                     n
-    ##    <chr>     <chr>                                                   <int>
-    ##  1 bike      bicycling or skateboarding (on paved road or off-road)   1373
-    ##  2 camp      camping (rv at campsite, tent campsite, or at a rustic~  1373
-    ##  3 fish      fishing (recreational fly and non-fly)                   1373
-    ##  4 hunt      hunting & shooting (shotgun, rifle, or bow)              1373
-    ##  5 motorcyc~ motorcycling (on-road, off-road)                         1373
-    ##  6 none      i didn't participate in any of these activities          1373
-    ##  7 offroad   off-roading with atvs, 4x4 trucks                        1373
-    ##  8 picnic    picnicking or relaxing                                   1373
-    ##  9 playgrou~ playground activities                                    1373
-    ## 10 snow      snow sports (skiing cross-country/downhill/telemark, s~  1373
-    ## 11 sport     individual competitive sports (golf, tennis)             1373
-    ## 12 team      team competitive sports (softball/baseball, volleyball~  1373
-    ## 13 trail     trail sports (running 3+ miles, day-hiking, backpackin~  1373
-    ## 14 water     water sports (swimming, canoeing, kayaking, rafting, p~  1373
-    ## 15 wildlife  wildlife-watching (viewing, feeding, or photographing ~  1373
+    ##    act       lab1                                                                 n
+    ##    <chr>     <chr>                                                            <int>
+    ##  1 bike      bicycling or skateboarding (on paved road or off-road)            1373
+    ##  2 camp      camping (rv at campsite, tent campsite, or at a rustic lodge)     1373
+    ##  3 fish      fishing (recreational fly and non-fly)                            1373
+    ##  4 hunt      hunting & shooting (shotgun, rifle, or bow)                       1373
+    ##  5 motorcyc~ motorcycling (on-road, off-road)                                  1373
+    ##  6 none      i didn't participate in any of these activities                   1373
+    ##  7 offroad   off-roading with atvs, 4x4 trucks                                 1373
+    ##  8 picnic    picnicking or relaxing                                            1373
+    ##  9 playgrou~ playground activities                                             1373
+    ## 10 snow      snow sports (skiing cross-country/downhill/telemark, snowboardi~  1373
+    ## 11 sport     individual competitive sports (golf, tennis)                      1373
+    ## 12 team      team competitive sports (softball/baseball, volleyball, soccer,~  1373
+    ## 13 trail     trail sports (running 3+ miles, day-hiking, backpacking, climbi~  1373
+    ## 14 water     water sports (swimming, canoeing, kayaking, rafting, paddle-boa~  1373
+    ## 15 wildlife  wildlife-watching (viewing, feeding, or photographing animals, ~  1373
 
 ``` r
 # along water?
@@ -130,15 +116,15 @@ part_water <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 7 x 3
-    ##   act      dim_var                                                       n
-    ##   <chr>    <chr>                                                     <int>
-    ## 1 bike     bicycling or skateboarding (on paved road or off-road)      378
-    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic l~   488
-    ## 3 hunt     hunting & shooting (shotgun, rifle, or bow)                 166
-    ## 4 picnic   picnicking or relaxing                                      910
-    ## 5 snow     snow sports (skiing cross-country/downhill/telemark, sno~   303
-    ## 6 trail    trail sports (running 3+ miles, day-hiking, backpacking,~   428
-    ## 7 wildlife wildlife-watching (viewing, feeding, or photographing an~   514
+    ##   act      lab1                                                                   n
+    ##   <chr>    <chr>                                                              <int>
+    ## 1 bike     bicycling or skateboarding (on paved road or off-road)               378
+    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic lodge)        488
+    ## 3 hunt     hunting & shooting (shotgun, rifle, or bow)                          166
+    ## 4 picnic   picnicking or relaxing                                               910
+    ## 5 snow     snow sports (skiing cross-country/downhill/telemark, snowboarding~   303
+    ## 6 trail    trail sports (running 3+ miles, day-hiking, backpacking, climbing~   428
+    ## 7 wildlife wildlife-watching (viewing, feeding, or photographing animals, bi~   514
 
 ``` r
 # how many days?
@@ -162,17 +148,17 @@ days <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 9 x 3
-    ##   act      dim_var                                                       n
-    ##   <chr>    <chr>                                                     <int>
-    ## 1 bike     bicycling or skateboarding (on paved road or off-road)      396
-    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic l~   500
-    ## 3 fish     fishing (recreational fly and non-fly)                      342
-    ## 4 hunt     hunting & shooting (shotgun, rifle, or bow)                 171
-    ## 5 picnic   picnicking or relaxing                                      948
-    ## 6 snow     snow sports (skiing cross-country/downhill/telemark, sno~   319
-    ## 7 trail    trail sports (running 3+ miles, day-hiking, backpacking,~   447
-    ## 8 water    water sports (swimming, canoeing, kayaking, rafting, pad~   391
-    ## 9 wildlife wildlife-watching (viewing, feeding, or photographing an~   539
+    ##   act      lab1                                                                   n
+    ##   <chr>    <chr>                                                              <int>
+    ## 1 bike     bicycling or skateboarding (on paved road or off-road)               396
+    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic lodge)        500
+    ## 3 fish     fishing (recreational fly and non-fly)                               342
+    ## 4 hunt     hunting & shooting (shotgun, rifle, or bow)                          171
+    ## 5 picnic   picnicking or relaxing                                               948
+    ## 6 snow     snow sports (skiing cross-country/downhill/telemark, snowboarding~   319
+    ## 7 trail    trail sports (running 3+ miles, day-hiking, backpacking, climbing~   447
+    ## 8 water    water sports (swimming, canoeing, kayaking, rafting, paddle-board~   391
+    ## 9 wildlife wildlife-watching (viewing, feeding, or photographing animals, bi~   539
 
 ``` r
 # days along water?
@@ -195,15 +181,15 @@ days_water <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 7 x 3
-    ##   act      dim_var                                                       n
-    ##   <chr>    <chr>                                                     <int>
-    ## 1 bike     bicycling or skateboarding (on paved road or off-road)      216
-    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic l~   375
-    ## 3 hunt     hunting & shooting (shotgun, rifle, or bow)                  70
-    ## 4 picnic   picnicking or relaxing                                      675
-    ## 5 snow     snow sports (skiing cross-country/downhill/telemark, sno~    92
-    ## 6 trail    trail sports (running 3+ miles, day-hiking, backpacking,~   314
-    ## 7 wildlife wildlife-watching (viewing, feeding, or photographing an~   386
+    ##   act      lab1                                                                   n
+    ##   <chr>    <chr>                                                              <int>
+    ## 1 bike     bicycling or skateboarding (on paved road or off-road)               216
+    ## 2 camp     camping (rv at campsite, tent campsite, or at a rustic lodge)        375
+    ## 3 hunt     hunting & shooting (shotgun, rifle, or bow)                           70
+    ## 4 picnic   picnicking or relaxing                                               675
+    ## 5 snow     snow sports (skiing cross-country/downhill/telemark, snowboarding~    92
+    ## 6 trail    trail sports (running 3+ miles, day-hiking, backpacking, climbing~   314
+    ## 7 wildlife wildlife-watching (viewing, feeding, or photographing animals, bi~   386
 
 ``` r
 # combine
@@ -247,7 +233,7 @@ part <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 9 x 3
-    ##   act      dim_var       n
+    ##   act      lab2          n
     ##   <chr>    <chr>     <int>
     ## 1 bike     bicycling  2020
     ## 2 camp     camp       3600
@@ -262,26 +248,26 @@ part <- svy %>%
     ## --- Basin Summary ---
     ## 
     ## # A tibble: 18 x 3
-    ##    basin     dim_var                                                     n
-    ##    <chr>     <chr>                                                   <int>
-    ##  1 arkansas  Arkansas River Basin                                     2686
-    ##  2 colorado  Colorado River Basin                                     2686
-    ##  3 gunnison  Gunnison River Basin                                     2686
-    ##  4 metro     Metro Area                                               2686
-    ##  5 n platte  North Platte River Basin                                 2686
-    ##  6 none      I did not engage in bicycling or skateboarding on or a~   202
-    ##  7 none      I did not engage in camping on or along the water duri~   360
-    ##  8 none      I did not engage in fishing on or along the water duri~   311
-    ##  9 none      I did not engage in hunting and shooting on or along t~    58
-    ## 10 none      I did not engage in picnicking or relaxing on or along~   646
-    ## 11 none      I did not engage in snow sports on or along the water ~    68
-    ## 12 none      I did not engage in trail sports on or along the water~   308
-    ## 13 none      I did not engage in water sports on or along the water~   361
-    ## 14 none      I did not engage in wildlife-watching on or along the ~   372
-    ## 15 rio       Rio Grande River Basin                                   2686
-    ## 16 s platte  South Platte River Basin (excluding Metro Area)          2686
-    ## 17 southwest Southwest River Basin                                    2686
-    ## 18 yampa     Yampa-White River Basin                                  2686
+    ##    basin     lab1                                                                 n
+    ##    <chr>     <chr>                                                            <int>
+    ##  1 arkansas  Arkansas River Basin                                              2686
+    ##  2 colorado  Colorado River Basin                                              2686
+    ##  3 gunnison  Gunnison River Basin                                              2686
+    ##  4 metro     Metro Area                                                        2686
+    ##  5 n platte  North Platte River Basin                                          2686
+    ##  6 none      I did not engage in bicycling or skateboarding on or along the ~   202
+    ##  7 none      I did not engage in camping on or along the water during this t~   360
+    ##  8 none      I did not engage in fishing on or along the water during this t~   311
+    ##  9 none      I did not engage in hunting and shooting on or along the water ~    58
+    ## 10 none      I did not engage in picnicking or relaxing on or along the wate~   646
+    ## 11 none      I did not engage in snow sports on or along the water during th~    68
+    ## 12 none      I did not engage in trail sports on or along the water during t~   308
+    ## 13 none      I did not engage in water sports on or along the water during t~   361
+    ## 14 none      I did not engage in wildlife-watching on or along the water dur~   372
+    ## 15 rio       Rio Grande River Basin                                            2686
+    ## 16 s platte  South Platte River Basin (excluding Metro Area)                   2686
+    ## 17 southwest Southwest River Basin                                             2686
+    ## 18 yampa     Yampa-White River Basin                                           2686
 
 ``` r
 days <- svy %>%
@@ -303,7 +289,7 @@ days <- svy %>%
     ## --- Labelling Summary ---
     ## 
     ## # A tibble: 9 x 3
-    ##   act      dim_var       n
+    ##   act      lab2          n
     ##   <chr>    <chr>     <int>
     ## 1 bike     bicycling   233
     ## 2 camp     camp        483
@@ -318,7 +304,7 @@ days <- svy %>%
     ## --- Basin Summary ---
     ## 
     ## # A tibble: 9 x 3
-    ##   basin     dim_var                                             n
+    ##   basin     lab1                                                n
     ##   <chr>     <chr>                                           <int>
     ## 1 arkansas  Arkansas River Basin                              494
     ## 2 colorado  Colorado River Basin                              798
@@ -350,18 +336,18 @@ sapply(names(out), function(nm) {
 
     ## $person
     ## # A tibble: 1,373 x 9
-    ##    Vrid  id     Vstatus  age    sex   income  race    race_other  hispanic
-    ##    <chr> <chr>  <chr>    <fct>  <fct> <fct>   <fct>   <chr>       <fct>   
-    ##  1 98    C2058~ Complete 45 to~ Fema~ Less t~ White   ""          No      
-    ##  2 99    C2058~ Complete 45 to~ Fema~ Less t~ Other   unecessary~ No      
-    ##  3 100   C2058~ Partial  <NA>   <NA>  <NA>    <NA>    ""          <NA>    
-    ##  4 101   C2058~ Complete 35 to~ Male  $25,00~ White   ""          No      
-    ##  5 102   C2058~ Complete 35 to~ Fema~ $50,00~ Black/~ ""          No      
-    ##  6 103   C2058~ Complete 18 to~ Male  $25,00~ White   ""          No      
-    ##  7 104   C2058~ Complete 55 to~ Fema~ $75,00~ White   ""          No      
-    ##  8 105   C2058~ Complete 25 to~ Male  $50,00~ White   ""          No      
-    ##  9 106   C2058~ Complete 45 to~ Fema~ $35,00~ Black/~ ""          No      
-    ## 10 107   C2058~ Complete 35 to~ Male  $25,00~ White   ""          Yes     
+    ##    Vrid  id      Vstatus  age    sex    income    race       race_other    hispanic
+    ##    <chr> <chr>   <chr>    <chr>  <chr>  <chr>     <chr>      <chr>         <chr>   
+    ##  1 98    C20583~ Complete 45 to~ Female Less tha~ White      ""            No      
+    ##  2 99    C20583~ Complete 45 to~ Female Less tha~ Other      "unecessary ~ No      
+    ##  3 100   C20583~ Partial  <NA>   <NA>   <NA>      <NA>       ""            <NA>    
+    ##  4 101   C20583~ Complete 35 to~ Male   $25,000 ~ White      ""            No      
+    ##  5 102   C20583~ Complete 35 to~ Female $50,000 ~ Black/Afr~ ""            No      
+    ##  6 103   C20583~ Complete 18 to~ Male   $25,000 ~ White      ""            No      
+    ##  7 104   C20583~ Complete 55 to~ Female $75,000 ~ White      ""            No      
+    ##  8 105   C20583~ Complete 25 to~ Male   $50,000 ~ White      ""            No      
+    ##  9 106   C20583~ Complete 45 to~ Female $35,000 ~ Black/Afr~ ""            No      
+    ## 10 107   C20583~ Complete 35 to~ Male   $25,000 ~ White      ""            Yes     
     ## # ... with 1,363 more rows
     ## 
     ## $act
@@ -403,11 +389,17 @@ sapply(names(out), function(nm) {
 plot_choice(person, age)
 ```
 
+    ## Warning: Factor `age` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
 ![](2-reshape_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 plot_choice(person, sex)
 ```
+
+    ## Warning: Factor `sex` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
 ![](2-reshape_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
@@ -415,11 +407,17 @@ plot_choice(person, sex)
 plot_choice(person, income)
 ```
 
+    ## Warning: Factor `income` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
+
 ![](2-reshape_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
 ``` r
 plot_choice(person, race)
 ```
+
+    ## Warning: Factor `race` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
 ![](2-reshape_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
 
@@ -432,6 +430,9 @@ plot_choice(person, race_other)
 ``` r
 plot_choice(person, hispanic)
 ```
+
+    ## Warning: Factor `hispanic` contains implicit NA, consider using
+    ## `forcats::fct_explicit_na`
 
 ![](2-reshape_files/figure-gfm/unnamed-chunk-1-6.png)<!-- -->
 

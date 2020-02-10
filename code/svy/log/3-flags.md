@@ -1,7 +1,7 @@
 3-flags.R
 ================
 danka
-Sat Feb 08 10:57:08 2020
+2020-02-10
 
 ``` r
 # flagging respondents for potentional removal
@@ -62,8 +62,8 @@ c("age", "sex", "income", "race", "hispanic") %>%
 ```
 
     ## # A tibble: 0 x 9
-    ## # ... with 9 variables: Vrid <chr>, id <chr>, Vstatus <chr>, age <fct>,
-    ## #   sex <fct>, income <fct>, race <fct>, race_other <chr>, hispanic <fct>
+    ## # ... with 9 variables: Vrid <chr>, id <chr>, Vstatus <chr>, age <fct>, sex <fct>,
+    ## #   income <fct>, race <fct>, race_other <chr>, hispanic <fct>
 
 ``` r
 # no answer to total days
