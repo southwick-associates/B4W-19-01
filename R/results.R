@@ -18,13 +18,13 @@ get_year_adjust <- function(df, year_reference, year_target) {
 #' stored in the Excel file.
 #' 
 #' - filename: path where the Excel workbook will be written
-initialize_workbook <- function(filename) {
+initialize_workbook <- function(filename, add_readme = TRUE) {
     if (file.exists(filename)) {
         # an existing file won't be overwritten
         return(invisible())
     }
     wb <- openxlsx::createWorkbook()
-    openxlsx::addWorksheet(wb, "README")
+    if (add_readme) openxlsx::addWorksheet(wb, "README")
     openxlsx::saveWorkbook(wb, filename)
 }
 

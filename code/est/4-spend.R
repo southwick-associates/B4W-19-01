@@ -18,7 +18,9 @@ spend <- bind_rows(
     read_excel(infile, "avgSpendPicnic") %>% multiply_vars(), # picnic
     read_excel(infile, "spend") %>% multiply_vars() # others
 ) %>%
-    select(act:item, spend)
+    select(act:item, spend) %>%
+    # for implan categories:
+    mutate(activity_group = ifelse(act %in% c("fish", "hunt", "wildlife"), act, "oia"))
 
 # Save & Summarize --------------------------------------------------------
 
