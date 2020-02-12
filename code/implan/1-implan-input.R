@@ -1,32 +1,31 @@
 # create input file for implan import
-# 1. convert: spending to implan categories
-# 2. stage: apportion to implan sectors
-# 3. input: format to Ind/Comm excel for implan import
+# 1. categories: convert spending items ("food", etc.) to implan categories ("Food - Groceries", etc.)
+# 2. sectors: apportion categories to implan sectors
+# 3. input: format to Ind/Comm excel tabs for implan import
 
 library(tidyverse)
 library(readxl)
 library(openxlsx)
 source("R/implan.R")
 
-xls_template_file <- "data/raw/implan/implan_import_template.xls"
+# need to manually save this ".xlsx" as ".xls" after running this script
 xls_out_file <- "data/processed/implan-import.xlsx"
-# need to manually save as "implan-import.xls" at the end
 
 # Load Data ---------------------------------------------------------------
 
 spend <- readRDS("data/processed/spend2019.rds")
 
 # manually-built implan relation tables
-implan_convert <- read_excel("data/raw/implan/implan-convert.xlsx") %>%
+implan_convert <- read_excel("data/raw/implan/implan-categories.xlsx") %>%
     rename(type = spend_type)
 
 implan_stage <- sapply(unique(spend$activity_group), function(x) {
-    read_excel("data/raw/implan/implan-stage.xlsx", sheet = x) %>%
+    read_excel("data/raw/implan/implan-sectors.xlsx", sheet = x) %>%
         mutate(activity_group = x)
     }, simplify = FALSE
 ) %>% bind_rows()
 
-# 1. Convert: spending to Implan Categories -----------------------------------
+# 1. Convert spending to Implan Categories -----------------------------------
 
 spend_convert <- spend %>%
     left_join(implan_convert, by = c("activity_group", "type", "item")) %>%
@@ -50,7 +49,7 @@ check_share_sums <- function(df, var, ...) {
 }
 check_share_sums(df = spend_convert, var = share, act, type, item)
 
-# 2. Stage: Apportion Implan categories to sectors ----------------------------
+# 2. Apportion Implan categories to sectors ----------------------------
 
 spend_stage <- spend_convert %>%
     left_join(implan_stage, by = c("activity_group", "category")) %>%
@@ -60,7 +59,7 @@ spend_stage <- spend_convert %>%
 check_spend_sums(spend, spend_stage)
 check_share_sums(df = spend_stage, var = portion, act, type, item, category)
 
-# 3. Input: Build spreadsheets for imlan import---------------------------------
+# 3. Build spreadsheets for implan import---------------------------------
 
 # collapse to implan input dimension
 # - 18 worksheets: act (n=9), group (n=2)
@@ -73,6 +72,6 @@ spend_input <- spend_stage %>%
 # write to excel
 for (i in sort(unique(spend$act))) {
     x <- filter(spend_input, act == i)
-    implan_prepare_comm(x) %>% implan_write(xls_out_file, paste0(i, "Comm"))
-    implan_prepare_ind(x) %>% implan_write(xls_out_file, paste0(i, "Ind"))
+    implan_prepare_comm(x, paste0(i, "Comm")) %>% implan_write(xls_out_file)
+    implan_prepare_ind(x, paste0(i, "Ind")) %>% implan_write(xls_out_file)
 }

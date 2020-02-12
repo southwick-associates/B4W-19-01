@@ -34,7 +34,9 @@ run_script("code/est/3-profile.R") # out/profiles.xlsx
 run_script("code/est/4-spend.R") # 2019 CO spending along waterways
 
 # Economic contributions
-run_script("code/implan/1-implan-input.R")
+run_script("code/implan/1-implan-input.R") # "data/processed/implan-import.xlsx"
+# manually save "implan-import.xlsx" as "implan-import.xls"
 # TODO: see if implan import works with the "save as" xls file
+# - test on the old CO model first 
 # run implan externally & save it's output as csvs: data/raw/implan-out/
 run_script("code/implan/2-contributions.R") # data/processed/contributions.xlsx

@@ -41,3 +41,9 @@ From 2016 OIA analysis, stored on O365: [OIA 2016 > Analysis Resources](https://
 - results.RDATA: OIA survey results
 - svy-wtd.RDATA: OIA survey data
 - Vehicle_act1.xlsx: vehicle to activity group relation table
+
+#### implan
+
+- Implan546...xlsx: Reference file for all [2018 Implan sectors](https://implanhelp.zendesk.com/hc/en-us/articles/360034895094-BEA-Benchmark-The-New-546-Sectoring-Scheme)
+- implan-categories.xlsx: Relation table for converting from spending data (by item) to implan spending categories
+- implan-sectors.xlsx: Relation table for converting from implan categories to implan sectors
