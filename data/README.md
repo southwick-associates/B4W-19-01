@@ -47,3 +47,11 @@ From 2016 OIA analysis, stored on O365: [OIA 2016 > Analysis Resources](https://
 - Implan546...xlsx: Reference file for all [2018 Implan sectors](https://implanhelp.zendesk.com/hc/en-us/articles/360034895094-BEA-Benchmark-The-New-546-Sectoring-Scheme)
 - implan-categories.xlsx: Relation table for converting from spending data (by item) to implan spending categories
 - implan-sectors.xlsx: Relation table for converting from implan categories to implan sectors
+
+#### implan_out
+
+Output from Implan scenario results stored in csv; 5 files per activity:
+
+- Impact Summary
+- Fed Tax (direct & total)
+- State/local tax (direct & total)

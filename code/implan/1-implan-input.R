@@ -16,10 +16,10 @@ xls_out_file <- "data/processed/implan-import.xlsx"
 spend <- readRDS("data/processed/spend2019.rds")
 
 # manually-built implan relation tables
-implan_convert <- read_excel("data/raw/implan/implan-categories.xlsx") %>%
+implan_categories <- read_excel("data/raw/implan/implan-categories.xlsx") %>%
     rename(type = spend_type)
 
-implan_stage <- sapply(unique(spend$activity_group), function(x) {
+implan_sectors <- sapply(unique(spend$activity_group), function(x) {
     read_excel("data/raw/implan/implan-sectors.xlsx", sheet = x) %>%
         mutate(activity_group = x)
     }, simplify = FALSE
@@ -28,7 +28,7 @@ implan_stage <- sapply(unique(spend$activity_group), function(x) {
 # 1. Convert spending to Implan Categories -----------------------------------
 
 spend_convert <- spend %>%
-    left_join(implan_convert, by = c("activity_group", "type", "item")) %>%
+    left_join(implan_categories, by = c("activity_group", "type", "item")) %>%
     mutate(spend = share * spend)
 
 # checks - should show TRUE
@@ -52,7 +52,7 @@ check_share_sums(df = spend_convert, var = share, act, type, item)
 # 2. Apportion Implan categories to sectors ----------------------------
 
 spend_stage <- spend_convert %>%
-    left_join(implan_stage, by = c("activity_group", "category")) %>%
+    left_join(implan_sectors, by = c("activity_group", "category")) %>%
     mutate(spend = spend * portion)
 
 # check - should show TRUE
