@@ -6,7 +6,7 @@
 library(tidyverse)
 library(readxl)
 library(openxlsx)
-source("R/implan.R")
+library(implan)
 
 # need to manually save this ".xlsx" as ".xls" after running this script
 xls_out_file <- "data/processed/implan-import.xlsx"

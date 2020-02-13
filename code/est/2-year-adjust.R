@@ -2,6 +2,8 @@
 
 library(tidyverse)
 library(readxl)
+library(implan) # xlsx_write_table()
+
 source("R/results.R")
 outfile <- "out/profiles.xlsx"
 
@@ -44,5 +46,5 @@ ggplot(cpi, aes(year, cpi)) + geom_col() + ggtitle("US CPI in recent years")
 
 # Save --------------------------------------------------------------------
 
-write_table(pop, "pop", outfile)
-write_table(cpi, "cpi", outfile)
+xlsx_write_table(pop, "pop", outfile)
+xlsx_write_table(cpi, "cpi", outfile)

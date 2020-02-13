@@ -2,6 +2,8 @@
 
 library(tidyverse)
 library(readxl)
+library(implan) # xlsx_write_table()
+
 source("R/results.R")
 outfile <- "out/profiles.xlsx"
 
@@ -48,7 +50,7 @@ avgSpendPicnic <- spend_picnic %>%
     left_join(co_prof, by = "act") %>%
     select(act, type, item, avgSpend2018 = avgSpend, Pop, tgtRate, svyRate, 
            waterRate, avgDays, waterShare, cpiAdjust)
-write_table(avgSpendPicnic, "avgSpendPicnic", outfile)
+xlsx_write_table(avgSpendPicnic, "avgSpendPicnic", outfile)
 
 # Spend2016 ---------------------------------------------------------------
 # from OIA & USFWS
@@ -61,7 +63,7 @@ spend <- bind_rows(spend_oia, spend_usfws) %>%
     ) %>%
     left_join(co_prof, by = "act") %>%
     select(act, type, item, spend2016 = spend, waterRate, waterShare, cpiAdjust, popAdjust)
-write_table(spend, "spend", outfile)
+xlsx_write_table(spend, "spend", outfile)
 
 # by activity
 spendAll <- spend %>%
@@ -69,4 +71,4 @@ spendAll <- spend %>%
     mutate(spend2016 = sum(spend2016)) %>%
     summarise_all("first") %>%
     select(-type, -item)
-write_table(spendAll, "spendAll", outfile)
+xlsx_write_table(spendAll, "spendAll", outfile)

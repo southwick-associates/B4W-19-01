@@ -33,7 +33,10 @@ run_script("code/est/2-year-adjust.R") # cpi, pop
 run_script("code/est/3-profile.R") # out/profiles.xlsx
 run_script("code/est/4-spend.R") # 2019 CO spending along waterways
 
+# TODO: update code below to make use of package implan
+
 # Economic contributions
+run_script("code/implan/0-sector-update.R")
 run_script("code/implan/1-implan-input.R") # "data/processed/implan-import.xlsx"
 # manually save "implan-import.xlsx" as "implan-import.xls"
 # TODO: see if implan import works with the "save as" xls file

@@ -88,8 +88,9 @@ sector_update <- function(
 sectors_new <- implan_sectors %>%
     rename(sector536 = sector) %>%
     sector_update(crosswalk, description_new)
+
 # check
-# - "share" should sum to 1 across allocation dimension
+# - "share" should sum to 1 across allocation dimensions
 check_share_sums <- function(df, var, ...) {
     var <- enquo(var) # share variable
     dims <- enquos(...) # allocation dimension

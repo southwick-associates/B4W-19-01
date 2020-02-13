@@ -1,7 +1,7 @@
 6-weight.R
 ================
 danka
-2020-02-10
+2020-02-13
 
 ``` r
 # weight survey using OIA

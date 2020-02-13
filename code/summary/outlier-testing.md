@@ -1,6 +1,6 @@
 Test outlier identification with Tukey’s Rule
 ================
-February 10, 2020
+February 13, 2020
 
 ``` r
 library(tidyverse)
