@@ -13,7 +13,7 @@ The analysis can be reproduced from [`code/run.R`](code/run.R)
 
 ### Software Environment
 
-The project was setup using package [renv](https://rstudio.github.io/renv/index.html) which makes use of `.Rprofile` and `renv` files. You can use `renv::restore()` to set the project library used for this analysis.
+The project was setup using [package renv](https://rstudio.github.io/renv/index.html). Use `renv::restore()` to build the project library used for this analysis.
 
 ## CO Survey Data
 
