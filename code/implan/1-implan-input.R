@@ -22,8 +22,7 @@ check_share_sums(item_to_category, share, activity_group, type, item)
 category_to_sector <- sapply(unique(spending$activity_group), function(x) {
     read_excel("data/processed/category_to_sector546.xlsx", sheet = x) %>%
         mutate(activity_group = x)
-    }, simplify = FALSE
-) %>% 
+    }, simplify = FALSE) %>% 
     bind_rows()
 check_share_sums(category_to_sector, share, activity_group, category)
 
