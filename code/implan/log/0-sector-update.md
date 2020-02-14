@@ -1,7 +1,7 @@
 0-sector-update.R
 ================
 danka
-2020-02-13
+2020-02-14
 
 ``` r
 # update from 536 to 546 implan sectoring
@@ -25,26 +25,26 @@ library(tidyverse)
 library(readxl)
 library(implan)
 
-infile <- "data/raw/implan/implan-sectors536.xlsx"
-outfile <- "data/processed/implan-sectors546.xlsx"
+infile <- "data/raw/implan/category_to_sector536.xlsx"
+outfile <- "data/processed/category_to_sector546.xlsx"
 
 # implan sectoring information
-data("sectors546", "sectors_crosswalk")
+data("sectors546", "sector536_to_sector546")
 
 # sectoring scheme for 536
 acts <- c("oia", "fish", "hunt", "wildlife")
-sector_scheme536 <- acts %>%
+category_to_sector536 <- acts %>%
     sapply(function(x) read_excel(infile, x) %>% mutate(act_group = x), 
            simplify = FALSE) %>%
     bind_rows()
 
 # update sectoring scheme
-sector_scheme546 <- sector_scheme536 %>%
-    sector_update(sectors_crosswalk, sectors546)
+category_to_sector546 <- category_to_sector536 %>%
+    sector_update(sector536_to_sector546, sectors546)
 
 # write to Excel (to preserve original format)
 for (i in acts) {
-    x <- filter(sector_scheme546, act_group == i) %>% select(-act_group)
+    x <- filter(category_to_sector546, act_group == i) %>% select(-act_group)
     xlsx_write_table(x, i, outfile)
 }
 ```

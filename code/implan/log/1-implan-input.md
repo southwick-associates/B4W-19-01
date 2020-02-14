@@ -1,7 +1,7 @@
 1-implan-input.R
 ================
 danka
-2020-02-13
+2020-02-14
 
 ``` r
 # create input file for implan import
@@ -35,23 +35,21 @@ outfile <- "data/processed/implan-import.xlsx"
 
 spending <- readRDS("data/processed/spend2019.rds")
 
-# item-category crosswalk
-categories <- read_excel("data/raw/implan/implan-categories.xlsx") %>%
+item_to_category <- read_excel("data/raw/implan/item_to_category.xlsx") %>%
     rename(type = spend_type)
-check_share_sums(categories, share, activity_group, type, item)
+check_share_sums(item_to_category, share, activity_group, type, item)
 ```
 
     ## [1] TRUE
 
 ``` r
-# category-sector crosswalk
-sector_scheme <- sapply(unique(spending$activity_group), function(x) {
-    read_excel("data/processed/implan-sectors546.xlsx", sheet = x) %>%
+category_to_sector <- sapply(unique(spending$activity_group), function(x) {
+    read_excel("data/processed/category_to_sector546.xlsx", sheet = x) %>%
         mutate(activity_group = x)
     }, simplify = FALSE
 ) %>% 
     bind_rows()
-check_share_sums(sector_scheme, share, activity_group, category)
+check_share_sums(category_to_sector, share, activity_group, category)
 ```
 
     ## [1] TRUE
@@ -61,7 +59,7 @@ check_share_sums(sector_scheme, share, activity_group, category)
 
 # 1. Convert spending to Implan Categories
 spend_category <- spending %>%
-    left_join(categories, by = c("activity_group", "type", "item")) %>%
+    left_join(item_to_category, by = c("activity_group", "type", "item")) %>%
     mutate(spend = share * spend) %>%
     select(-share) # no longer needed
 check_spend_sums(spending, spend_category, spend, activity_group, type, item)
@@ -72,7 +70,7 @@ check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 ``` r
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
-    left_join(sector_scheme, by = c("activity_group", "category")) %>%
+    left_join(category_to_sector, by = c("activity_group", "category")) %>%
     mutate(spend = spend * share) %>%
     select(-share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)

@@ -382,15 +382,15 @@
     },
     "implan": {
       "Package": "implan",
-      "Version": "0.2.0",
+      "Version": "0.3.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "implan",
       "RemoteUsername": "southwick-associates",
       "RemoteRef": "master",
-      "RemoteSha": "09e063214acd492af4076d89d7ddfaf0e6c8d8b9",
-      "Hash": "ef3632eb262b1aeeae0c228b6ff8c2fc"
+      "RemoteSha": "746c7cfbdbd63fb646a6753ae09f0ce56ac51e9f",
+      "Hash": "d973b7961d4178ae98000443d213d661"
     },
     "jomo": {
       "Package": "jomo",
