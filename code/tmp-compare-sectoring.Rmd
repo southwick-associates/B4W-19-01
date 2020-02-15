@@ -1,5 +1,5 @@
 ---
-title: "Find Disagreements in Sectoring Schemes"
+title: "Find Disagreements in Implan (536) Sectoring Schemes"
 date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
 output: github_document
 ---
@@ -18,7 +18,7 @@ library(tidyr)
 
 ## Motivation
 
-Running Implan depends on mapping spending categories ("Food - Groceries", etc.) to implan sectors. We currently store these sectoring schemes (or category-sector crosswalks) separately for different activities (fish, hunt, etc.). For efficiency, we should use a master sector scheme as a single source of truth, and only change it when (1) new categories are needed, or (2) the sectoring scheme needs updating. 
+Running Implan depends on mapping spending categories ("Food - Groceries", etc.) to implan sectors. We currently store these sectoring schemes (or category-sector crosswalks) separately by activity (fish, hunt, etc.). For efficiency, we should consider using a master sector scheme as a single source of truth, and only change it when (1) new categories are needed, or (2) the sectoring scheme needs updating. 
 
 However, there is disagreement between the 4 sectoring schemes examined. As far as I can tell, these shouldn't disagree. If that is the case, then we should fix these discrepancies in a new master sectoring scheme.
 
@@ -103,18 +103,20 @@ master <- bind_rows(ls) %>%
 
 # find disagreement in the master scheme
 dups <- count(master, category, sector) %>% filter(n > 1)
-disagree_combine <- semi_join(master, dups, by = c("category", "sector")) %>%
+disagree_any <- semi_join(master, dups, by = c("category", "sector")) %>%
     arrange(category, sector)
-knitr::kable(disagree_combine)
+knitr::kable(disagree_any)
 ```
 
 
 ```{r}
 # save relevant tables as Excel to share with Tom/Lisa
-# - master
-# - disagree_share
-# - disagree_retail
-# - disagree_group
-# - disagree_combine
+f <- "compare-sectoring.xlsx"
+# xlsx_initialize_workbook(f)
+xlsx_write_table(master, "master", f)
+xlsx_write_table(disagree_share, "disagree_share", f)
+xlsx_write_table(disagree_retail, "disagree_retail", f)
+xlsx_write_table(disagree_group, "disagree_group", f)
+xlsx_write_table(disagree_any, "disagree_any", f)
 ```
 

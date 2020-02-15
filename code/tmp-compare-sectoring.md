@@ -1,4 +1,4 @@
-Find Disagreements in Sectoring Schemes
+Find Disagreements in Implan (536) Sectoring Schemes
 ================
 February 15, 2020
 
@@ -6,11 +6,10 @@ February 15, 2020
 
 Running Implan depends on mapping spending categories (“Food -
 Groceries”, etc.) to implan sectors. We currently store these
-sectoring schemes (or category-sector crosswalks) separately for
-different activities (fish, hunt, etc.). For efficiency, we should use a
-master sector scheme as a single source of truth, and only change it
-when (1) new categories are needed, or (2) the sectoring scheme needs
-updating.
+sectoring schemes (or category-sector crosswalks) separately by activity
+(fish, hunt, etc.). For efficiency, we should consider using a master
+sector scheme as a single source of truth, and only change it when (1)
+new categories are needed, or (2) the sectoring scheme needs updating.
 
 However, there is disagreement between the 4 sectoring schemes examined.
 As far as I can tell, these shouldn’t disagree. If that is the case,
