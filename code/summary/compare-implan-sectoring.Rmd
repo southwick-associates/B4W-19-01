@@ -96,7 +96,7 @@ knitr::kable(disagree_group)
 
 ### Master
 
-Preparing a master table with one row per category-sector. Flag variables are included for disagreement, and corresponding variables are set to missing. The idea is that this table can be easily manually edited to fix discrepancies.
+Preparing a master table with one row per category-sector (saved in Excel). Flag variables are included for disagreement, and corresponding variables are set to missing. The idea is that this table can be easily manually edited to fix discrepancies.
 
 ```{r}
 master <- bind_rows(ls) %>%
@@ -122,7 +122,6 @@ master <- master %>%
 
 master_disagree <- master %>%
     filter(is.na(share) | is.na(retail) | is.na(group))
-knitr::kable(master_disagree)
 ```
 
 ```{r}

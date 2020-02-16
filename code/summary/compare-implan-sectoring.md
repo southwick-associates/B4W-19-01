@@ -102,52 +102,7 @@ activity sectoring schemes:
 
 ### Master
 
-Preparing a master table with one row per category-sector. Flag
-variables are included for disagreement, and corresponding variables are
-set to missing. The idea is that this table can be easily manually
-edited to fix discrepancies.
-
-| group | category                             | sector | description                                                                 |     share | retail | disagree\_share | disagree\_retail | disagree\_group |
-| :---- | :----------------------------------- | -----: | :-------------------------------------------------------------------------- | --------: | :----- | :-------------- | :--------------- | :-------------- |
-|       | Boat launching                       |    496 | Other amusement and recreation industries                                   |           | No     | Y               |                  | Y               |
-|       | Cabins                               |     59 | Construction of new single-family residential structures                    |           | No     | Y               |                  | Y               |
-|       | Cabins                               |    440 | Real estate                                                                 |           | No     | Y               |                  | Y               |
-|       | Dues and contributions               |    516 | Labor and civic services                                                    |           | No     | Y               |                  | Y               |
-|       | Public transportation                |    409 | Rail transportation                                                         |           | No     | Y               |                  | Y               |
-|       | Public transportation                |    410 | Water transportation                                                        |           | No     | Y               |                  | Y               |
-|       | Public transportation                |    412 | Transit and ground passenger transportation                                 |           | No     | Y               |                  | Y               |
-| Ind   | Boat launching                       |    494 | Amusement parks and arcades                                                 |           | No     | Y               |                  |                 |
-| Ind   | Boat mooring                         |    494 | Amusement parks and arcades                                                 |           | No     | Y               |                  |                 |
-| Ind   | Boat mooring                         |    496 | Other amusement and recreation industries                                   |           | No     | Y               |                  |                 |
-| Comm  | Cabins                               |     60 | Newly constructed multifamily residential structures                        |           | No     | Y               |                  |                 |
-| Ind   | Cabins                               |     63 | Maintenance and repair construction of residential structures               |           | No     | Y               |                  |                 |
-| Ind   | Dues and contributions               |    515 | Business and professional associations                                      |           | No     | Y               |                  |                 |
-| Comm  | Pick-ups, campers, motor homes, etc. |    343 | Automobiles                                                                 |           | Yes    | Y               |                  |                 |
-| Comm  | Pick-ups, campers, motor homes, etc. |    344 | Light trucks and utility vehicles                                           |           | Yes    | Y               |                  |                 |
-|       | Food - Groceries                     |     18 | Wild game products, pelts, and furs                                         | 0.0002670 |        |                 | Y                | Y               |
-| Comm  | Boat fuel                            |    159 | Petroleum lubricating oil and grease                                        | 0.0230000 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |     13 | Poultry and egg products                                                    | 0.0049540 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    104 | Spices and extracts                                                         | 0.0080430 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    105 | All other food products                                                     | 0.0202340 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    106 | Bottled and canned soft drinks and water                                    | 0.0500795 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    107 | Manufactured ice                                                            | 0.0026855 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    108 | Beer, ale, malt liquor and nonalcoholic beer                                | 0.0386770 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    109 | Wine and brandies                                                           | 0.0144550 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    396 | Retail services - Motor vehicle and parts dealers                           | 0.0000040 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    397 | Retail services - Furniture and home furnishings stores                     | 0.0000040 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    401 | Retail services - Health and personal care stores                           | 0.0000040 |        |                 | Y                |                 |
-| Comm  | Food - Groceries                     |    402 | Retail services - Gasoline stores                                           | 0.0648680 |        |                 | Y                |                 |
-|       | Equipment rental                     |    443 | General and consumer goods rental except video tapes and discs              | 1.0000000 | No     |                 |                  | Y               |
-|       | Food - Groceries                     |    408 | Air transportation services                                                 | 0.0016640 | No     |                 |                  | Y               |
-|       | Food - Groceries                     |    409 | Rail transportation services                                                | 0.0024070 | No     |                 |                  | Y               |
-|       | Food - Groceries                     |    410 | Water transportation services                                               | 0.0001840 | No     |                 |                  | Y               |
-|       | Food - Groceries                     |    411 | Truck transportation services                                               | 0.0205050 | No     |                 |                  | Y               |
-|       | Land leased for fishing              |    440 | Real estate                                                                 | 1.0000000 | No     |                 |                  | Y               |
-|       | Land purchased for fishing           |    440 | Real estate                                                                 | 1.0000000 | No     |                 |                  | Y               |
-|       | Private land use fees                |    517 | Cooking, housecleaning, gardening, and other services to private households | 1.0000000 | No     |                 |                  | Y               |
-
-    ## Warning in file.create(to[okay]): cannot create file '../../data/interim/
-    ## compare-sectoring.xlsx', reason 'Permission denied'
-    
-    ## Warning in file.create(to[okay]): cannot create file '../../data/interim/
-    ## compare-sectoring.xlsx', reason 'Permission denied'
+Preparing a master table with one row per category-sector (saved in
+Excel). Flag variables are included for disagreement, and corresponding
+variables are set to missing. The idea is that this table can be easily
+manually edited to fix discrepancies.
