@@ -18,7 +18,7 @@ then we should fix these discrepancies in a new master sectoring scheme.
 An output (Excel) master table [is downloadable
 here](https://github.com/southwick-associates/B4W-19-01/blob/master/data/interim/compare-sectoring.xlsx)
 (and R code for this analysis [is stored
-here](https://github.com/southwick-associates/B4W-19-01/blob/master/code/summary/compare-implan-sectoring.md)).
+here](https://github.com/southwick-associates/B4W-19-01/blob/master/code/summary/compare-implan-sectoring.Rmd)).
 
 ### Sectoring Scheme
 
@@ -145,3 +145,9 @@ edited to fix discrepancies.
 |       | Land leased for fishing              |    440 | Real estate                                                                 | 1.0000000 | No     |                 |                  | Y               |
 |       | Land purchased for fishing           |    440 | Real estate                                                                 | 1.0000000 | No     |                 |                  | Y               |
 |       | Private land use fees                |    517 | Cooking, housecleaning, gardening, and other services to private households | 1.0000000 | No     |                 |                  | Y               |
+
+    ## Warning in file.create(to[okay]): cannot create file '../../data/interim/
+    ## compare-sectoring.xlsx', reason 'Permission denied'
+    
+    ## Warning in file.create(to[okay]): cannot create file '../../data/interim/
+    ## compare-sectoring.xlsx', reason 'Permission denied'
