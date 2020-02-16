@@ -1,7 +1,7 @@
 1-implan-input.R
 ================
 danka
-2020-02-14
+2020-02-16
 
 ``` r
 # create input file for implan import

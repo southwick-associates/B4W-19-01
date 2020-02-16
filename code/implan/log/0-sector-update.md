@@ -1,27 +1,13 @@
 0-sector-update.R
 ================
 danka
-2020-02-14
+2020-02-16
 
 ``` r
 # update from 536 to 546 implan sectoring
 # https://implanhelp.zendesk.com/hc/en-us/articles/360034896614-546-Industries-Conversions-Bridges-Construction-2018-Data
 
 library(tidyverse)
-```
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-
-    ## √ ggplot2 3.2.1     √ purrr   0.3.3
-    ## √ tibble  2.1.3     √ dplyr   0.8.4
-    ## √ tidyr   1.0.2     √ stringr 1.4.0
-    ## √ readr   1.3.1     √ forcats 0.4.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 library(readxl)
 library(implan)
 
@@ -45,6 +31,6 @@ category_to_sector546 <- category_to_sector536 %>%
 # write to Excel (to preserve original format)
 for (i in acts) {
     x <- filter(category_to_sector546, act_group == i) %>% select(-act_group)
-    xlsx_write_table(x, i, outfile)
+    xlsx_write_table(x, outfile, i)
 }
 ```

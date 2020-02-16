@@ -1,7 +1,7 @@
 2-contributions.R
 ================
 danka
-2020-02-14
+2020-02-16
 
 ``` r
 # Get contributions from Implan
@@ -23,7 +23,7 @@ econ <- acts %>%
 
 # save
 xlsx_initialize_workbook(outfile)
-xlsx_write_table(econ, "econ", outfile)
+xlsx_write_table(econ, outfile)
 
 # summarize
 plot_metric <- function(df, metric) {

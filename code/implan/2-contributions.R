@@ -17,7 +17,7 @@ econ <- acts %>%
 
 # save
 xlsx_initialize_workbook(outfile)
-xlsx_write_table(econ, "econ", outfile)
+xlsx_write_table(econ, outfile)
 
 # summarize
 plot_metric <- function(df, metric) {

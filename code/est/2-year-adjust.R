@@ -46,5 +46,5 @@ ggplot(cpi, aes(year, cpi)) + geom_col() + ggtitle("US CPI in recent years")
 
 # Save --------------------------------------------------------------------
 
-xlsx_write_table(pop, "pop", outfile)
-xlsx_write_table(cpi, "cpi", outfile)
+xlsx_write_table(pop, outfile)
+xlsx_write_table(cpi, outfile)

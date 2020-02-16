@@ -31,7 +31,9 @@ For reference, a few rows of the hunting sectoring scheme (note the leading 3000
 ```{r}
 # load data
 acts <- c("oia", "hunt", "fish", "wildlife")
-infile <- "../data/raw/implan/category_to_sector536.xlsx"
+infile <- "../../data/raw/implan/category_to_sector536.xlsx"
+outfile <- "../../data/interim/compare-sectoring.xlsx"
+
 ls <- acts %>%
     sapply(function(x) read_excel(infile, sheet = x) %>% mutate(act = x), simplify = FALSE)
 
@@ -71,7 +73,8 @@ show_disagree <- function(var, joinvars = c("category", "sector")) {
         select(category, sector, act, !! var) %>%
         spread(act, !! var)
     semi_join(all_spread, dup, by = joinvars) %>%
-        arrange(category, sector)
+        arrange(category, sector) %>%
+        mutate()
 }
 disagree_share <- show_disagree(share, "category")
 disagree_share %>% knitr::kable()
@@ -80,7 +83,7 @@ disagree_share %>% knitr::kable()
 ### Retail Disagreement
 
 ```{r}
-disagree_retail <- show_disagree(retail)
+disagree_retail <- show_disagree(retail) %>% mutate(disagree_retail = 1)
 knitr::kable(disagree_retail)
 ```
 
@@ -91,32 +94,41 @@ disagree_group <- show_disagree(group)
 knitr::kable(disagree_group)
 ```
 
-### Any Disagreement
+### Master
 
-Shows complete records for those category-sectors which have some disagreement between the 4 activities (i.e., a synthesis of the 3 tables above). Note that the descriptions can disagree with Ind/Comm disagreement.
+Preparing a master table with one row per category-sector. Flag variables are included for disagreement, and corresponding variables are set to missing. The idea is that this table can be easily manually edited to fix discrepancies.
 
 ```{r}
-# create a master sectoring scheme
 master <- bind_rows(ls) %>%
-    select(-act) %>%
-    distinct()
+    group_by(category, sector) %>%
+    slice(1L) %>%
+    ungroup() %>%
+    select(-act)
 
-# find disagreement in the master scheme
-dups <- count(master, category, sector) %>% filter(n > 1)
-disagree_any <- semi_join(master, dups, by = c("category", "sector")) %>%
-    arrange(category, sector)
-knitr::kable(disagree_any)
+update_master <- function(master, df, joinvars = c("category", "sector")) {
+    flag_value <- deparse(substitute(df))
+    varname <- sub(".*_", "", flag_value)
+    x <- semi_join(master, df, by = joinvars)
+    x[[flag_value]] <- "Y"
+    x[[varname]] <- NA
+    bind_rows(x, anti_join(master, df, by = joinvars))
+}
+master <- update_master(master, disagree_share, "category")
+master <- update_master(master, disagree_retail)
+master <- update_master(master, disagree_group)
+
+master <- master %>%
+    arrange(desc(disagree_share), desc(disagree_retail), desc(disagree_group))
+
+master_disagree <- master %>%
+    filter(is.na(share) | is.na(retail) | is.na(group))
+knitr::kable(master_disagree)
 ```
-
 
 ```{r}
 # save relevant tables as Excel to share with Tom/Lisa
-f <- "compare-sectoring.xlsx"
 # xlsx_initialize_workbook(f)
-xlsx_write_table(master, "master", f)
-xlsx_write_table(disagree_share, "disagree_share", f)
-xlsx_write_table(disagree_retail, "disagree_retail", f)
-xlsx_write_table(disagree_group, "disagree_group", f)
-xlsx_write_table(disagree_any, "disagree_any", f)
+xlsx_write_table(master, outfile)
+xlsx_write_table(master_disagree, outfile)
 ```
 

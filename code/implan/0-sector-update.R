@@ -25,5 +25,5 @@ category_to_sector546 <- category_to_sector536 %>%
 # write to Excel (to preserve original format)
 for (i in acts) {
     x <- filter(category_to_sector546, act_group == i) %>% select(-act_group)
-    xlsx_write_table(x, i, outfile)
+    xlsx_write_table(x, outfile, i)
 }
