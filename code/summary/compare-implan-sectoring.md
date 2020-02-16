@@ -15,8 +15,10 @@ However, there is disagreement between the 4 sectoring schemes examined.
 As far as I can tell, these shouldn’t disagree. If that is the case,
 then we should fix these discrepancies in a new master sectoring scheme.
 
-The R code for this analysis [is stored
-here](https://github.com/southwick-associates/B4W-19-01/blob/master/code/tmp-compare-sectoring.Rmd).
+An output (Excel) master table [is downloadable
+here](https://github.com/southwick-associates/B4W-19-01/blob/master/data/interim/compare-sectoring.xlsx)
+(and R code for this analysis [is stored
+here](https://github.com/southwick-associates/B4W-19-01/blob/master/code/summary/compare-implan-sectoring.md)).
 
 ### Sectoring Scheme
 
