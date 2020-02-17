@@ -1,13 +1,13 @@
 Find Disagreements in Implan (536) Sectoring Schemes
 ================
-February 16, 2020
+February 17, 2020
 
 ## Motivation
 
 Running Implan depends on mapping spending categories (“Food -
 Groceries”, etc.) to implan sectors. We currently store these
 sectoring schemes (or category-sector crosswalks) separately by activity
-(fish, hunt, etc.). For efficiency, we should consider using a master
+(fish, hunt, etc.). For efficiency, we might consider using a master
 sector scheme as a single source of truth, and only change it when (1)
 new categories are needed, or (2) the sectoring scheme needs updating.
 
@@ -32,7 +32,7 @@ purposes):
 | Comm  | Ammo      |    258 | Ammunition, except for small arms | 0.6751908 | Yes    | hunt |
 | Comm  | Bass boat |    364 | Boats                             | 1.0000000 | Yes    | hunt |
 
-## Show Duplication
+## Show Disagreement
 
 There are 3 relevant variables that can potentionally disagree between
 activity sectoring schemes:
