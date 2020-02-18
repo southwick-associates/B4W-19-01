@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(implan)
+library(workflow) # xlsx_write_table()
 
 indir <- "data/raw/implan_out"
 outfile <- "data/processed/contributions.xlsx"
@@ -16,7 +17,6 @@ econ <- acts %>%
     bind_rows()
 
 # save
-xlsx_initialize_workbook(outfile)
 xlsx_write_table(econ, outfile)
 
 # summarize

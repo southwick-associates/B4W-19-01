@@ -1,13 +1,14 @@
 2-contributions.R
 ================
 danka
-2020-02-16
+2020-02-18
 
 ``` r
 # Get contributions from Implan
 
 library(tidyverse)
 library(implan)
+library(workflow) # xlsx_write_table()
 
 indir <- "data/raw/implan_out"
 outfile <- "data/processed/contributions.xlsx"
@@ -22,7 +23,6 @@ econ <- acts %>%
     bind_rows()
 
 # save
-xlsx_initialize_workbook(outfile)
 xlsx_write_table(econ, outfile)
 
 # summarize

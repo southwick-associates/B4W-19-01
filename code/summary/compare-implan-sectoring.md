@@ -1,6 +1,6 @@
 Find Disagreements in Implan (536) Sectoring Schemes
 ================
-February 17, 2020
+February 18, 2020
 
 ## Motivation
 

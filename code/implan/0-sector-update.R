@@ -4,6 +4,7 @@
 library(tidyverse)
 library(readxl)
 library(implan)
+library(workflow) # xlsx_write_table()
 
 infile <- "data/raw/implan/category_to_sector536.xlsx"
 outfile <- "data/processed/category_to_sector546.xlsx"

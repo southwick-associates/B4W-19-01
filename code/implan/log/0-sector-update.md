@@ -1,7 +1,7 @@
 0-sector-update.R
 ================
 danka
-2020-02-16
+2020-02-18
 
 ``` r
 # update from 536 to 546 implan sectoring
@@ -10,6 +10,17 @@ danka
 library(tidyverse)
 library(readxl)
 library(implan)
+```
+
+    ## 
+    ## Attaching package: 'implan'
+
+    ## The following objects are masked from 'package:workflow':
+    ## 
+    ##     xlsx_initialize_workbook, xlsx_write_table
+
+``` r
+library(workflow) # xlsx_write_table()
 
 infile <- "data/raw/implan/category_to_sector536.xlsx"
 outfile <- "data/processed/category_to_sector546.xlsx"

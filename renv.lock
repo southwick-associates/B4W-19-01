@@ -894,6 +894,18 @@
       "Repository": "CRAN",
       "Hash": "aa57ed55ff2df4bea697a07df528993d"
     },
+    "workflow": {
+      "Package": "workflow",
+      "Version": "0.1",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "workflow",
+      "RemoteUsername": "southwick-associates",
+      "RemoteRef": "master",
+      "RemoteSha": "bde7aeec4d7ac7e5f3c8ffc2b8a203a30b177c09",
+      "Hash": "15a8a939bc61c095ee7279f2739da873"
+    },
     "xfun": {
       "Package": "xfun",
       "Version": "0.12",

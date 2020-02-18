@@ -14,6 +14,7 @@ library(readxl)
 library(dplyr)
 library(implan)
 library(tidyr)
+library(workflow)
 ```
 
 ## Motivation
@@ -126,7 +127,6 @@ master_disagree <- master %>%
 
 ```{r}
 # save relevant tables as Excel to share with Tom/Lisa
-# xlsx_initialize_workbook(f)
 xlsx_write_table(master, outfile)
 xlsx_write_table(master_disagree, outfile)
 ```

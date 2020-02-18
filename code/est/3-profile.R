@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(readxl)
-library(implan) # xlsx_write_table()
+library(workflow) # xlsx_write_table()
 
 source("R/results.R")
 outfile <- "out/profiles.xlsx"
