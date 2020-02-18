@@ -3,7 +3,9 @@
 # OIA
 workflow::run("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
 workflow::run("code/oia/2-spend-oia.R") # oia-spend2016
+
 # TODO: oia-nonres participation
+workflow::run("code/oia/3-nonres-oia.R")
 
 # CO svy initial testing
 workflow::run("code/svy-test/1-load-raw.R")
@@ -33,7 +35,6 @@ workflow::run("code/est/3-profile.R") # out/profiles.xlsx
 workflow::run("code/est/4-spend.R") # 2019 CO spending along waterways
 
 # Economic contributions
-workflow::run("code/implan/0-sector-update.R")
 workflow::run("code/implan/1-implan-input.R") # "data/processed/implan-import.xlsx"
 # manually save "implan-import.xlsx" as "implan-import.xls"
 # run implan externally & save it's output as csvs: data/raw/implan-out/

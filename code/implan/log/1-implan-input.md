@@ -10,12 +10,26 @@ danka
 # 3. input: format to Ind/Comm excel tabs for implan import
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.2.1     v purrr   0.3.3
+    ## v tibble  2.1.3     v dplyr   0.8.4
+    ## v tidyr   1.0.2     v stringr 1.4.0
+    ## v readr   1.3.1     v forcats 0.4.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 library(openxlsx)
 library(implan)
 
 # need to manually save this ".xlsx" as ".xls" after running this script
-outfile <- "data/processed/implan-import.xlsx"
+outfile <- "data/interim/implan-import.xlsx"
 
 # Load Data ---------------------------------------------------------------
 
@@ -29,12 +43,8 @@ check_share_sums(item_to_category, share, activity_group, type, item)
     ## [1] TRUE
 
 ``` r
-category_to_sector <- sapply(unique(spending$activity_group), function(x) {
-    read_excel("data/processed/category_to_sector546.xlsx", sheet = x) %>%
-        mutate(activity_group = x)
-    }, simplify = FALSE) %>% 
-    bind_rows()
-check_share_sums(category_to_sector, share, activity_group, category)
+data("category_to_sector546", package = "implan") # version 2020-02-18
+check_share_sums(category_to_sector546, share, category)
 ```
 
     ## [1] TRUE
@@ -55,7 +65,7 @@ check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 ``` r
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
-    left_join(category_to_sector, by = c("activity_group", "category")) %>%
+    left_join(category_to_sector546, by = "category") %>%
     mutate(spend = spend * share) %>%
     select(-share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)
