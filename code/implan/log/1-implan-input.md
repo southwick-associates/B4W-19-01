@@ -1,7 +1,7 @@
 1-implan-input.R
 ================
 danka
-2020-02-18
+2020-02-19
 
 ``` r
 # create input file for implan import
@@ -43,8 +43,9 @@ check_share_sums(item_to_category, share, activity_group, type, item)
     ## [1] TRUE
 
 ``` r
-data("category_to_sector546", package = "implan") # version 2020-02-18
-check_share_sums(category_to_sector546, share, category)
+category_to_sector <- read_excel("data/raw/implan/master546-2020-02-19.xlsx", 
+                                 "category_to_sector546")
+check_share_sums(category_to_sector, share, category)
 ```
 
     ## [1] TRUE
@@ -65,7 +66,7 @@ check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 ``` r
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
-    left_join(category_to_sector546, by = "category") %>%
+    left_join(category_to_sector, by = "category") %>%
     mutate(spend = spend * share) %>%
     select(-share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)

@@ -44,9 +44,8 @@ From 2016 OIA analysis, stored on O365: [OIA 2016 > Analysis Resources](https://
 
 #### implan
 
-- Implan546...xlsx: Reference file for all [2018 Implan sectors](https://implanhelp.zendesk.com/hc/en-us/articles/360034895094-BEA-Benchmark-The-New-546-Sectoring-Scheme)
-- implan-categories.xlsx: Relation table for converting from spending data (by item) to implan spending categories
-- implan-sectors.xlsx: Relation table for converting from implan categories to implan sectors
+- item-to-category.xlsx: Relation table for converting from spending data (by item) to implan spending categories
+- master546...xlsx: Relation table for converting from implan categories to implan sectors, from [O365 > Implan](https://southwickassociatesinc.sharepoint.com/sites/Implan)
 
 #### implan_out
 

@@ -19,11 +19,9 @@ item_to_category <- read_excel("data/raw/implan/item_to_category.xlsx") %>%
     rename(type = spend_type)
 check_share_sums(item_to_category, share, activity_group, type, item)
 
-# TODO: test the sectoring scheme & probably update margins
-# - should use excel data here rather than from implan package
-# - may also will want to add a disclaimer in the implan vignette
-data("category_to_sector546", package = "implan") # version 2020-02-18
-check_share_sums(category_to_sector546, share, category)
+category_to_sector <- read_excel("data/raw/implan/master546-2020-02-19.xlsx", 
+                                 "category_to_sector546")
+check_share_sums(category_to_sector, share, category)
 
 # Prepare Implan Input ------------------------------------------------------
 
@@ -36,7 +34,7 @@ check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
-    left_join(category_to_sector546, by = "category") %>%
+    left_join(category_to_sector, by = "category") %>%
     mutate(spend = spend * share) %>%
     select(-share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)
