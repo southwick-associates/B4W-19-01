@@ -5,7 +5,6 @@
 
 library(tidyverse)
 library(readxl)
-library(openxlsx)
 library(implan)
 
 # need to manually save this ".xlsx" as ".xls" after running this script

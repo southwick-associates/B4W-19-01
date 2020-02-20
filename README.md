@@ -1,12 +1,12 @@
 
 ## Overview
 
-For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-01](https://southwickassociatesinc.sharepoint.com/sites/B4W-19-01) project:
+For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-01 project](https://southwickassociatesinc.sharepoint.com/sites/B4W-19-01):
 
 - CO survey prep: [data/processed/svy-csv.zip](data/processed/svy-csv.zip)
 - OIA-based tgtRate: 77.1%
 - Spending profile data: [out/profiles.xlsx](out/profiles.xlsx)
-- Econ contributions: TODO: [data/processed/contributions.xlsx](data/processed/contributions.xlsx)
+- Econ contributions: [data/processed/contributions.xlsx](out/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
 The analysis can be reproduced from [`code/run.R`](code/run.R)

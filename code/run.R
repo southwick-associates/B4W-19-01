@@ -31,6 +31,7 @@ rmarkdown::render("code/summary/compare-implan-sectoring.Rmd")
 # Profiles & spending estimates
 workflow::run("code/est/1-spend-usfws.R") # usfws-spend2016
 workflow::run("code/est/2-year-adjust.R") # cpi, pop
+# TODO: update this with nonresident numbers
 workflow::run("code/est/3-profile.R") # out/profiles.xlsx
 workflow::run("code/est/4-spend.R") # 2019 CO spending along waterways
 

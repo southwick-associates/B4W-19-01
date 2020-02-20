@@ -1,0 +1,10 @@
+Federal Tax Impact by Total,,,,,,,
+InstitutionReceipts,TransferType,Description,Employee Compensation,Proprietor Income,Tax on Production and Imports,Households,Corporations
+11001,15014,Social Ins Tax- Employee Contribution,"$64,852,756","$7,024,694",,,
+11001,15015,Social Ins Tax- Employer Contribution,"$59,800,427",,,,
+11001,15017,TOPI: Excise Taxes,,,"$20,779,317",,
+11001,15018,TOPI: Custom Duty,,,"$10,296,039",,
+11001,15019,TOPI: Fed NonTaxes,,,"$1,608,442",,
+11001,15026,Corporate Profits Tax,,,,,"$11,470,409"
+11001,15027,Personal Tax: Income Tax,,,,"$102,327,363",
+11001,99999,Total Federal Tax,"$124,653,183","$7,024,694","$32,683,799","$102,327,363","$11,470,409"

@@ -5,33 +5,37 @@ library(implan)
 library(workflow) # xlsx_write_table()
 
 indir <- "data/raw/implan_out"
-outfile <- "data/processed/contributions.xlsx"
+outfile <- "out/contributions.xlsx"
 
 # load data
 acts <- list.files(indir)
-econ <- acts %>%
-    sapply(function(x) {
-        output_read_csv(file.path(indir, x)) %>% output_combine() %>%
-            mutate(act = x)
-    }, simplify = FALSE) %>%
+econ <- sapply(acts, function(x) { 
+    output_read_csv(file.path(indir, x)) %>% output_combine() %>% mutate(act = x) 
+}, simplify = FALSE) %>%
     bind_rows()
+
+# get total (all activities)
+econ_total <- econ %>%
+    select(-act) %>%
+    group_by(ImpactType) %>%
+    summarise_all("sum")
 
 # save
 xlsx_write_table(econ, outfile)
+xlsx_write_table(econ_total, outfile)
 
 # summarize
-plot_metric <- function(df, metric) {
-    df %>%
-        filter(ImpactType %in% c("Direct Effect", "Total Effect")) %>%
-        ggplot(aes_string("act", metric)) +
+plot_impact <- function(econ, impact_type) {
+    econ %>%
+        gather(metric, value, Employment:LocalTax) %>%
+        mutate(value_millions = value / 10^6) %>%
+        filter(ImpactType == impact_type) %>%
+        ggplot(aes(act, value_millions)) +
         geom_col() +
-        facet_wrap(~ ImpactType) +
-        ggtitle(metric) +
-        scale_y_continuous(labels = scales::comma)
+        facet_wrap(~ metric, scales = "free_x") +
+        ggtitle(paste(impact_type, "(Millions)")) +
+        scale_y_continuous(labels = scales::comma) +
+        coord_flip()
 }
-plot_metric(econ, "Employment")
-plot_metric(econ, "LaborIncome")
-plot_metric(econ, "TotalValueAdded")
-plot_metric(econ, "Output")
-plot_metric(econ, "FedTax")
-plot_metric(econ, "LocalTax")
+plot_impact(econ, "Direct Effect")
+plot_impact(econ, "Total Effect")

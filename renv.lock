@@ -389,8 +389,8 @@
       "RemoteRepo": "implan",
       "RemoteUsername": "southwick-associates",
       "RemoteRef": "master",
-      "RemoteSha": "0579582c69fef4d87e75987fc138f873b8ab9a5b",
-      "Hash": "7ae343dac83719f03f367b3fb145ea8d"
+      "RemoteSha": "eb453801f8b81d6420508c311bb795759e473b6a",
+      "Hash": "d3691e3ca6f2eb1704884786d3419ee7"
     },
     "jomo": {
       "Package": "jomo",
@@ -896,15 +896,15 @@
     },
     "workflow": {
       "Package": "workflow",
-      "Version": "0.1",
+      "Version": "1.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "workflow",
       "RemoteUsername": "southwick-associates",
       "RemoteRef": "master",
-      "RemoteSha": "bde7aeec4d7ac7e5f3c8ffc2b8a203a30b177c09",
-      "Hash": "15a8a939bc61c095ee7279f2739da873"
+      "RemoteSha": "6590a7d3bed3f33585a9bcc66f32303b39b8381e",
+      "Hash": "c8dc15fd60d2f669759667ed4d33825d"
     },
     "xfun": {
       "Package": "xfun",

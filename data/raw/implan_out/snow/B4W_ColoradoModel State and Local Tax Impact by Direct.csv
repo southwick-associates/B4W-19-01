@@ -1,0 +1,18 @@
+State and Local Tax Impact by Direct,,,,,,,
+InstitutionReceipts,TransferType,Description,Employee Compensation,Proprietor Income,Tax on Production and Imports,Households,Corporations
+12001,15007,Dividends,,,,,"$148,560"
+12001,15014,Social Ins Tax- Employee Contribution,"$449,029",$0,,,
+12001,15015,Social Ins Tax- Employer Contribution,"$791,403",,,,
+12001,15020,TOPI: Sales Tax,,,"$54,849,044",,
+12001,15021,TOPI: Property Tax,,,"$46,379,073",,
+12001,15022,TOPI: Motor Vehicle Lic,,,"$1,393,436",,
+12001,15023,TOPI: Severance Tax,,,"$107,195",,
+12001,15024,TOPI: Other Taxes,,,"$2,984,917",,
+12001,15025,TOPI: S/L NonTaxes,,,"$1,222,455",,
+12001,15026,Corporate Profits Tax,,,,,"$739,937"
+12001,15027,Personal Tax: Income Tax,,,,"$8,243,862",
+12001,15029,Personal Tax: NonTaxes (Fines- Fees,,,,"$1,511,043",
+12001,15030,Personal Tax: Motor Vehicle License,,,,"$497,549",
+12001,15031,Personal Tax: Property Taxes,,,,"$169,886",
+12001,15032,Personal Tax: Other Tax (Fish/Hunt),,,,"$290,637",
+12001,99999,Total State and Local Tax,"$1,240,432",$0,"$106,936,119","$10,712,976","$888,497"
