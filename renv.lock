@@ -681,10 +681,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.9.2",
+      "Version": "0.9.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "5181d5f316c7a6589219866d640e004c"
+      "Hash": "c1a367437d8a8a44bec4b9d4974cb20c"
     },
     "repr": {
       "Package": "repr",
@@ -744,15 +744,15 @@
     },
     "sastats": {
       "Package": "sastats",
-      "Version": "0.2.0",
+      "Version": "0.3.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "sastats",
       "RemoteUsername": "southwick-associates",
       "RemoteRef": "master",
-      "RemoteSha": "999c34351c934707926d308d84662628f751a655",
-      "Hash": "72cdc5f5d5776e7a59a6ee0d496a337c"
+      "RemoteSha": "4cf29e061f24ac444c6a1713108dd505da7f6b78",
+      "Hash": "aa1e390a90b504923a499678f759d31a"
     },
     "scales": {
       "Package": "scales",

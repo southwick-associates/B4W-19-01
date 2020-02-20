@@ -4,8 +4,7 @@
 library(tidyverse)
 library(sastats)
 
-source("R/outliers.R")
-source("R/prep-svy.R")
+source("R/prep-svy.R") # write_list_csv()
 
 outfile <- "data/processed/svy.rds"
 outfile_csv <- "data/processed/svy-csv"
@@ -21,16 +20,17 @@ svy <- lapply(svy, function(df) anti_join(df, suspicious, by = "Vrid"))
 svy$act <- svy$act %>%
     group_by(act) %>%
     mutate(
-        is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier, NA, days)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$act, is_targeted, !is.na(days))
-filter(x, days > 0) %>% outlier_plot() + ggtitle("Overall days outliers")
+x <- filter(svy$act, is_targeted)
+outlier_plot(x, days, act, apply_log = TRUE, show_outliers = TRUE) + 
+    ggtitle("Overall days outliers")
 outlier_pct(x, act) %>% knitr::kable()
-outlier_mean_compare(x, "days", "days_cleaned", act) %>% knitr::kable()
+outlier_mean_compare(x, days, days_cleaned, act) %>% knitr::kable()
 
 # clean-up
 svy$act <- svy$act %>%
@@ -44,16 +44,17 @@ svy$act <- svy$act %>%
 svy$act <- svy$act %>%
     group_by(act) %>%
     mutate(
-        is_outlier = tukey_outlier(days_water, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days_water, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier | is_overall_outlier, NA, days_water)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$act, is_targeted, !is.na(days_water))
-filter(x, days_water > 0) %>% outlier_plot("days_water") + ggtitle("Water days outliers")
+x <- filter(svy$act, is_targeted)
+outlier_plot(x, days_water, act, apply_log = TRUE, show_outliers = TRUE) + 
+    ggtitle("Water days outliers")
 outlier_pct(x, act) %>% knitr::kable()
-outlier_mean_compare(x, "days_water", "days_cleaned", act) %>% knitr::kable()
+outlier_mean_compare(x, days_water, days_cleaned, act) %>% knitr::kable()
 
 # clean-up
 svy$act <- svy$act %>%
@@ -67,19 +68,24 @@ svy$act <- svy$act %>%
 svy$basin <- svy$basin %>%
     group_by(act, basin) %>%
     mutate(
-        is_outlier = tukey_outlier(days_water, ignore_zero = TRUE, apply_log = TRUE),
-        topcode_value = tukey_top(days_water, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days_water, apply_log = TRUE),
+        topcode_value = outlier_tukey_top(days_water, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier, topcode_value, days_water)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$basin, !is.na(days_water))
-filter(x, days_water > 0) %>% outlier_plot("days_water", c("act", "basin")) + 
-    facet_wrap(~ basin)
+x <- filter(svy$basin)
+plts <- sapply(unique(x$basin), function(i) {
+    tmp <- filter(x, basin == i)
+    outlier_plot(tmp, days_water, act, apply_log = TRUE, show_outliers = TRUE) + 
+        ggtitle(i) + theme(legend.position = "none")
+}, simplify = FALSE)
+cowplot::plot_grid(plotlist = plts)
+
 outlier_pct(x, act, basin) %>% ungroup() %>% select(-n, -is_outlier) %>% 
     spread(basin, pct_outliers, fill = 0) %>% knitr::kable()
-outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
+outlier_mean_compare(x, days_water, days_cleaned, act, basin) %>%
     knitr::kable()
 
 # clean-up

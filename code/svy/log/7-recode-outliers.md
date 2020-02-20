@@ -1,7 +1,7 @@
 7-recode-outliers.R
 ================
 danka
-2020-02-13
+2020-02-20
 
 ``` r
 # identify days outliers using tukey's rule
@@ -10,8 +10,7 @@ danka
 library(tidyverse)
 library(sastats)
 
-source("R/outliers.R")
-source("R/prep-svy.R")
+source("R/prep-svy.R") # write_list_csv()
 
 outfile <- "data/processed/svy.rds"
 outfile_csv <- "data/processed/svy-csv"
@@ -33,14 +32,15 @@ svy <- lapply(svy, function(df) anti_join(df, suspicious, by = "Vrid"))
 svy$act <- svy$act %>%
     group_by(act) %>%
     mutate(
-        is_outlier = tukey_outlier(days, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier, NA, days)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$act, is_targeted, !is.na(days))
-filter(x, days > 0) %>% outlier_plot() + ggtitle("Overall days outliers")
+x <- filter(svy$act, is_targeted)
+outlier_plot(x, days, act, apply_log = TRUE, show_outliers = TRUE) + 
+    ggtitle("Overall days outliers")
 ```
 
 ![](7-recode-outliers_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
@@ -51,31 +51,18 @@ outlier_pct(x, act) %>% knitr::kable()
 
 | act      | is\_outlier |  n | pct\_outliers |
 | :------- | :---------- | -: | ------------: |
-| camp     | TRUE        |  6 |     1.3793103 |
-| fish     | TRUE        |  3 |     0.9803922 |
-| hunt     | TRUE        |  1 |     0.6802721 |
-| picnic   | TRUE        | 15 |     1.7241379 |
-| snow     | TRUE        |  2 |     0.7168459 |
-| trail    | TRUE        |  4 |     1.0204082 |
-| water    | TRUE        |  4 |     1.1142061 |
-| wildlife | TRUE        | 13 |     2.6530612 |
+| camp     | TRUE        |  6 |     0.4792332 |
+| fish     | TRUE        |  3 |     0.2396166 |
+| hunt     | TRUE        |  1 |     0.0798722 |
+| picnic   | TRUE        | 15 |     1.1980831 |
+| snow     | TRUE        |  2 |     0.1597444 |
+| trail    | TRUE        |  4 |     0.3194888 |
+| water    | TRUE        |  4 |     0.3194888 |
+| wildlife | TRUE        | 13 |     1.0383387 |
 
 ``` r
-outlier_mean_compare(x, "days", "days_cleaned", act) %>% knitr::kable()
+outlier_mean_compare(x, days, days_cleaned, act) %>% knitr::kable()
 ```
-
-    ## Warning: funs() is soft deprecated as of dplyr 0.8.0
-    ## Please use a list of either functions or lambdas: 
-    ## 
-    ##   # Simple named list: 
-    ##   list(mean = mean, median = median)
-    ## 
-    ##   # Auto named with `tibble::lst()`: 
-    ##   tibble::lst(mean, median)
-    ## 
-    ##   # Using lambdas
-    ##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
-    ## This warning is displayed once per session.
 
 | act      |      days | days\_cleaned |
 | :------- | --------: | ------------: |
@@ -102,14 +89,15 @@ svy$act <- svy$act %>%
 svy$act <- svy$act %>%
     group_by(act) %>%
     mutate(
-        is_outlier = tukey_outlier(days_water, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days_water, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier | is_overall_outlier, NA, days_water)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$act, is_targeted, !is.na(days_water))
-filter(x, days_water > 0) %>% outlier_plot("days_water") + ggtitle("Water days outliers")
+x <- filter(svy$act, is_targeted)
+outlier_plot(x, days_water, act, apply_log = TRUE, show_outliers = TRUE) + 
+    ggtitle("Water days outliers")
 ```
 
 ![](7-recode-outliers_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
@@ -120,16 +108,16 @@ outlier_pct(x, act) %>% knitr::kable()
 
 | act      | is\_outlier | n | pct\_outliers |
 | :------- | :---------- | -: | ------------: |
-| bike     | TRUE        | 4 |     2.2598870 |
-| camp     | TRUE        | 5 |     1.5974441 |
-| fish     | TRUE        | 3 |     1.0000000 |
-| picnic   | TRUE        | 7 |     1.1532125 |
-| trail    | TRUE        | 4 |     1.4492754 |
-| water    | TRUE        | 3 |     0.9493671 |
-| wildlife | TRUE        | 4 |     1.1396011 |
+| bike     | TRUE        | 4 |     0.3194888 |
+| camp     | TRUE        | 5 |     0.3993610 |
+| fish     | TRUE        | 3 |     0.2396166 |
+| picnic   | TRUE        | 7 |     0.5591054 |
+| trail    | TRUE        | 4 |     0.3194888 |
+| water    | TRUE        | 3 |     0.2396166 |
+| wildlife | TRUE        | 4 |     0.3194888 |
 
 ``` r
-outlier_mean_compare(x, "days_water", "days_cleaned", act) %>% knitr::kable()
+outlier_mean_compare(x, days_water, days_cleaned, act) %>% knitr::kable()
 ```
 
 | act      | days\_water | days\_cleaned |
@@ -157,16 +145,20 @@ svy$act <- svy$act %>%
 svy$basin <- svy$basin %>%
     group_by(act, basin) %>%
     mutate(
-        is_outlier = tukey_outlier(days_water, ignore_zero = TRUE, apply_log = TRUE),
-        topcode_value = tukey_top(days_water, ignore_zero = TRUE, apply_log = TRUE),
+        is_outlier = outlier_tukey(days_water, apply_log = TRUE),
+        topcode_value = outlier_tukey_top(days_water, apply_log = TRUE),
         days_cleaned = ifelse(is_outlier, topcode_value, days_water)
     ) %>%
     ungroup()
 
 # summarize
-x <- filter(svy$basin, !is.na(days_water))
-filter(x, days_water > 0) %>% outlier_plot("days_water", c("act", "basin")) + 
-    facet_wrap(~ basin)
+x <- filter(svy$basin)
+plts <- sapply(unique(x$basin), function(i) {
+    tmp <- filter(x, basin == i)
+    outlier_plot(tmp, days_water, act, apply_log = TRUE, show_outliers = TRUE) + 
+        ggtitle(i) + theme(legend.position = "none")
+}, simplify = FALSE)
+cowplot::plot_grid(plotlist = plts)
 ```
 
 ![](7-recode-outliers_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
@@ -176,20 +168,20 @@ outlier_pct(x, act, basin) %>% ungroup() %>% select(-n, -is_outlier) %>%
     spread(basin, pct_outliers, fill = 0) %>% knitr::kable()
 ```
 
-| act      | arkansas | colorado | gunnison |     metro | n platte |        rio | s platte | southwest | yampa |
-| :------- | -------: | -------: | -------: | --------: | -------: | ---------: | -------: | --------: | ----: |
-| bike     | 0.000000 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |  50.000000 | 6.250000 | 20.000000 |     0 |
-| camp     | 3.125000 | 3.061224 | 2.040816 |  4.166667 | 6.896552 |   0.000000 | 5.555556 | 11.764706 |     0 |
-| fish     | 1.639344 | 1.492537 | 2.702703 |  3.225807 | 3.571429 |   0.000000 | 1.538461 |  0.000000 |     0 |
-| hunt     | 0.000000 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |   0.000000 | 0.000000 | 66.666667 |     0 |
-| picnic   | 1.818182 | 1.470588 | 0.000000 |  1.709402 | 4.081633 |   7.692308 | 2.395210 |  0.000000 |     0 |
-| snow     | 0.000000 | 0.000000 | 0.000000 | 50.000000 | 0.000000 | 100.000000 | 0.000000 | 20.000000 |   100 |
-| trail    | 0.000000 | 1.052632 | 0.000000 |  1.315789 | 3.125000 |   5.263158 | 0.000000 |  4.761905 |    20 |
-| water    | 2.272727 | 2.409639 | 0.000000 |  0.000000 | 0.000000 |  11.111111 | 0.000000 |  0.000000 |     0 |
-| wildlife | 0.000000 | 1.176471 | 0.000000 |  0.000000 | 3.030303 |   0.000000 | 5.504587 |  0.000000 |     0 |
+| act      |  arkansas |  colorado |  gunnison |     metro |  n platte |       rio |  s platte | southwest |     yampa |
+| :------- | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: |
+| bike     | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.5714286 | 1.7142857 | 0.5714286 | 0.0000000 |
+| camp     | 0.6153846 | 0.9230769 | 0.3076923 | 0.3076923 | 0.6153846 | 0.0000000 | 1.2307692 | 0.6153846 | 0.0000000 |
+| fish     | 0.3571429 | 0.3571429 | 0.3571429 | 0.3571429 | 0.3571429 | 0.0000000 | 0.3571429 | 0.0000000 | 0.0000000 |
+| hunt     | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 0.0000000 | 4.2553191 | 0.0000000 |
+| picnic   | 0.3284072 | 0.3284072 | 0.0000000 | 0.3284072 | 0.3284072 | 0.3284072 | 0.6568144 | 0.0000000 | 0.0000000 |
+| snow     | 0.0000000 | 0.0000000 | 0.0000000 | 1.7241379 | 0.0000000 | 3.4482759 | 0.0000000 | 1.7241379 | 1.7241379 |
+| trail    | 0.0000000 | 0.3496503 | 0.0000000 | 0.3496503 | 0.3496503 | 0.3496503 | 0.0000000 | 0.3496503 | 0.6993007 |
+| water    | 0.2967359 | 0.5934718 | 0.0000000 | 0.0000000 | 0.0000000 | 0.5934718 | 0.0000000 | 0.0000000 | 0.0000000 |
+| wildlife | 0.0000000 | 0.2890173 | 0.0000000 | 0.0000000 | 0.2890173 | 0.0000000 | 1.7341040 | 0.0000000 | 0.0000000 |
 
 ``` r
-outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
+outlier_mean_compare(x, days_water, days_cleaned, act, basin) %>%
     knitr::kable()
 ```
 
@@ -197,6 +189,7 @@ outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
 | :------- | :-------- | ----------: | ------------: |
 | bike     | arkansas  |   23.714286 |     23.714286 |
 | bike     | colorado  |    9.523810 |      9.523810 |
+| bike     | gunnison  |         NaN |           NaN |
 | bike     | metro     |    9.538462 |      9.538462 |
 | bike     | n platte  |    3.500000 |      3.500000 |
 | bike     | rio       |    5.000000 |      5.000000 |
@@ -217,12 +210,14 @@ outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
 | fish     | gunnison  |    5.108108 |      4.697922 |
 | fish     | metro     |    8.096774 |      5.381784 |
 | fish     | n platte  |    3.428571 |      2.939775 |
+| fish     | rio       |         NaN |           NaN |
 | fish     | s platte  |    6.723077 |      5.889774 |
 | fish     | southwest |    6.250000 |      6.250000 |
 | fish     | yampa     |    6.058823 |      6.058823 |
 | hunt     | arkansas  |    9.833333 |      9.833333 |
 | hunt     | colorado  |    5.000000 |      5.000000 |
 | hunt     | gunnison  |    3.250000 |      3.250000 |
+| hunt     | metro     |         NaN |           NaN |
 | hunt     | n platte  |    1.666667 |      1.666667 |
 | hunt     | rio       |    6.750000 |      6.750000 |
 | hunt     | s platte  |    5.111111 |      5.111111 |
@@ -243,6 +238,7 @@ outlier_mean_compare(x, "days_water", "days_cleaned", act, basin) %>%
 | snow     | metro     |    1.500000 |      1.500000 |
 | snow     | n platte  |    2.250000 |      2.250000 |
 | snow     | rio       |    1.000000 |      1.000000 |
+| snow     | s platte  |         NaN |           NaN |
 | snow     | southwest |    1.600000 |      1.146873 |
 | snow     | yampa     |    5.000000 |      5.000000 |
 | trail    | arkansas  |    6.745455 |      6.745455 |
