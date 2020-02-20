@@ -44,8 +44,7 @@ Days outliers were identified using [Tukey's rule]( https://en.wikipedia.org/wik
 - `act$water_days`: Water-specific days had any outliers set to missing, and were also set to missing where `act$days` was set to missing
 - `basin$water_days`: Basin-level days were top-coded such that outliers were set to the top Tukey fence, to avoid losing data when estimating share of activity for each basin.
 
-For a code summary:  [code/svy/log/7-recode-outliers.md](code/svy/log/7-recode-outliers.md). 
-Initial work is available here: [code/summary/outlier-testing.md](code/summary/outlier-testing.md)
+For a code summary:  [code/svy/log/7-recode-outliers.md](code/svy/log/7-recode-outliers.md).
 
 ## Secondary Data Sources
 
