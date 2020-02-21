@@ -744,15 +744,15 @@
     },
     "sastats": {
       "Package": "sastats",
-      "Version": "0.3.0",
+      "Version": "1.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "sastats",
       "RemoteUsername": "southwick-associates",
       "RemoteRef": "master",
-      "RemoteSha": "4cf29e061f24ac444c6a1713108dd505da7f6b78",
-      "Hash": "aa1e390a90b504923a499678f759d31a"
+      "RemoteSha": "a297639d5f35c456f35b4c68c8044f0c882b4ef1",
+      "Hash": "1e6426fc5747c2544234652af4a9f62f"
     },
     "scales": {
       "Package": "scales",

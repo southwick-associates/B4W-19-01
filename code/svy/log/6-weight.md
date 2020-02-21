@@ -1,20 +1,34 @@
 6-weight.R
 ================
 danka
-2020-02-13
+2020-02-21
 
 ``` r
 # weight survey using OIA
-# - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
-source("R/prep-svy.R")
+```
 
-outfile <- "data/interim/svy-weight.rds"
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.2.1     v purrr   0.3.3
+    ## v tibble  2.1.3     v dplyr   0.8.4
+    ## v tidyr   1.0.2     v stringr 1.4.0
+    ## v readr   1.3.1     v forcats 0.4.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+library(sastats)
+
+outfile_svy <- "data/interim/svy-weight.rds" # updated svy data frame
+outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by rake_weight()
+    
 svy <- readRDS("data/interim/svy-demo.rds")
 oia <- readRDS("data/interim/oia-co.rds")
 flags <- readRDS("data/interim/svy-flag.rds")
-
 
 # Add Flags ---------------------------------------------------------------
 
@@ -63,29 +77,9 @@ pop_data <- oia %>%
     select(Vrid, sex, age_weight, income_weight, race_weight, stwt)
 
 # get population distribution targets
-weight_variable_names <- setdiff(names(pop_data), c("Vrid", "stwt"))
-pop <- weight_variable_names %>%
-    sapply(function(x) weights::wpct(pop_data[[x]], weight = pop_data$stwt))
-pop
-```
+wt_vars <- setdiff(names(pop_data), c("Vrid", "stwt"))
+pop <- sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
 
-    ## $sex
-    ##    Male  Female 
-    ## 0.51747 0.48253 
-    ## 
-    ## $age_weight
-    ##     18-34     35-54       55+ 
-    ## 0.3514503 0.3486601 0.2998896 
-    ## 
-    ## $income_weight
-    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
-    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
-    ## 
-    ## $race_weight
-    ##                 White              Hispanic Not white or Hispanic 
-    ##            0.73559778            0.17719770            0.08720452
-
-``` r
 # Weight ------------------------------------------------------------------
 
 # check: distributions of weighting variables
@@ -111,15 +105,84 @@ sapply(names(pop), function(x) weights::wpct(svy_wt[[x]]))
 
 ``` r
 # run weighting
-svy_wt <- svy_wt %>%
-    est_wts(pop, print_name = "CO survey", idvar = "Vrid") %>%
-    select(Vrid, weight = rake_wt)
+rake_output <- rake_weight(svy_wt, pop, "Vrid")
 ```
 
     ## [1] "Raking converged in 21 iterations"
+
+``` r
+svy_wt <- select(rake_output$svy, Vrid, weight)
+svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
+
+# check - these 2 should match
+sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
+```
+
+    ## $sex
+    ##    Male  Female 
+    ## 0.51747 0.48253 
     ## 
-    ## Weight Summary for CO survey -----------------------------
+    ## $age_weight
+    ##     18-34     35-54       55+ 
+    ## 0.3514503 0.3486601 0.2998896 
     ## 
+    ## $income_weight
+    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
+    ## 
+    ## $race_weight
+    ##                 White              Hispanic Not white or Hispanic 
+    ##            0.73559778            0.17719770            0.08720452
+
+``` r
+pop
+```
+
+    ## $sex
+    ##    Male  Female 
+    ## 0.51747 0.48253 
+    ## 
+    ## $age_weight
+    ##     18-34     35-54       55+ 
+    ## 0.3514503 0.3486601 0.2998896 
+    ## 
+    ## $income_weight
+    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
+    ## 
+    ## $race_weight
+    ##                 White              Hispanic Not white or Hispanic 
+    ##            0.73559778            0.17719770            0.08720452
+
+``` r
+# Save --------------------------------------------------------------------
+
+saveRDS(svy, outfile_svy)
+saveRDS(rake_output, outfile_wt)
+
+# summarize
+glimpse(svy$person)
+```
+
+    ## Observations: 1,359
+    ## Variables: 12
+    ## $ Vrid          <chr> "98", "99", "100", "101", "102", "103", "104", "105", "106", "...
+    ## $ id            <chr> "C2058317730", "C2058321874", "C2058323362", "C2058324714", "C...
+    ## $ Vstatus       <chr> "Complete", "Complete", "Partial", "Complete", "Complete", "Co...
+    ## $ sex           <fct> Female, Female, NA, Male, Female, Male, Female, Male, Female, ...
+    ## $ race          <fct> White, Other, NA, White, Black/African-American, White, White,...
+    ## $ race_other    <chr> "", "unecessary question", "", "", "", "", "", "", "", "", "",...
+    ## $ hispanic      <fct> No, No, NA, No, No, No, No, No, No, Yes, Yes, No, Yes, No, No,...
+    ## $ age_weight    <fct> 35-54, 35-54, NA, 35-54, 35-54, 18-34, 55+, 18-34, 35-54, 35-5...
+    ## $ income_weight <fct> 0-25K, 0-25K, NA, 25-35K, 50-75K, 25-35K, 75-100K, 50-75K, 35-...
+    ## $ race_weight   <fct> White, Not white or Hispanic, NA, White, Not white or Hispanic...
+    ## $ flag          <dbl> 0, 0, 3, 0, 0, 0, 6, 0, 0, 0, 1, 2, 1, 0, 0, 0, 3, 1, 0, 0, 0,...
+    ## $ weight        <dbl> 0.9596845, 1.0899973, 1.0000000, 0.8747500, 0.9641894, 0.92452...
+
+``` r
+summary(rake_output$wts)
+```
+
     ## $convergence
     ## [1] "Complete convergence was achieved after 21 iterations"
     ## 
@@ -140,26 +203,26 @@ svy_wt <- svy_wt %>%
     ## [1] 1.186242
     ## 
     ## $sex
-    ##         Target Unweighted N Unweighted %     Wtd N   Wtd % Change in %
-    ## Male   0.51747          510    0.4318374  611.2812 0.51747  0.08563258
-    ## Female 0.48253          671    0.5681626  570.0070 0.48253 -0.08563258
-    ## Total  1.00000         1181    1.0000000 1181.2882 1.00000  0.17126517
-    ##        Resid. Disc. Orig. Disc.
-    ## Male   0.000000e+00  0.08563258
-    ## Female 5.551115e-17 -0.08563258
-    ## Total  5.551115e-17  0.17126517
+    ##         Target Unweighted N Unweighted %     Wtd N   Wtd % Change in % Resid. Disc.
+    ## Male   0.51747          510    0.4318374  611.2812 0.51747  0.08563258 0.000000e+00
+    ## Female 0.48253          671    0.5681626  570.0070 0.48253 -0.08563258 5.551115e-17
+    ## Total  1.00000         1181    1.0000000 1181.2882 1.00000  0.17126517 5.551115e-17
+    ##        Orig. Disc.
+    ## Male    0.08563258
+    ## Female -0.08563258
+    ## Total   0.17126517
     ## 
     ## $age_weight
-    ##          Target Unweighted N Unweighted %     Wtd N     Wtd % Change in %
-    ## 18-34 0.3514503          327    0.2766497  415.4143 0.3514503  0.07480056
-    ## 35-54 0.3486601          348    0.2944162  412.1162 0.3486601  0.05424384
-    ## 55+   0.2998896          507    0.4289340  354.4695 0.2998896 -0.12904440
-    ## Total 1.0000000         1182    1.0000000 1182.0000 1.0000000  0.25808881
-    ##       Resid. Disc. Orig. Disc.
-    ## 18-34 0.000000e+00  0.07480056
-    ## 35-54 0.000000e+00  0.05424384
-    ## 55+   5.551115e-17 -0.12904440
-    ## Total 5.551115e-17  0.25808881
+    ##          Target Unweighted N Unweighted %     Wtd N     Wtd % Change in % Resid. Disc.
+    ## 18-34 0.3514503          327    0.2766497  415.4143 0.3514503  0.07480056 0.000000e+00
+    ## 35-54 0.3486601          348    0.2944162  412.1162 0.3486601  0.05424384 0.000000e+00
+    ## 55+   0.2998896          507    0.4289340  354.4695 0.2998896 -0.12904440 5.551115e-17
+    ## Total 1.0000000         1182    1.0000000 1182.0000 1.0000000  0.25808881 5.551115e-17
+    ##       Orig. Disc.
+    ## 18-34  0.07480056
+    ## 35-54  0.05424384
+    ## 55+   -0.12904440
+    ## Total  0.25808881
     ## 
     ## $income_weight
     ##              Target Unweighted N Unweighted %     Wtd N      Wtd %  Change in %
@@ -192,58 +255,3 @@ svy_wt <- svy_wt %>%
     ## Hispanic               0.080669338  2.775558e-17  0.080669338
     ## Not white or Hispanic  0.007610952  0.000000e+00  0.007610952
     ## Total                  0.176560579  1.387779e-16  0.176560579
-
-``` r
-svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
-
-# check
-summary(svy$person$weight)
-```
-
-    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-    ##  0.3568  0.7408  0.9245  1.0000  1.1662  2.6893     107
-
-``` r
-sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
-```
-
-    ## $sex
-    ##    Male  Female 
-    ## 0.51747 0.48253 
-    ## 
-    ## $age_weight
-    ##     18-34     35-54       55+ 
-    ## 0.3514503 0.3486601 0.2998896 
-    ## 
-    ## $income_weight
-    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
-    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
-    ## 
-    ## $race_weight
-    ##                 White              Hispanic Not white or Hispanic 
-    ##            0.73559778            0.17719770            0.08720452
-
-``` r
-# Save --------------------------------------------------------------------
-
-glimpse(svy$person)
-```
-
-    ## Observations: 1,359
-    ## Variables: 12
-    ## $ Vrid          <chr> "98", "99", "100", "101", "102", "103", "104", "105", "1...
-    ## $ id            <chr> "C2058317730", "C2058321874", "C2058323362", "C205832471...
-    ## $ Vstatus       <chr> "Complete", "Complete", "Partial", "Complete", "Complete...
-    ## $ sex           <fct> Female, Female, NA, Male, Female, Male, Female, Male, Fe...
-    ## $ race          <fct> White, Other, NA, White, Black/African-American, White, ...
-    ## $ race_other    <chr> "", "unecessary question", "", "", "", "", "", "", "", "...
-    ## $ hispanic      <fct> No, No, NA, No, No, No, No, No, No, Yes, Yes, No, Yes, N...
-    ## $ age_weight    <fct> 35-54, 35-54, NA, 35-54, 35-54, 18-34, 55+, 18-34, 35-54...
-    ## $ income_weight <fct> 0-25K, 0-25K, NA, 25-35K, 50-75K, 25-35K, 75-100K, 50-75...
-    ## $ race_weight   <fct> White, Not white or Hispanic, NA, White, Not white or Hi...
-    ## $ flag          <dbl> 0, 0, 3, 0, 0, 0, 6, 0, 0, 0, 1, 2, 1, 0, 0, 0, 3, 1, 0,...
-    ## $ weight        <dbl> 0.9596845, 1.0899973, 1.0000000, 0.8747500, 0.9641894, 0...
-
-``` r
-saveRDS(svy, outfile)
-```

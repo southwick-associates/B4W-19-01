@@ -6,7 +6,7 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 - CO survey prep: [data/processed/svy-csv.zip](data/processed/svy-csv.zip)
 - OIA-based tgtRate: 77.1%
 - Spending profile data: [out/profiles.xlsx](out/profiles.xlsx)
-- Econ contributions: [data/processed/contributions.xlsx](out/contributions.xlsx)
+- Econ contributions: [out/contributions.xlsx](out/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
 The analysis can be reproduced from [`code/run.R`](code/run.R)
@@ -45,16 +45,3 @@ Days outliers were identified using [Tukey's rule]( https://en.wikipedia.org/wik
 - `basin$water_days`: Basin-level days were top-coded such that outliers were set to the top Tukey fence, to avoid losing data when estimating share of activity for each basin.
 
 For a code summary:  [code/svy/log/7-recode-outliers.md](code/svy/log/7-recode-outliers.md).
-
-## Secondary Data Sources
-
-Details included in [data](data)/README.md. Overview:
-
-- OIA 2016 Survey
-    + Define the CO survey target population (and subsequent weighting)
-    + Outdoor Rec spending in CO
-- USFWS Nat Survey: spending profiles for fish/hunt/wildlife
-- AZ 2018 Survey: picnic spending profile
-- US Census: population estimates
-- Federal Reserve Bank: CPI estimates
-- Implan sectoring for activities of interest (built by Southwick)

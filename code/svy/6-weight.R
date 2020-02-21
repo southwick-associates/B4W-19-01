@@ -1,14 +1,14 @@
 # weight survey using OIA
-# - based on this template: https://github.com/southwick-associates/rakewt-ashs
 
 library(tidyverse)
-source("R/prep-svy.R")
+library(sastats)
 
-outfile <- "data/interim/svy-weight.rds"
+outfile_svy <- "data/interim/svy-weight.rds" # updated svy data frame
+outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by rake_weight()
+    
 svy <- readRDS("data/interim/svy-demo.rds")
 oia <- readRDS("data/interim/oia-co.rds")
 flags <- readRDS("data/interim/svy-flag.rds")
-
 
 # Add Flags ---------------------------------------------------------------
 
@@ -29,10 +29,8 @@ pop_data <- oia %>%
     select(Vrid, sex, age_weight, income_weight, race_weight, stwt)
 
 # get population distribution targets
-weight_variable_names <- setdiff(names(pop_data), c("Vrid", "stwt"))
-pop <- weight_variable_names %>%
-    sapply(function(x) weights::wpct(pop_data[[x]], weight = pop_data$stwt))
-pop
+wt_vars <- setdiff(names(pop_data), c("Vrid", "stwt"))
+pop <- sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
 
 # Weight ------------------------------------------------------------------
 
@@ -41,16 +39,19 @@ pop
 sapply(names(pop), function(x) weights::wpct(svy_wt[[x]]))
 
 # run weighting
-svy_wt <- svy_wt %>%
-    est_wts(pop, print_name = "CO survey", idvar = "Vrid") %>%
-    select(Vrid, weight = rake_wt)
+rake_output <- rake_weight(svy_wt, pop, "Vrid")
+svy_wt <- select(rake_output$svy, Vrid, weight)
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
-# check
-summary(svy$person$weight)
+# check - these 2 should match
 sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
+pop
 
 # Save --------------------------------------------------------------------
 
+saveRDS(svy, outfile_svy)
+saveRDS(rake_output, outfile_wt)
+
+# summarize
 glimpse(svy$person)
-saveRDS(svy, outfile)
+summary(rake_output$wts)
