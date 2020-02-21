@@ -4,7 +4,7 @@ library(tidyverse)
 library(sastats)
 
 outfile_svy <- "data/interim/svy-weight.rds" # updated svy data frame
-outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by rake_weight()
+outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by sastats::rake_weight()
     
 svy <- readRDS("data/interim/svy-demo.rds")
 oia <- readRDS("data/interim/oia-co.rds")
@@ -31,6 +31,7 @@ pop_data <- oia %>%
 # get population distribution targets
 wt_vars <- setdiff(names(pop_data), c("Vrid", "stwt"))
 pop <- sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
+pop
 
 # Weight ------------------------------------------------------------------
 
@@ -43,9 +44,9 @@ rake_output <- rake_weight(svy_wt, pop, "Vrid")
 svy_wt <- select(rake_output$svy, Vrid, weight)
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
-# check - these 2 should match
-sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
-pop
+# check - should show TRUE
+x <- sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
+all.equal(x, pop)
 
 # Save --------------------------------------------------------------------
 

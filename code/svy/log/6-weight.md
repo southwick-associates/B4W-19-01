@@ -24,7 +24,7 @@ library(tidyverse)
 library(sastats)
 
 outfile_svy <- "data/interim/svy-weight.rds" # updated svy data frame
-outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by rake_weight()
+outfile_wt <- "data/interim/svy-weight-object.rds" # list returned by sastats::rake_weight()
     
 svy <- readRDS("data/interim/svy-demo.rds")
 oia <- readRDS("data/interim/oia-co.rds")
@@ -79,7 +79,26 @@ pop_data <- oia %>%
 # get population distribution targets
 wt_vars <- setdiff(names(pop_data), c("Vrid", "stwt"))
 pop <- sapply(wt_vars, function(x) weights::wpct(pop_data[[x]], pop_data$stwt))
+pop
+```
 
+    ## $sex
+    ##    Male  Female 
+    ## 0.51747 0.48253 
+    ## 
+    ## $age_weight
+    ##     18-34     35-54       55+ 
+    ## 0.3514503 0.3486601 0.2998896 
+    ## 
+    ## $income_weight
+    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
+    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
+    ## 
+    ## $race_weight
+    ##                 White              Hispanic Not white or Hispanic 
+    ##            0.73559778            0.17719770            0.08720452
+
+``` r
 # Weight ------------------------------------------------------------------
 
 # check: distributions of weighting variables
@@ -114,45 +133,12 @@ rake_output <- rake_weight(svy_wt, pop, "Vrid")
 svy_wt <- select(rake_output$svy, Vrid, weight)
 svy$person <- left_join(svy$person, svy_wt, by = "Vrid")
 
-# check - these 2 should match
-sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
+# check - should show TRUE
+x <- sapply(names(pop), function(x) weights::wpct(svy$person[[x]], svy$person$weight))
+all.equal(x, pop)
 ```
 
-    ## $sex
-    ##    Male  Female 
-    ## 0.51747 0.48253 
-    ## 
-    ## $age_weight
-    ##     18-34     35-54       55+ 
-    ## 0.3514503 0.3486601 0.2998896 
-    ## 
-    ## $income_weight
-    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
-    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
-    ## 
-    ## $race_weight
-    ##                 White              Hispanic Not white or Hispanic 
-    ##            0.73559778            0.17719770            0.08720452
-
-``` r
-pop
-```
-
-    ## $sex
-    ##    Male  Female 
-    ## 0.51747 0.48253 
-    ## 
-    ## $age_weight
-    ##     18-34     35-54       55+ 
-    ## 0.3514503 0.3486601 0.2998896 
-    ## 
-    ## $income_weight
-    ##      0-25K     25-35K     35-50K     50-75K    75-100K   100-150K      150K+ 
-    ## 0.17353726 0.09405487 0.14064324 0.18922885 0.15252025 0.16103245 0.08898309 
-    ## 
-    ## $race_weight
-    ##                 White              Hispanic Not white or Hispanic 
-    ##            0.73559778            0.17719770            0.08720452
+    ## [1] TRUE
 
 ``` r
 # Save --------------------------------------------------------------------

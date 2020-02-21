@@ -5,7 +5,7 @@ For Southwick internal use only; Dan's portion of the analysis for the [B4W-19-0
 
 - CO survey prep: [data/processed/svy-csv.zip](data/processed/svy-csv.zip)
 - OIA-based tgtRate: 77.1%
-- Spending profile data: [out/profiles.xlsx](out/profiles.xlsx)
+- Spending profiles: [out/profiles.xlsx](out/profiles.xlsx)
 - Econ contributions: [out/contributions.xlsx](out/contributions.xlsx)
 - Report figures: [out/fig](out/fig)
 
@@ -13,7 +13,7 @@ The analysis can be reproduced from [`code/run.R`](code/run.R)
 
 ### Software Environment
 
-The project was setup using [package renv](https://rstudio.github.io/renv/index.html). Use `renv::restore()` to build the project library used for this analysis.
+The R package library was setup using [package renv](https://rstudio.github.io/renv/index.html). Use `renv::restore()` to build the package library used for this analysis.
 
 ## CO Survey Data
 
