@@ -22,18 +22,17 @@ workflow::run("code/svy/7-recode-outliers.R") # data/processed/svy.rds
 
 # Summaries (with some stats/figures for report)
 rmarkdown::render("code/summary/flag-summary.Rmd")
-rmarkdown::render("code/summary/weight-summary.Rmd")
-rmarkdown::render("code/summary/outlier-testing.Rmd")
+rmarkdown::render("code/summary/weight-summary.Rmd") # out/figs/
 rmarkdown::render("code/summary/compare-implan-sectoring.Rmd")
 
 # Profiles & spending estimates
-workflow::run("code/est/1-spend-usfws.R") # usfws-spend2016
+workflow::run("code/est/1-spend-usfws.R")
 workflow::run("code/est/2-year-adjust.R") # cpi, pop
 workflow::run("code/est/3-profile.R") # out/profiles.xlsx
 workflow::run("code/est/4-spend.R") # 2019 CO spending along waterways
 
 # Economic contributions
-workflow::run("code/implan/1-implan-input.R") # "data/processed/implan-import.xlsx"
+workflow::run("code/implan/1-implan-input.R")
 # manually save "implan-import.xlsx" as "implan-import.xls"
 # run implan externally & save it's output as csvs: data/raw/implan-out/
 workflow::run("code/implan/2-contributions.R") # out/contributions.xlsx
