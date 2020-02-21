@@ -34,7 +34,7 @@ sd(svy_data$weight)
 
 There was a small amount of skew between the CO survey (valid) respondents and the target population defined using the OIA survey dataset:
 
-```{r}
+```{r, warning=FALSE}
 figs <- list(
     compare_demo(age_weight, svy_data, pop_data) %>% plot_demo(age_weight, "Age"),
     compare_demo(race_weight, svy_data, pop_data) %>% plot_demo(race_weight, "Race"),

@@ -1,3 +1,9 @@
+3-nonres-oia.R
+================
+danka
+2020-02-21
+
+``` r
 # Get nonresident participation percentages in Colorado
 # 1. estimate to-Colorado participation profiles from oia survey
 # 2. estimate to-Coloardo participation rates by multiplying profiles
@@ -5,7 +11,20 @@
 # 4. estimate % res trips (as stand-in for days) from OIA results dataset
 
 library(tidyverse)
+```
 
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.2.1     v purrr   0.3.3
+    ## v tibble  2.1.3     v dplyr   0.8.4
+    ## v tidyr   1.0.2     v stringr 1.4.0
+    ## v readr   1.3.1     v forcats 0.4.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 state_slct <- "Colorado"
 statenum <- 6
 outfile <- "data/interim/nonres-oia.rds"
@@ -73,17 +92,53 @@ outstate_tgt <- function(df) {
 
 nmtr <- list()
 nmtr$svy <- slct_vars(svy_wtd, statenum, "nmtr")
+```
+
+    ## [1] "Vrid"                    "state"                   "stwt"                   
+    ## [4] "trip.nmtr.all_2"         "trip.nmtr.all_4"         "slct.nmtr.all"          
+    ## [7] "state.nmtr.all.dy.out_6" "state.nmtr.all.nt.out_6"
+
+``` r
 nmtr$all <- outstate_all(nmtr$svy)
 nmtr$tgt <- outstate_tgt(nmtr$svy)
 
 mtr <- list()
 mtr$svy <- slct_vars(svy_wtd, statenum, "mtr")
+```
+
+    ## [1] "Vrid"                   "state"                  "stwt"                  
+    ## [4] "trip.mtr.all_2"         "trip.mtr.all_4"         "slct.mtr.all"          
+    ## [7] "state.mtr.all.dy.out_6" "state.mtr.all.nt.out_6"
+
+``` r
 mtr$all <- outstate_all(mtr$svy)
 mtr$tgt <- outstate_tgt(mtr$svy)
 
 # combine
 out_rate <- bind_rows(nmtr$all, mtr$all)
+```
+
+    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector, coercing into
+    ## character vector
+    
+    ## Warning in bind_rows_(x, .id): binding character and factor vector, coercing into
+    ## character vector
+
+``` r
 tgt_rate <- bind_rows(nmtr$tgt, mtr$tgt)
+```
+
+    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character
+    
+    ## Warning in bind_rows_(x, .id): binding character and factor vector, coercing into
+    ## character vector
+    
+    ## Warning in bind_rows_(x, .id): binding character and factor vector, coercing into
+    ## character vector
+
+``` r
 rm(nmtr, mtr, svy_wtd)
 
 # Estimate Part Rates --------------------------------------------------------
@@ -164,4 +219,46 @@ mget(c("pct_part_act2", "pct_part_act1", "pct_trip_act2", "pct_trip_act1")) %>%
 # Summarize ---------------------------------------------------------------
 
 knitr::kable(pct_part_act1)
+```
+
+| act  | act1       | pct\_nres |
+| :--- | :--------- | --------: |
+| mtr  | boat       | 0.3495121 |
+| mtr  | motorcycle | 0.4456349 |
+| mtr  | off\_road  | 0.4351324 |
+| mtr  | rv         | 0.6376482 |
+| mtr  | snowmobile | 0.5403113 |
+| nmtr | alpine     | 0.7572883 |
+| nmtr | camp       | 0.4732169 |
+| nmtr | hike       | 0.6493995 |
+| nmtr | horse      | 0.5856775 |
+| nmtr | mountain   | 0.6662378 |
+| nmtr | nordic     | 0.7955662 |
+| nmtr | paddle     | 0.5055134 |
+| nmtr | run        | 0.6995863 |
+| nmtr | sail       | 0.4625562 |
+| nmtr | scuba      | 0.1054750 |
+| nmtr | wheel      | 0.3848835 |
+
+``` r
 knitr::kable(pct_trip_act1)
+```
+
+| act  | act1       | pct\_nres |
+| :--- | :--------- | --------: |
+| mtr  | boat       | 0.3154783 |
+| mtr  | motorcycle | 0.1096197 |
+| mtr  | off\_road  | 0.2023028 |
+| mtr  | rv         | 0.4611569 |
+| mtr  | snowmobile | 0.5749151 |
+| nmtr | alpine     | 0.4599618 |
+| nmtr | camp       | 0.3063708 |
+| nmtr | hike       | 0.2879584 |
+| nmtr | horse      | 0.3054256 |
+| nmtr | mountain   | 0.3778148 |
+| nmtr | nordic     | 0.5994792 |
+| nmtr | paddle     | 0.4020676 |
+| nmtr | run        | 0.4838764 |
+| nmtr | sail       | 0.7143388 |
+| nmtr | scuba      | 0.1341959 |
+| nmtr | wheel      | 0.1018457 |

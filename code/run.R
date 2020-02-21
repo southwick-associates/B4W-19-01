@@ -3,8 +3,6 @@
 # OIA
 workflow::run("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
 workflow::run("code/oia/2-spend-oia.R") # oia-spend2016
-
-# TODO: oia-nonres participation
 workflow::run("code/oia/3-nonres-oia.R")
 
 # CO svy initial testing

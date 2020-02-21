@@ -1,6 +1,6 @@
 Summarize CO survey weighting
 ================
-February 13, 2020
+February 21, 2020
 
 ``` r
 library(tidyverse)
@@ -47,27 +47,6 @@ figs <- list(
     compare_demo(sex, svy_data, pop_data) %>% plot_demo(sex, "Gender"),
     compare_demo(income_weight, svy_data, pop_data) %>% plot_demo(income_weight, "Income")
 )
-```
-
-    Warning: Factor `age_weight` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-
-    Warning: Factor `race_weight` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-    
-    Warning: Factor `race_weight` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-
-    Warning: Factor `sex` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-
-    Warning: Factor `income_weight` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-    
-    Warning: Factor `income_weight` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-
-``` r
 f1 <- cowplot::plot_grid(figs[[1]], figs[[2]], rel_widths = c(0.5, 0.5), ncol = 2)
 f2 <- cowplot::plot_grid(figs[[3]], figs[[4]], rel_widths = c(0.3, 0.7), ncol = 2)
 
@@ -76,12 +55,7 @@ f3 <- compare_demo(sex, svy_data, pop_data) %>%
     plot_demo(sex, "", hide_legend = FALSE) %>%
     get_legend() %>%
     cowplot::plot_grid()
-```
 
-    Warning: Factor `sex` contains implicit NA, consider using
-    `forcats::fct_explicit_na`
-
-``` r
 figs_out <- cowplot::plot_grid(f1, f2, f3, nrow = 3, rel_heights = c(0.4, 0.4, 0.1))
 ggsave("../../out/fig/demorep.png", figs_out, width = 6.5, height = 4.5, units = "in")
 figs_out
