@@ -18,6 +18,7 @@ workflow::run("code/svy/explore-act-rates.R")
 workflow::run("code/svy/3-flags.R")
 workflow::run("code/svy/4-clean.R")
 workflow::run("code/svy/5-recode-demographics.R")
+# TODO use sastats for weighting
 workflow::run("code/svy/6-weight.R")
 workflow::run("code/svy/7-recode-outliers.R") # data/processed/svy.rds
 # save zipped file by hand for "data/processed/svy-csv.zip"
