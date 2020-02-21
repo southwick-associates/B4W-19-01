@@ -25,6 +25,9 @@ spend_picnic <- readRDS("data/raw/spend_picnic-az.rds")$avg
 spend_oia <- readRDS("data/interim/oia-spend2016.rds")
 spend_usfws <- readRDS("data/interim/usfws-spend2016.rds")
 
+# oia nonres
+oia_nonres <- readRDS("data/interim/oia-nonres.rds")
+
 # tgtRate -----------------------------------------------------------------
 # percent of whole CO resident population in the CO svy target audience
 
@@ -72,3 +75,14 @@ spendAll <- spend %>%
     summarise_all("first") %>%
     select(-type, -item)
 xlsx_write_table(spendAll, outfile)
+
+# nresPct ----------------------------------------------------------------
+# percent of CO recreation done by nonresidents (participants, trips)
+# - comes directly from OIA
+
+nresPct <- left_join(
+    rename(oia_nonres$pct_part_act, part_pct_nres = pct_nres),
+    rename(oia_nonres$pct_trip_act, trip_pct_nres = pct_nres)
+) %>%
+    rename(act = co_activity)
+xlsx_write_table(nresPct, outfile)

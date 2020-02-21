@@ -25,9 +25,11 @@ library(tidyverse)
     ## x dplyr::lag()    masks stats::lag()
 
 ``` r
+library(readxl)
+
 state_slct <- "Colorado"
 statenum <- 6
-outfile <- "data/interim/nonres-oia.rds"
+outfile <- "data/interim/oia-nonres.rds"
 
 # Load Data ---------------------------------------------------------------
 
@@ -45,6 +47,10 @@ meta <- select(out$act_meta, act:act2, choice)
 rate <- select(out$part, act, act2, state, rate_mon, rate) %>% 
     left_join(meta, by = c("act", "act2"))
 rm(out, stat, meta)
+
+# - oia to co svy, for aggregating to the necessary activity level
+acts <- read_excel("data/raw/oia/oia-activities.xlsx", sheet = "co-oia-acts") %>%
+    filter(!is.na(co_activity))
 
 # Profile -----------------------------------------------------------------
 # 1. all: What % of activity participants (by state of residence) went to another state?
@@ -185,17 +191,19 @@ pct_part_act2 <- left_join(res, nres, by = c("act", "act1", "act2")) %>%
 
 # to get by activity groups, need to weight by act2
 # - participants by act2 seems like our best weighting variable
-pct_part_act1 <- pct_part_act2 %>%
-    group_by(act, act1) %>%
+pct_part_act <- pct_part_act2 %>%
+    right_join(acts, by = c("act", "act1")) %>%
+    group_by(co_activity) %>%
     summarise(pct_nres = weighted.mean(pct_nres, part_all))
 
 # Estimate Nres Trip % ----------------------------------------------------
 # the necessary estimates were included in the OIA results
 
 # total for day & overnight separately
-pct_trip_act2 <- tot$trip %>%
+x <- tot$trip %>%
     filter(state == state_slct) %>%
-    group_by(act, act1, stay, dest) %>%
+    right_join(acts, by = c("act", "act1")) %>%
+    group_by(co_activity, stay, dest) %>%
     summarise(trips = sum(trip_tot)) %>%
     ungroup() %>%
     spread(dest, trips) %>%
@@ -204,61 +212,78 @@ pct_trip_act2 <- tot$trip %>%
 # get % nres, weighting day vs. overnight based on total number of trips
 # - this is a bit hacky, but probably not terrible
 # - it overweights day trips, but that is conservative for estimating % nres
-pct_trip_act1 <- pct_trip_act2 %>% 
-    group_by(act, act1) %>%
+pct_trip_act <- x %>% 
+    group_by(co_activity) %>%
     summarise(pct_nres = weighted.mean(pct_nres, all))
 
 # Save --------------------------------------------------------------------
-# a list of 4 elements
-# - % part/trip by act1
-# - % part/trip by act2
 
-mget(c("pct_part_act2", "pct_part_act1", "pct_trip_act2", "pct_trip_act1")) %>%
+mget(c("pct_part_act2", "pct_part_act", "pct_trip_act")) %>%
     saveRDS(outfile)
 
 # Summarize ---------------------------------------------------------------
 
-knitr::kable(pct_part_act1)
+knitr::kable(pct_part_act2, format.args = list(big.mark = ","))
 ```
 
-| act  | act1       | pct\_nres |
-| :--- | :--------- | --------: |
-| mtr  | boat       | 0.3495121 |
-| mtr  | motorcycle | 0.4456349 |
-| mtr  | off\_road  | 0.4351324 |
-| mtr  | rv         | 0.6376482 |
-| mtr  | snowmobile | 0.5403113 |
-| nmtr | alpine     | 0.7572883 |
-| nmtr | camp       | 0.4732169 |
-| nmtr | hike       | 0.6493995 |
-| nmtr | horse      | 0.5856775 |
-| nmtr | mountain   | 0.6662378 |
-| nmtr | nordic     | 0.7955662 |
-| nmtr | paddle     | 0.5055134 |
-| nmtr | run        | 0.6995863 |
-| nmtr | sail       | 0.4625562 |
-| nmtr | scuba      | 0.1054750 |
-| nmtr | wheel      | 0.3848835 |
+| act  | act1       | act2            |     part\_res | part\_nres |    part\_all | pct\_nres |
+| :--- | :--------- | :-------------- | ------------: | ---------: | -----------: | --------: |
+| nmtr | run        | run             |   307,657.453 |    716,455 | 1,024,112.45 | 0.6995863 |
+| nmtr | hike       | hike            |   817,499.564 |  1,514,213 | 2,331,712.56 | 0.6493995 |
+| nmtr | mountain   | backpack        |   348,562.098 |    554,437 |   902,999.10 | 0.6139951 |
+| nmtr | mountain   | climb           |   112,495.722 |    244,928 |   357,423.72 | 0.6852595 |
+| nmtr | horse      | horse           |   149,550.885 |    211,402 |   360,952.88 | 0.5856775 |
+| nmtr | mountain   | mountaineering  |    48,129.582 |    217,047 |   265,176.58 | 0.8184999 |
+| nmtr | wheel      | bike\_road      |   364,439.797 |    161,109 |   525,548.80 | 0.3065538 |
+| nmtr | wheel      | bike\_mtn       |   209,182.884 |    144,696 |   353,878.88 | 0.4088857 |
+| nmtr | wheel      | skateboard      |    49,212.293 |     83,908 |   133,120.29 | 0.6303171 |
+| nmtr | camp       | camp            | 1,292,685.323 |  1,161,238 | 2,453,923.32 | 0.4732169 |
+| nmtr | nordic     | cross\_country  |    20,402.180 |    227,996 |   248,398.18 | 0.9178650 |
+| nmtr | alpine     | ski\_downhill   |   399,216.217 |  1,357,394 | 1,756,610.22 | 0.7727349 |
+| nmtr | alpine     | ski\_telemark   |    15,552.749 |      2,835 |    18,387.75 | 0.1541787 |
+| nmtr | alpine     | snowboard       |   313,250.261 |    911,274 | 1,224,524.26 | 0.7441862 |
+| nmtr | nordic     | snowshoe        |    81,023.739 |    166,709 |   247,732.74 | 0.6729389 |
+| nmtr | paddle     | kayak           |   168,110.920 |    167,953 |   336,063.92 | 0.4997650 |
+| nmtr | paddle     | raft            |   164,963.559 |    235,651 |   400,614.56 | 0.5882238 |
+| nmtr | paddle     | canoe           |    84,838.065 |    115,654 |   200,492.06 | 0.5768508 |
+| nmtr | paddle     | surf            |    35,379.735 |      2,799 |    38,178.74 | 0.0733131 |
+| nmtr | scuba      | scuba           |    71,231.222 |      8,399 |    79,630.22 | 0.1054750 |
+| nmtr | sail       | sail            |    29,679.554 |     25,544 |    55,223.55 | 0.4625562 |
+| nmtr | paddle     | paddle\_board   |    90,554.180 |     33,917 |   124,471.18 | 0.2724888 |
+| mtr  | motorcycle | motorcycle\_on  |   275,283.999 |    268,936 |   544,220.00 | 0.4941678 |
+| mtr  | motorcycle | motorcycle\_off |   105,521.051 |     37,180 |   142,701.05 | 0.2605447 |
+| mtr  | off\_road  | atv             |   203,945.456 |    181,653 |   385,598.46 | 0.4710937 |
+| mtr  | off\_road  | rov             |    27,826.335 |     30,378 |    58,204.33 | 0.5219199 |
+| mtr  | off\_road  | buggy           |    37,637.766 |     27,295 |    64,932.77 | 0.4203579 |
+| mtr  | off\_road  | truck           |   298,229.077 |    197,941 |   496,170.08 | 0.3989378 |
+| mtr  | boat       | waterski        |    54,665.904 |     14,980 |    69,645.90 | 0.2150880 |
+| mtr  | boat       | wakeboard       |    36,072.689 |     20,789 |    56,861.69 | 0.3656064 |
+| mtr  | boat       | kneeboard       |     5,678.749 |     15,178 |    20,856.75 | 0.7277261 |
+| mtr  | boat       | tube            |   142,621.156 |     38,474 |   181,095.16 | 0.2124518 |
+| mtr  | boat       | power\_boat     |   159,623.288 |    124,783 |   284,406.29 | 0.4387491 |
+| mtr  | snowmobile | snowmobile      |   118,728.714 |    139,552 |   258,280.71 | 0.5403113 |
+| mtr  | rv         | rv              |   250,980.644 |    441,663 |   692,643.64 | 0.6376482 |
 
 ``` r
-knitr::kable(pct_trip_act1)
+knitr::kable(pct_part_act)
 ```
 
-| act  | act1       | pct\_nres |
-| :--- | :--------- | --------: |
-| mtr  | boat       | 0.3154783 |
-| mtr  | motorcycle | 0.1096197 |
-| mtr  | off\_road  | 0.2023028 |
-| mtr  | rv         | 0.4611569 |
-| mtr  | snowmobile | 0.5749151 |
-| nmtr | alpine     | 0.4599618 |
-| nmtr | camp       | 0.3063708 |
-| nmtr | hike       | 0.2879584 |
-| nmtr | horse      | 0.3054256 |
-| nmtr | mountain   | 0.3778148 |
-| nmtr | nordic     | 0.5994792 |
-| nmtr | paddle     | 0.4020676 |
-| nmtr | run        | 0.4838764 |
-| nmtr | sail       | 0.7143388 |
-| nmtr | scuba      | 0.1341959 |
-| nmtr | wheel      | 0.1018457 |
+| co\_activity | pct\_nres |
+| :----------- | --------: |
+| bike         | 0.3848835 |
+| camp         | 0.5094126 |
+| snow         | 0.7627210 |
+| trail        | 0.6597163 |
+| water        | 0.4352387 |
+
+``` r
+knitr::kable(pct_trip_act)
+```
+
+| co\_activity | pct\_nres |
+| :----------- | --------: |
+| bike         | 0.1018457 |
+| camp         | 0.3318146 |
+| snow         | 0.4777663 |
+| trail        | 0.3378155 |
+| water        | 0.3725105 |

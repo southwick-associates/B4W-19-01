@@ -1,12 +1,26 @@
 3-profile.R
 ================
 danka
-2020-02-18
+2020-02-21
 
 ``` r
 # pull together spending profiles
 
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.2.1     v purrr   0.3.3
+    ## v tibble  2.1.3     v dplyr   0.8.4
+    ## v tidyr   1.0.2     v stringr 1.4.0
+    ## v readr   1.3.1     v forcats 0.4.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(readxl)
 library(workflow) # xlsx_write_table()
 
@@ -54,6 +68,9 @@ co_prof
 spend_picnic <- readRDS("data/raw/spend_picnic-az.rds")$avg
 spend_oia <- readRDS("data/interim/oia-spend2016.rds")
 spend_usfws <- readRDS("data/interim/usfws-spend2016.rds")
+
+# oia nonres
+oia_nonres <- readRDS("data/interim/oia-nonres.rds")
 
 # tgtRate -----------------------------------------------------------------
 # percent of whole CO resident population in the CO svy target audience
@@ -117,4 +134,20 @@ spendAll <- spend %>%
     summarise_all("first") %>%
     select(-type, -item)
 xlsx_write_table(spendAll, outfile)
+
+# nresPct ----------------------------------------------------------------
+# percent of CO recreation done by nonresidents (participants, trips)
+# - comes directly from OIA
+
+nresPct <- left_join(
+    rename(oia_nonres$pct_part_act, part_pct_nres = pct_nres),
+    rename(oia_nonres$pct_trip_act, trip_pct_nres = pct_nres)
+) %>%
+    rename(act = co_activity)
+```
+
+    ## Joining, by = "co_activity"
+
+``` r
+xlsx_write_table(nresPct, outfile)
 ```

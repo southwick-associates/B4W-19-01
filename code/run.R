@@ -1,8 +1,8 @@
 # run analysis
 
 # OIA
-workflow::run("code/oia/1-prep-oia.R") # oia-co (for CO svy weighting)
-workflow::run("code/oia/2-spend-oia.R") # oia-spend2016
+workflow::run("code/oia/1-prep-oia.R") # for CO svy weighting
+workflow::run("code/oia/2-spend-oia.R")
 workflow::run("code/oia/3-nonres-oia.R")
 
 # CO svy initial testing
@@ -29,7 +29,6 @@ rmarkdown::render("code/summary/compare-implan-sectoring.Rmd")
 # Profiles & spending estimates
 workflow::run("code/est/1-spend-usfws.R") # usfws-spend2016
 workflow::run("code/est/2-year-adjust.R") # cpi, pop
-# TODO: update this with nonresident numbers
 workflow::run("code/est/3-profile.R") # out/profiles.xlsx
 workflow::run("code/est/4-spend.R") # 2019 CO spending along waterways
 

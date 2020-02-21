@@ -5,10 +5,11 @@
 # 4. estimate % res trips (as stand-in for days) from OIA results dataset
 
 library(tidyverse)
+library(readxl)
 
 state_slct <- "Colorado"
 statenum <- 6
-outfile <- "data/interim/nonres-oia.rds"
+outfile <- "data/interim/oia-nonres.rds"
 
 # Load Data ---------------------------------------------------------------
 
@@ -26,6 +27,10 @@ meta <- select(out$act_meta, act:act2, choice)
 rate <- select(out$part, act, act2, state, rate_mon, rate) %>% 
     left_join(meta, by = c("act", "act2"))
 rm(out, stat, meta)
+
+# - oia to co svy, for aggregating to the necessary activity level
+acts <- read_excel("data/raw/oia/oia-activities.xlsx", sheet = "co-oia-acts") %>%
+    filter(!is.na(co_activity))
 
 # Profile -----------------------------------------------------------------
 # 1. all: What % of activity participants (by state of residence) went to another state?
@@ -130,17 +135,19 @@ pct_part_act2 <- left_join(res, nres, by = c("act", "act1", "act2")) %>%
 
 # to get by activity groups, need to weight by act2
 # - participants by act2 seems like our best weighting variable
-pct_part_act1 <- pct_part_act2 %>%
-    group_by(act, act1) %>%
+pct_part_act <- pct_part_act2 %>%
+    right_join(acts, by = c("act", "act1")) %>%
+    group_by(co_activity) %>%
     summarise(pct_nres = weighted.mean(pct_nres, part_all))
 
 # Estimate Nres Trip % ----------------------------------------------------
 # the necessary estimates were included in the OIA results
 
 # total for day & overnight separately
-pct_trip_act2 <- tot$trip %>%
+x <- tot$trip %>%
     filter(state == state_slct) %>%
-    group_by(act, act1, stay, dest) %>%
+    right_join(acts, by = c("act", "act1")) %>%
+    group_by(co_activity, stay, dest) %>%
     summarise(trips = sum(trip_tot)) %>%
     ungroup() %>%
     spread(dest, trips) %>%
@@ -149,19 +156,17 @@ pct_trip_act2 <- tot$trip %>%
 # get % nres, weighting day vs. overnight based on total number of trips
 # - this is a bit hacky, but probably not terrible
 # - it overweights day trips, but that is conservative for estimating % nres
-pct_trip_act1 <- pct_trip_act2 %>% 
-    group_by(act, act1) %>%
+pct_trip_act <- x %>% 
+    group_by(co_activity) %>%
     summarise(pct_nres = weighted.mean(pct_nres, all))
 
 # Save --------------------------------------------------------------------
-# a list of 4 elements
-# - % part/trip by act1
-# - % part/trip by act2
 
-mget(c("pct_part_act2", "pct_part_act1", "pct_trip_act2", "pct_trip_act1")) %>%
+mget(c("pct_part_act2", "pct_part_act", "pct_trip_act")) %>%
     saveRDS(outfile)
 
 # Summarize ---------------------------------------------------------------
 
-knitr::kable(pct_part_act1)
-knitr::kable(pct_trip_act1)
+knitr::kable(pct_part_act2, format.args = list(big.mark = ","))
+knitr::kable(pct_part_act)
+knitr::kable(pct_trip_act)
