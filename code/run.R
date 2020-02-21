@@ -36,4 +36,4 @@ workflow::run("code/est/4-spend.R") # 2019 CO spending along waterways
 workflow::run("code/implan/1-implan-input.R") # "data/processed/implan-import.xlsx"
 # manually save "implan-import.xlsx" as "implan-import.xls"
 # run implan externally & save it's output as csvs: data/raw/implan-out/
-workflow::run("code/implan/2-contributions.R") # data/processed/contributions.xlsx
+workflow::run("code/implan/2-contributions.R") # out/contributions.xlsx
