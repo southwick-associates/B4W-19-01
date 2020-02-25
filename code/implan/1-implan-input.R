@@ -28,17 +28,16 @@ check_share_sums(category_to_sector, share, category)
 # 1. Convert spending to Implan Categories
 spend_category <- spending %>%
     left_join(item_to_category, by = c("activity_group", "type", "item")) %>%
-    mutate(spend = share * spend) %>%
-    select(-share) # no longer needed
+    mutate(spend = share * spend)
 check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
+    select(-share) %>% # avoid ambiguity with category_to_sector$share
     left_join(category_to_sector, by = "category") %>%
-    mutate(spend = spend * share) %>%
-    select(-share)
+    mutate(spend = spend * share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)
 
 # 3. Build spreadsheets for implan import
-# TODO: check this
 input(spend_sector, outfile, 2019, act)
+check_implan_sums(spend_sector, outfile, act)

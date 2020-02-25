@@ -17,7 +17,6 @@ econ_total <- econ %>%
     summarise_all("sum")
 
 # save
-# TODO: check for exact match
 xlsx_write_table(econ, outfile)
 xlsx_write_table(econ_total, outfile)
 

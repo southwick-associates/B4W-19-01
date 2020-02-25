@@ -1,7 +1,7 @@
 1-implan-input.R
 ================
 danka
-2020-02-19
+2020-02-25
 
 ``` r
 # create input file for implan import
@@ -34,7 +34,8 @@ outfile <- "data/interim/implan-import.xlsx"
 
 spending <- readRDS("data/processed/spend2019.rds")
 
-item_to_category <- read_excel("data/raw/implan/item_to_category.xlsx") %>%
+item_to_category <- "data/raw/implan/item_to_category.xlsx" %>%
+    read_excel() %>%
     rename(type = spend_type)
 check_share_sums(item_to_category, share, activity_group, type, item)
 ```
@@ -42,8 +43,8 @@ check_share_sums(item_to_category, share, activity_group, type, item)
     ## [1] TRUE
 
 ``` r
-category_to_sector <- read_excel("data/raw/implan/master546-2020-02-19.xlsx", 
-                                 "category_to_sector546")
+category_to_sector <- "data/raw/implan/master546-2020-02-19.xlsx" %>%
+    read_excel(sheet = "category_to_sector546")
 check_share_sums(category_to_sector, share, category)
 ```
 
@@ -55,8 +56,7 @@ check_share_sums(category_to_sector, share, category)
 # 1. Convert spending to Implan Categories
 spend_category <- spending %>%
     left_join(item_to_category, by = c("activity_group", "type", "item")) %>%
-    mutate(spend = share * spend) %>%
-    select(-share) # no longer needed
+    mutate(spend = share * spend)
 check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 ```
 
@@ -65,9 +65,9 @@ check_spend_sums(spending, spend_category, spend, activity_group, type, item)
 ``` r
 # 2. Apportion Implan categories to sectors
 spend_sector <- spend_category %>%
+    select(-share) %>% # avoid ambiguity with category_to_sector$share
     left_join(category_to_sector, by = "category") %>%
-    mutate(spend = spend * share) %>%
-    select(-share)
+    mutate(spend = spend * share)
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)
 ```
 
@@ -75,10 +75,8 @@ check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item
 
 ``` r
 # 3. Build spreadsheets for implan import
-acts <- sort(unique(spending$act))
-for (i in acts) {
-    x <- filter(spend_sector, act == i)
-    input_prep_comm(x, paste0(i, "Comm")) %>% xlsx_write_implan(outfile)
-    input_prep_ind(x, paste0(i, "Ind")) %>% xlsx_write_implan(outfile)
-}
+input(spend_sector, outfile, 2019, act)
+check_implan_sums(spend_sector, outfile, act)
 ```
+
+    ## [1] TRUE
