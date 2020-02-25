@@ -14,12 +14,13 @@ outfile <- "data/interim/implan-import.xlsx"
 
 spending <- readRDS("data/processed/spend2019.rds")
 
-item_to_category <- read_excel("data/raw/implan/item_to_category.xlsx") %>%
+item_to_category <- "data/raw/implan/item_to_category.xlsx" %>%
+    read_excel() %>%
     rename(type = spend_type)
 check_share_sums(item_to_category, share, activity_group, type, item)
 
-category_to_sector <- read_excel("data/raw/implan/master546-2020-02-19.xlsx", 
-                                 "category_to_sector546")
+category_to_sector <- "data/raw/implan/master546-2020-02-19.xlsx" %>%
+    read_excel(sheet = "category_to_sector546")
 check_share_sums(category_to_sector, share, category)
 
 # Prepare Implan Input ------------------------------------------------------
@@ -39,9 +40,5 @@ spend_sector <- spend_category %>%
 check_spend_sums(spend_category, spend_sector, spend, activity_group, type, item)
 
 # 3. Build spreadsheets for implan import
-acts <- sort(unique(spending$act))
-for (i in acts) {
-    x <- filter(spend_sector, act == i)
-    input_prep_comm(x, paste0(i, "Comm")) %>% xlsx_write_implan(outfile)
-    input_prep_ind(x, paste0(i, "Ind")) %>% xlsx_write_implan(outfile)
-}
+# TODO: check this
+input(spend_sector, outfile, 2019, act)
